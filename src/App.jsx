@@ -22,7 +22,7 @@ function MiniCardArt({ id, meta }){
   const nextCopies = level < maxLevel ? COPY_THRESHOLDS[level] : copies
   if(art){
     return <div className="mini-card-art premium">
-      <img src={art.front} alt={p.name} />
+      <img src={art.mini||art.front} alt={p.name} />
       <div className="mini-top-mask" />
       <div className="mini-badge left">{'★'.repeat(level)}{'☆'.repeat(Math.max(0,maxLevel-level))}</div>
       <div className="mini-badge right">{copies}/{nextCopies}</div>
@@ -48,9 +48,9 @@ function TechNode({id,meta,onBuy,compact=false,disabled=false}){
 
 function UnitStat({label,value}){return <div className="unit-stat"><span>{label}</span><b>{value}</b></div>}
 function UnitCard({id,compact=false}){
-  const u=UNITS[id]
+  const u=UNITS[id], art=ASSETS.units?.[id]
   return <div className={`unit-card ${compact?'compact':''}`}>
-    <div className="unit-icon">{unitIcon(u)}</div>
+    <div className={`unit-icon ${art?'has-art':''}`}>{art?<img src={art} alt={u.name}/>:unitIcon(u)}</div>
     <div className="unit-card-main">
       <h4>{u.name}</h4><span className="unit-role">{u.role}</span>
       <div className="unit-stats"><UnitStat label="HP" value={u.health}/><UnitStat label="Armor" value={u.armor}/><UnitStat label="Dmg" value={u.damage}/><UnitStat label="Atk" value={u.attackSpeed}/><UnitStat label="Rng" value={u.range}/></div>
@@ -301,7 +301,7 @@ export default function App(){
         </div>
         <div>
           <h3>Available armies</h3>
-          <div className="muster-pool-list">{availableMusterUnits().map(id=><div key={id} className="muster-pool-item"><div className="mini-unit-glyph">{unitIcon(UNITS[id])}</div><div><b>{UNITS[id].name}</b><span>{UNITS[id].role}</span></div></div>)}</div>
+          <div className="muster-pool-list">{availableMusterUnits().map(id=><div key={id} className="muster-pool-item"><div className="mini-unit-glyph">{ASSETS.units?.[id]?<img src={ASSETS.units[id]} alt={UNITS[id].name}/>:unitIcon(UNITS[id])}</div><div><b>{UNITS[id].name}</b><span>{UNITS[id].role}</span></div></div>)}</div>
           <p className="micro-copy">Your starting armies come from your selected technologies, your general's signature unit, and special leader unlocks. Click an empty slot to pick one.</p>
           <button className="primary big" onClick={launchBattle}>March to Campaign</button>
         </div>
