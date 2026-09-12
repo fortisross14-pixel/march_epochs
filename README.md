@@ -1,52 +1,48 @@
-# March of Epochs — React v0.11.0
+# March of Epochs — React v0.12.0
 
-Mobile-first stabilization pass focused on early balance, battle controls, Armies UX, Artifacts packs, Achievements, and terrain pathfinding.
+This pass stabilizes the early-game UX and establishes the full historical content shell.
 
-## Main changes
+## Immediate gameplay fixes
+- Muster layout rebuilt for phone screens: compact squad cards, no giant empty panels.
+- Rally / Focus / Reinforce can be cancelled by tapping the active command again.
+- Rally and Focus command cooldowns reduced substantially (about 6 seconds).
+- Command target pause auto-cancels after about 2 seconds if no selection is made.
+- Mountain / river routing upgraded to denser A* pathfinding with segment validation and smoothing.
+- Battle stats now include a horizontally scrollable **Your Enhancements** strip. It shows cumulative run bonuses, equipped technologies, unit levels and equipped artifacts. These bonuses apply only to the player's army.
+- Added melee / spear artifact support and two functional early examples:
+  - Hardened Bronze Edges
+  - Reinforced Bronze Spearheads
 
-- Fresh save starts with **Warriors + Slingers**.
-- Every current army now has an explicit permanent unlock route through a starting unlock, technologies, or a named Leader/General.
-- Campaign I battles 1–5 were rebalanced around two primitive squads plus a small number of early Artifact/EXP upgrades.
-- First Wars now uses a proper illustrated campaign image rather than the previous geometric SVG treatment.
-- Re-cropped unit UI art for Warriors, Spearmen, Slingers, Archers, Cavalry and War Elephants to remove neighboring sprite-sheet fragments.
-- Army screen is now compact and tappable. Unit detail contains:
-  - large clean art
-  - Level and stats
-  - prominent EXP Level Up button
-  - two equipped Artifact slots
-  - unlock path
-- Artifacts can no longer be purchased directly. The Artifacts screen now has:
-  - Army Artifacts
-  - Hero Relics
-  - Pack Store
-- Pack Store includes cheap/advanced Artifact packs and, once People unlocks, standard/premium Hero packs.
-- Workshop evolution is integrated directly into owned Artifact cards.
-- Achievements now have progression families, including:
-  - victories: 1 / 3 / 5 / 10 / 20 / 50 / 100
-  - enemy squads destroyed: 1 / 2 / 5 / 10 / 25 / 50 / 100
-  - Progression / People / Artifacts / Collection milestones
-- Completed and claimable Achievements are shown first.
-- Popups stop above the persistent bottom navigation and retain a visible close button.
-- Battle command target selection now shows explicit friendly/enemy target chips, which is especially useful when melee units overlap.
-- Rally / Focus / Reinforce pause has a short automatic timeout (3 seconds; Rally destination 2.4 seconds).
-- Focus duration reduced to 5 seconds. Rally cooldown reduced.
-- Ground pathfinding now uses a coarse A* route when direct movement is blocked, so units can route around mountains and through river bridges rather than stopping at the obstacle.
+## Full content backbone
+The code now defines:
+- 15 campaigns
+- 225 campaign encounters (15 per campaign)
+- 11 historical age groupings
+- 55 unit types / unit shells
+- complete hero rarity pools by age
+- artifact families by age
+- technology roadmaps by age
 
-## Early balance target
+See `CONTENT-SHELL.md` for the complete lists.
 
-A new account should normally:
+## Campaign sequence
+1. First Wars
+2. Bronze & Iron Empires
+3. Greeks, Persia & Macedon
+4. Rome, Carthage & Republics
+5. Empire in Crisis
+6. Kingdoms of the Early Middle Ages
+7. Caliphates & Expansion
+8. Crusades & Steppe Empires
+9. Late Medieval Wars
+10. Renaissance Wars
+11. Oceans & Empires
+12. Kings, Enlightenment & Revolution
+13. Industrial Nations
+14. World at War
+15. The Modern Battlefield
 
-1. Beat around 0–2 encounters on a rough first attempt.
-2. Earn enough Gold/EXP/Achievement rewards to open a cheap Artifact pack and train Warriors/Slingers after a couple of attempts.
-3. Reach and clear 1-5 realistically with two squads plus a couple of modest permanent improvements.
-4. Unlock People at 1-6, creating the next meaningful power jump.
-5. Complete Campaign I in roughly 3–4 meaningful progression runs rather than through repetitive grinding.
+The first two retain the current more-developed historical briefings. Later campaigns are intentionally shell-level content for now: named encounters and representative unit pools exist, while final art, exact balance and bespoke mechanics will come in later passes.
 
-## Build
-
-```bash
-npm ci
-npm run build
-```
-
-`npm run build` uses the permission-safe Vite invocation through Node.
+## Save compatibility
+The v0.11 localStorage key is intentionally retained so current browser progression is preserved.

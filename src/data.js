@@ -6,6 +6,116 @@ export const RARITIES = {
   Legend: { color: '#f2c66c', maxLevel: 6, weight: 1 },
 }
 
+
+
+export const AGES = {
+  origins:{id:'origins',name:'Origins & First States',era:'c. 10,000–1600 BCE',campaigns:['dawn']},
+  bronzeIron:{id:'bronzeIron',name:'Bronze & Iron Empires',era:'c. 1600–500 BCE',campaigns:['firstcities']},
+  classical:{id:'classical',name:'Classical Antiquity',era:'499–30 BCE',campaigns:['greekPersian','romeCarthage']},
+  lateAntiquity:{id:'lateAntiquity',name:'Late Antiquity',era:'9–600 CE',campaigns:['lateAntiquity']},
+  earlyMedieval:{id:'earlyMedieval',name:'Early Medieval World',era:'500–1000',campaigns:['earlyMedieval','arabExpansion']},
+  medieval:{id:'medieval',name:'High & Late Medieval',era:'1000–1453',campaigns:['crusadesSteppe','lateMedieval']},
+  renaissance:{id:'renaissance',name:'Renaissance & Exploration',era:'1453–1700',campaigns:['renaissanceWars','oceansEmpires']},
+  revolution:{id:'revolution',name:'Enlightenment & Revolution',era:'1700–1815',campaigns:['kingsRevolution']},
+  industrial:{id:'industrialAge',name:'Industrial Nations',era:'1815–1914',campaigns:['industrialNations']},
+  worldWars:{id:'worldWars',name:'World Wars',era:'1914–1945',campaigns:['worldWars']},
+  modern:{id:'modernAge',name:'Modern Warfare',era:'1945–present',campaigns:['modernBattlefield']},
+}
+
+export const HERO_CATALOG = {
+  origins:{
+    common:['Tribal Elder · Leader','Veteran Commander · General'],
+    uncommon:['Merchant Prince · Leader','Village Lawgiver · Leader','Hunter Captain · General','Sling Master · General'],
+    rare:['Narmer · Leader','Ur-Nammu · Leader','Gudea · Leader','Eannatum · General','Lugal-Zage-Si · General','Naram-Sin · General'],
+    epic:['Hammurabi · Leader','Enheduanna · Leader','Sargon of Akkad · General','Shulgi · General'],
+    legend:['Gilgamesh · Leader','Sargon the Great · General']
+  },
+  bronzeIron:{
+    common:['Palace Steward · Leader','Bronze Captain · General'],
+    uncommon:['Temple Administrator · Leader','Chariot Officer · General','Bow Captain · General'],
+    rare:['Hatshepsut · Leader','Suppiluliuma I · Leader','Tiglath-Pileser III · Leader','Seti I · General','Muwatalli II · General','Horemheb · General','Ashurbanipal · General','Necho II · Leader'],
+    epic:['Ramesses II · Leader','Cyrus the Great · Leader','Thutmose III · General','Nebuchadnezzar II · General'],
+    legend:['Darius I · Leader','Thutmose III the Conqueror · General']
+  },
+  classical:{
+    common:['Greek Archon · Leader','Roman Magistrate · Leader','Greek Strategos · General','Roman Tribune · General'],
+    uncommon:['Persian Satrap · Leader','Carthaginian Suffete · Leader','Hoplite Captain · General','Legion Legate · General'],
+    rare:['Pericles · Leader','Darius III · Leader','Philip II · Leader','Leonidas · General','Miltiades · General','Themistocles · General','Pyrrhus · General','Julius Caesar · General'],
+    epic:['Cleopatra VII · Leader','Scipio Africanus · Leader','Hannibal Barca · General','Epaminondas · General'],
+    legend:['Augustus · Leader','Alexander the Great · General']
+  },
+  lateAntiquity:{
+    common:['Provincial Governor · Leader','Frontier Comes · General'],
+    uncommon:['Imperial Prefect · Leader','Foederati Chief · General','Cavalry Magister · General'],
+    rare:['Diocletian · Leader','Theodosius I · Leader','Alaric · Leader','Stilicho · General','Aetius · General','Narses · General','Attila · General','Clovis · Leader'],
+    epic:['Constantine I · Leader','Theodoric · Leader','Belisarius · General','Aurelian · General'],
+    legend:['Justinian I · Leader','Belisarius the Last Roman · General']
+  },
+  earlyMedieval:{
+    common:['Medieval Baron · Leader','Household Captain · General'],
+    uncommon:['Abbey Patron · Leader','Shieldwall Captain · General','Mounted Thane · General'],
+    rare:['Alfred the Great · Leader','Æthelstan · Leader','Harald Bluetooth · Leader','Charles Martel · General','Harald Hardrada · General','William the Conqueror · General','El Cid · General','Basil II · Leader'],
+    epic:['Charlemagne · Leader','Otto I · Leader','Nikephoros II · General','William the Conqueror · General'],
+    legend:['Charlemagne the Emperor · Leader','Khalid ibn al-Walid · General']
+  },
+  medieval:{
+    common:['Feudal Lord · Leader','Crusader Captain · General'],
+    uncommon:['Guild Prince · Leader','Knight Commander · General','Steppe Noyan · General'],
+    rare:['Eleanor of Aquitaine · Leader','Richard I · Leader','Frederick II · Leader','Saladin · General','Subutai · General','Edward I · General','Baybars · General','Joan of Arc · General'],
+    epic:['Saladin · Leader','Mehmed II · Leader','Genghis Khan · General','Timur · General'],
+    legend:['Mehmed II the Conqueror · Leader','Genghis Khan · General']
+  },
+  renaissance:{
+    common:['Renaissance Prince · Leader','Mercenary Captain · General'],
+    uncommon:['Colonial Governor · Leader','Condottiero · General','Sea Captain · General'],
+    rare:['Francis I · Leader','Charles V · Leader','Akbar · Leader','Gonzalo Fernández de Córdoba · General','Hernán Cortés · General','Oda Nobunaga · General','Maurice of Nassau · General','Tokugawa Ieyasu · Leader'],
+    epic:['Suleiman the Magnificent · Leader','Elizabeth I · Leader','Yi Sun-sin · General','Gustavus Adolphus · General'],
+    legend:['Elizabeth I · Leader','Gonzalo Fernández de Córdoba · General']
+  },
+  revolution:{
+    common:['Court Minister · Leader','Regimental Colonel · General'],
+    uncommon:['Enlightened Reformer · Leader','Artillery Officer · General','Cavalry Marshal · General'],
+    rare:['Maria Theresa · Leader','George Washington · Leader','Frederick II · Leader','Suvorov · General','Wellington · General','Marlborough · General','Turenne · General','Lafayette · General'],
+    epic:['Catherine II · Leader','George Washington · Leader','Frederick the Great · General','Wellington · General'],
+    legend:['Catherine the Great · Leader','Napoleon Bonaparte · General']
+  },
+  industrialAge:{
+    common:['Industrial Statesman · Leader','Rifle Colonel · General'],
+    uncommon:['Railway Minister · Leader','Staff Officer · General','Artillery Brigadier · General'],
+    rare:['Abraham Lincoln · Leader','Bismarck · Leader','Meiji · Leader','Ulysses S. Grant · General','Robert E. Lee · General','Sherman · General','Garibaldi · General','MacMahon · General'],
+    epic:['Lincoln · Leader','Bismarck · Leader','Helmuth von Moltke · General','Grant · General'],
+    legend:['Abraham Lincoln · Leader','Helmuth von Moltke the Elder · General']
+  },
+  worldWars:{
+    common:['War Cabinet Minister · Leader','Division Commander · General'],
+    uncommon:['Home Front Organizer · Leader','Armored Colonel · General','Air Marshal · General'],
+    rare:['Woodrow Wilson · Leader','Franklin D. Roosevelt · Leader','Winston Churchill · Leader','Foch · General','Patton · General','Montgomery · General','MacArthur · General','Rommel · General'],
+    epic:['Franklin D. Roosevelt · Leader','Winston Churchill · Leader','Eisenhower · General','Zhukov · General'],
+    legend:['Winston Churchill · Leader','Georgy Zhukov · General']
+  },
+  modernAge:{
+    common:['Modern President · Leader','Brigade Commander · General'],
+    uncommon:['Defense Minister · Leader','Combined-Arms Commander · General','Air Wing Commander · General'],
+    rare:['Charles de Gaulle · Leader','Harry Truman · Leader','Konrad Adenauer · Leader','Matthew Ridgway · General','Moshe Dayan · General','Vo Nguyen Giap · General','Norman Schwarzkopf · General','James Mattis · General'],
+    epic:['Charles de Gaulle · Leader','Lee Kuan Yew · Leader','Vo Nguyen Giap · General','Norman Schwarzkopf · General'],
+    legend:['Charles de Gaulle · Leader','Norman Schwarzkopf · General']
+  }
+}
+
+export const TECHNOLOGY_CATALOG = {
+  origins:['Fire','Archery','Wheel','Agriculture','Domestication','Writing','Copper Working','Irrigation'],
+  bronzeIron:['Bronze Working','Iron Working','Composite Bow','Military Organization','Roads','Fortification','Early Siegecraft','Chariotry'],
+  classical:['Steelmaking','Coinage','Engineering','Advanced Siegecraft','Logistics','Military Drill','Medicine','Advanced Shipbuilding'],
+  lateAntiquity:['Heavy Armor','Stirrup Precursors','Fortified Cities','Professional Cavalry','Late Roman Logistics','Composite Horse Bow'],
+  earlyMedieval:['Stirrup','Castles','Crossbow','Feudal Levy','Heavy Cavalry','Ocean Sailing','Horse Archery'],
+  medieval:['Trebuchet Engineering','Professional Levies','Plate Armor','Longbow Doctrine','Gunpowder','Compass','Pike Drill'],
+  renaissance:['Printing Press','Matchlock','Cartography','Banking','Oceanic Shipbuilding','Field Artillery','Military Academies'],
+  revolution:['Flintlock','Bayonet','Rifling Precursors','Standardized Artillery','Mass Conscription','Staff Colleges'],
+  industrialAge:['Steam Power','Railroads','Telegraph','Rifling','Breech Loading','Industrial Chemistry','Mass Production'],
+  worldWars:['Machine Guns','Combustion','Radio','Armored Warfare','Aviation','Radar','Ballistics'],
+  modernAge:['Jet Propulsion','Rocketry','Electronics','Computing','Precision Guidance','Satellites','Unmanned Systems']
+}
+
 export const COPY_THRESHOLDS = [1, 2, 4, 6, 8, 10]
 export const GOLD_UPGRADE_COSTS = [0, 150, 250, 500, 1000, 2000]
 
@@ -136,21 +246,63 @@ export const TECHS = {
 }
 
 export const UNITS = {
-  warrior: { id:'warrior', name:'Warriors', rarity:'Common', role:'MELEE', health:112, armor:4, damage:11, attackSpeed:1.0, range:0, moveSpeed:42, unlock:'Starting army', desc:'Basic close-combat squad.' },
-  spear: { id:'spear', name:'Spearmen', rarity:'Common', role:'SPEAR', health:118, armor:6, damage:10, attackSpeed:1.05, range:0, moveSpeed:39, antiMounted:1.7, requires:['copper'], unlock:'Research Copper Working', desc:'+70% damage against mounted units.' },
-  slinger: { id:'slinger', name:'Slingers', rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:190, moveSpeed:37, unlock:'Starting army', desc:'Primitive ranged harassment.' },
-  archer: { id:'archer', name:'Archers', rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:235, moveSpeed:34, requires:['archery'], unlock:'Research Archery', desc:'Long-range projectile squad.' },
-  cavalry: { id:'cavalry', name:'Horsemen', rarity:'Rare', role:'MOUNTED', health:126, armor:5, damage:15, attackSpeed:1.15, range:0, moveSpeed:71, charge:1.55, requires:['domestication'], unlock:'Research Domestication', desc:'Fast flanking unit.' },
-  horseArcher: { id:'horseArcher', name:'Horse Archers', rarity:'Epic', role:'MOUNTED RANGED', health:94, armor:3, damage:11.5, attackSpeed:1.08, range:205, moveSpeed:67, requires:['archery','domestication'], unlock:'Research Archery + Domestication', desc:'Mobile ranged cavalry.' },
-  chariot: { id:'chariot', name:'Chariots', rarity:'Epic', role:'MOUNTED', health:140, armor:8, damage:17, attackSpeed:1.2, range:0, moveSpeed:75, charge:1.78, requires:['wheel','domestication'], unlock:'Research Wheel + Domestication, or obtain Thutmose III / Ramesses II', desc:'Shock chariots.' },
-  rangedChariot: { id:'rangedChariot', name:'Ranged Chariots', rarity:'Epic', role:'MOUNTED RANGED', health:108, armor:5, damage:13, attackSpeed:1.14, range:212, moveSpeed:71, requires:['wheel','archery','domestication'], unlock:'Research Wheel + Archery + Domestication', desc:'Mobile archery platform.' },
-  axeman: { id:'axeman', name:'Bronze Axemen', rarity:'Rare', role:'MELEE', health:122, armor:10, damage:15, attackSpeed:1.08, range:0, moveSpeed:40, requires:['bronze'], unlock:'Research Bronze Working', desc:'High-damage bronze melee troops.' },
-  bronzeGuard: { id:'bronzeGuard', name:'Bronze Guard', rarity:'Epic', role:'MELEE', health:155, armor:26, damage:13, attackSpeed:1.05, range:0, moveSpeed:36, requires:['bronze','organization'], unlock:'Research Bronze Working + Military Organization, or obtain Sargon', desc:'Durable bronze infantry.' },
-  cityArcher: { id:'cityArcher', name:'City Bowmen', rarity:'Rare', role:'RANGED', health:84, armor:4, damage:11, attackSpeed:1.15, range:250, moveSpeed:32, requires:['archery','writing'], unlock:'Research Archery + Writing', desc:'Organized city archers.' },
-  warElephant: { id:'warElephant', name:'War Elephants', rarity:'Legend', role:'MOUNTED HEAVY', health:220, armor:18, damage:20, attackSpeed:.74, range:0, moveSpeed:46, charge:1.9, signature:'hannibal', unlock:'Obtain Hannibal', fear:true, desc:'Hannibal signature shock unit.' },
-  egyptianGuard: { id:'egyptianGuard', name:'Royal Egyptian Guard', rarity:'Legend', role:'MELEE', health:176, armor:24, damage:16, attackSpeed:1.02, range:0, moveSpeed:38, signature:'cleopatra', unlock:'Raise Cleopatra to Level 5', desc:'Elite guard unlocked by Cleopatra at high level.' },
-  imperialGuard: { id:'imperialGuard', name:'Imperial Guard', rarity:'Legend', role:'FIREARM', health:166, armor:19, damage:22, attackSpeed:1.0, range:185, moveSpeed:44, signature:'napoleon', unlock:'Obtain Napoleon', desc:'Napoleon signature infantry.' },
-  marines: { id:'marines', name:'Marines', rarity:'Legend', role:'FIREARM MELEE', health:220, armor:20, damage:19, attackSpeed:1.22, range:210, moveSpeed:50, requires:['firearms','organization'], unlock:'Research Firearms + Military Organization', desc:'A future-era professional formation. Its Level 1 base stats intentionally exceed a fully trained primitive Warrior.' },
+  warrior: { id:'warrior', name:'Warriors', ageId:'origins', ageIndex:1, rarity:'Common', role:'MELEE', health:112, armor:4, damage:11, attackSpeed:1.0, range:0, moveSpeed:42, unlock:'Starting army', desc:'Basic close-combat squad.' },
+  spear: { id:'spear', name:'Spearmen', ageId:'origins', ageIndex:1, rarity:'Common', role:'SPEAR', health:118, armor:6, damage:10, attackSpeed:1.05, range:0, moveSpeed:39, antiMounted:1.7, requires:['copper'], unlock:'Research Copper Working', desc:'+70% damage against mounted units.' },
+  slinger: { id:'slinger', name:'Slingers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:190, moveSpeed:37, unlock:'Starting army', desc:'Primitive ranged harassment.' },
+  archer: { id:'archer', name:'Archers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:235, moveSpeed:34, requires:['archery'], unlock:'Research Archery', desc:'Long-range projectile squad.' },
+  cavalry: { id:'cavalry', name:'Horsemen', ageId:'origins', ageIndex:1, rarity:'Rare', role:'MOUNTED', health:126, armor:5, damage:15, attackSpeed:1.15, range:0, moveSpeed:71, charge:1.55, requires:['domestication'], unlock:'Research Domestication', desc:'Fast flanking unit.' },
+  horseArcher: { id:'horseArcher', name:'Horse Archers', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MOUNTED RANGED', health:94, armor:3, damage:11.5, attackSpeed:1.08, range:205, moveSpeed:67, requires:['archery','domestication'], unlock:'Research Archery + Domestication', desc:'Mobile ranged cavalry.' },
+  chariot: { id:'chariot', name:'Chariots', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MOUNTED', health:140, armor:8, damage:17, attackSpeed:1.2, range:0, moveSpeed:75, charge:1.78, requires:['wheel','domestication'], unlock:'Research Wheel + Domestication, or obtain Thutmose III / Ramesses II', desc:'Shock chariots.' },
+  rangedChariot: { id:'rangedChariot', name:'Ranged Chariots', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MOUNTED RANGED', health:108, armor:5, damage:13, attackSpeed:1.14, range:212, moveSpeed:71, requires:['wheel','archery','domestication'], unlock:'Research Wheel + Archery + Domestication', desc:'Mobile archery platform.' },
+  axeman: { id:'axeman', name:'Bronze Axemen', ageId:'bronzeIron', ageIndex:2, rarity:'Rare', role:'MELEE', health:122, armor:10, damage:15, attackSpeed:1.08, range:0, moveSpeed:40, requires:['bronze'], unlock:'Research Bronze Working', desc:'High-damage bronze melee troops.' },
+  bronzeGuard: { id:'bronzeGuard', name:'Bronze Guard', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MELEE', health:155, armor:26, damage:13, attackSpeed:1.05, range:0, moveSpeed:36, requires:['bronze','organization'], unlock:'Research Bronze Working + Military Organization, or obtain Sargon', desc:'Durable bronze infantry.' },
+  cityArcher: { id:'cityArcher', name:'City Bowmen', ageId:'bronzeIron', ageIndex:2, rarity:'Rare', role:'RANGED', health:84, armor:4, damage:11, attackSpeed:1.15, range:250, moveSpeed:32, requires:['archery','writing'], unlock:'Research Archery + Writing', desc:'Organized city archers.' },
+  warElephant: { id:'warElephant', name:'War Elephants', ageId:'classical', ageIndex:3, rarity:'Legend', role:'MOUNTED HEAVY', health:220, armor:18, damage:20, attackSpeed:.74, range:0, moveSpeed:46, charge:1.9, signature:'hannibal', unlock:'Obtain Hannibal', fear:true, desc:'Hannibal signature shock unit.' },
+  egyptianGuard: { id:'egyptianGuard', name:'Royal Egyptian Guard', ageId:'classical', ageIndex:3, rarity:'Legend', role:'MELEE', health:176, armor:24, damage:16, attackSpeed:1.02, range:0, moveSpeed:38, signature:'cleopatra', unlock:'Raise Cleopatra to Level 5', desc:'Elite guard unlocked by Cleopatra at high level.' },
+  imperialGuard: { id:'imperialGuard', name:'Imperial Guard', ageId:'revolution', ageIndex:8, rarity:'Legend', role:'FIREARM', health:166, armor:19, damage:22, attackSpeed:1.0, range:185, moveSpeed:44, signature:'napoleon', unlock:'Obtain Napoleon', desc:'Napoleon signature infantry.' },
+  marines: { id:'marines', name:'Marines', ageId:'industrialAge', ageIndex:9, rarity:'Legend', role:'FIREARM MELEE', health:220, armor:20, damage:19, attackSpeed:1.22, range:210, moveSpeed:50, requires:['firearms','organization'], unlock:'Research Firearms + Military Organization', desc:'A future-era professional formation. Its Level 1 base stats intentionally exceed a fully trained primitive Warrior.' },
+
+  // Full-game shell units. These already exist in the catalogue even when their final art, recipes and balance are still placeholders.
+  hunterBand:{id:'hunterBand',name:'Hunter Bands',ageId:'origins',ageIndex:1,rarity:'Common',role:'RANGED',health:76,armor:1,damage:9,attackSpeed:1.0,range:150,moveSpeed:39,unlock:'Origins technology / campaign discovery',shell:true,desc:'Early hunting parties adapted for skirmish warfare.'},
+  warCart:{id:'warCart',name:'War Carts',ageId:'origins',ageIndex:1,rarity:'Rare',role:'MOUNTED',health:128,armor:5,damage:14,attackSpeed:.9,range:0,moveSpeed:60,unlock:'Wheel + Domestication',shell:true,desc:'Primitive wheeled shock formation.'},
+  compositeBowmen:{id:'compositeBowmen',name:'Composite Bowmen',ageId:'bronzeIron',ageIndex:2,rarity:'Rare',role:'RANGED',health:88,armor:4,damage:12,attackSpeed:1.12,range:255,moveSpeed:34,unlock:'Composite Bow technology',shell:true,desc:'Powerful Bronze/Iron Age missile troops.'},
+  assyrianSpears:{id:'assyrianSpears',name:'Assyrian Spearmen',ageId:'bronzeIron',ageIndex:2,rarity:'Epic',role:'SPEAR',health:150,armor:20,damage:14,attackSpeed:1.08,range:0,moveSpeed:38,unlock:'Bronze & Iron hero/technology path',shell:true,desc:'Disciplined imperial spear infantry.'},
+  hoplite:{id:'hoplite',name:'Hoplites',ageId:'classical',ageIndex:3,rarity:'Rare',role:'SPEAR MELEE',health:160,armor:25,damage:15,attackSpeed:.94,range:0,moveSpeed:34,unlock:'Iron Working + Military Drill',shell:true,desc:'Heavy shield-and-spear infantry.'},
+  phalanx:{id:'phalanx',name:'Macedonian Phalanx',ageId:'classical',ageIndex:3,rarity:'Epic',role:'SPEAR FORMATION',health:175,armor:24,damage:17,attackSpeed:.86,range:0,moveSpeed:31,unlock:'Military Drill + Philip/Alexander path',shell:true,desc:'Deep pike formation with exceptional frontal power.'},
+  legion:{id:'legion',name:'Roman Legion',ageId:'classical',ageIndex:3,rarity:'Epic',role:'MELEE FORMATION',health:182,armor:27,damage:18,attackSpeed:1.05,range:0,moveSpeed:39,unlock:'Iron Working + Organization',shell:true,desc:'Flexible professional heavy infantry.'},
+  peltast:{id:'peltast',name:'Peltasts',ageId:'classical',ageIndex:3,rarity:'Rare',role:'RANGED',health:94,armor:5,damage:12,attackSpeed:1.20,range:175,moveSpeed:49,unlock:'Classical skirmish technology',shell:true,desc:'Mobile javelin skirmishers.'},
+  immortals:{id:'immortals',name:'Persian Immortals',ageId:'classical',ageIndex:3,rarity:'Legend',role:'MELEE RANGED',health:168,armor:20,damage:17,attackSpeed:1.10,range:120,moveSpeed:43,unlock:'Achaemenid hero path',shell:true,desc:'Elite Persian guard formation.'},
+  companionCavalry:{id:'companionCavalry',name:'Companion Cavalry',ageId:'classical',ageIndex:3,rarity:'Legend',role:'MOUNTED',health:165,armor:18,damage:24,attackSpeed:1.12,range:0,moveSpeed:82,charge:2.0,unlock:'Alexander the Great',shell:true,desc:'Elite Macedonian shock cavalry.'},
+  ballista:{id:'ballista',name:'Ballista',ageId:'classical',ageIndex:3,rarity:'Epic',role:'SIEGE RANGED',health:100,armor:3,damage:30,attackSpeed:.42,range:330,moveSpeed:20,unlock:'Engineering + Siegecraft',shell:true,desc:'Long-range torsion artillery.'},
+  lateLegion:{id:'lateLegion',name:'Late Roman Infantry',ageId:'lateAntiquity',ageIndex:4,rarity:'Rare',role:'MELEE SPEAR',health:190,armor:28,damage:18,attackSpeed:1.0,range:0,moveSpeed:38,unlock:'Late Antiquity military reform',shell:true,desc:'Late imperial heavy infantry.'},
+  cataphract:{id:'cataphract',name:'Cataphracts',ageId:'lateAntiquity',ageIndex:4,rarity:'Epic',role:'MOUNTED HEAVY',health:210,armor:36,damage:24,attackSpeed:.88,range:0,moveSpeed:63,charge:1.8,unlock:'Heavy Armor + cavalry technology',shell:true,desc:'Heavily armored cavalry.'},
+  hunnicHorseArcher:{id:'hunnicHorseArcher',name:'Hunnic Horse Archers',ageId:'lateAntiquity',ageIndex:4,rarity:'Epic',role:'MOUNTED RANGED',health:115,armor:8,damage:15,attackSpeed:1.15,range:220,moveSpeed:78,unlock:'Horse Archery path',shell:true,desc:'Fast mounted archers.'},
+  skoutatoi:{id:'skoutatoi',name:'Byzantine Skoutatoi',ageId:'lateAntiquity',ageIndex:4,rarity:'Rare',role:'SPEAR MELEE',health:195,armor:30,damage:18,attackSpeed:.98,range:0,moveSpeed:36,unlock:'Eastern Roman military technology',shell:true,desc:'Disciplined shield-and-spear infantry.'},
+  shieldwall:{id:'shieldwall',name:'Shieldwall Infantry',ageId:'earlyMedieval',ageIndex:5,rarity:'Rare',role:'MELEE FORMATION',health:200,armor:28,damage:19,attackSpeed:.94,range:0,moveSpeed:35,unlock:'Early Medieval organization',shell:true,desc:'Dense shieldwall infantry.'},
+  knight:{id:'knight',name:'Knights',ageId:'medieval',ageIndex:6,rarity:'Epic',role:'MOUNTED HEAVY',health:230,armor:38,damage:28,attackSpeed:.9,range:0,moveSpeed:69,charge:2.0,unlock:'Stirrup + Heavy Armor',shell:true,desc:'Armored feudal shock cavalry.'},
+  crossbow:{id:'crossbow',name:'Crossbowmen',ageId:'medieval',ageIndex:6,rarity:'Rare',role:'RANGED',health:110,armor:10,damage:21,attackSpeed:.68,range:265,moveSpeed:32,unlock:'Crossbow technology',shell:true,desc:'Slow, powerful armor-piercing missile troops.'},
+  longbow:{id:'longbow',name:'Longbowmen',ageId:'medieval',ageIndex:6,rarity:'Epic',role:'RANGED',health:106,armor:7,damage:18,attackSpeed:1.0,range:315,moveSpeed:34,unlock:'Longbow doctrine',shell:true,desc:'Exceptional long-range bowmen.'},
+  mongolHorseArcher:{id:'mongolHorseArcher',name:'Mongol Horse Archers',ageId:'medieval',ageIndex:6,rarity:'Legend',role:'MOUNTED RANGED',health:135,armor:12,damage:18,attackSpeed:1.25,range:245,moveSpeed:86,unlock:'Genghis Khan or advanced Horse Archery',shell:true,desc:'Elite mobile ranged cavalry.'},
+  trebuchet:{id:'trebuchet',name:'Trebuchets',ageId:'medieval',ageIndex:6,rarity:'Epic',role:'SIEGE RANGED',health:125,armor:4,damage:48,attackSpeed:.28,range:390,moveSpeed:16,unlock:'Trebuchet Engineering',shell:true,desc:'Heavy counterweight siege artillery.'},
+  arquebusier:{id:'arquebusier',name:'Arquebusiers',ageId:'renaissance',ageIndex:7,rarity:'Rare',role:'FIREARM',health:120,armor:8,damage:22,attackSpeed:.72,range:235,moveSpeed:34,unlock:'Gunpowder + Matchlock',shell:true,desc:'Early firearm infantry.'},
+  tercio:{id:'tercio',name:'Tercios',ageId:'renaissance',ageIndex:7,rarity:'Legend',role:'FIREARM SPEAR FORMATION',health:230,armor:25,damage:24,attackSpeed:.90,range:210,moveSpeed:31,unlock:'Firearms + Pike Drill + Organization',shell:true,desc:'Combined pike-and-shot formation.'},
+  janissary:{id:'janissary',name:'Janissaries',ageId:'renaissance',ageIndex:7,rarity:'Epic',role:'FIREARM',health:170,armor:16,damage:25,attackSpeed:1.02,range:230,moveSpeed:39,unlock:'Ottoman hero/technology path',shell:true,desc:'Elite gunpowder infantry.'},
+  conquistador:{id:'conquistador',name:'Conquistadores',ageId:'renaissance',ageIndex:7,rarity:'Epic',role:'FIREARM MELEE',health:180,armor:28,damage:25,attackSpeed:.92,range:175,moveSpeed:42,unlock:'Hernán Cortés or Exploration path',shell:true,desc:'Armored expeditionary troops.'},
+  fieldCannon:{id:'fieldCannon',name:'Field Cannon',ageId:'renaissance',ageIndex:7,rarity:'Epic',role:'ARTILLERY RANGED',health:130,armor:5,damage:52,attackSpeed:.34,range:400,moveSpeed:22,unlock:'Field Artillery technology',shell:true,desc:'Mobile gunpowder artillery.'},
+  lineInfantry:{id:'lineInfantry',name:'Line Infantry',ageId:'revolution',ageIndex:8,rarity:'Rare',role:'FIREARM FORMATION',health:185,armor:10,damage:27,attackSpeed:1.0,range:250,moveSpeed:39,unlock:'Flintlock + Bayonet',shell:true,desc:'Disciplined volley infantry.'},
+  grenadier:{id:'grenadier',name:'Grenadiers',ageId:'revolution',ageIndex:8,rarity:'Epic',role:'FIREARM MELEE',health:205,armor:14,damage:30,attackSpeed:.95,range:220,moveSpeed:40,unlock:'Professional army technology',shell:true,desc:'Elite assault infantry.'},
+  dragoon:{id:'dragoon',name:'Dragoons',ageId:'revolution',ageIndex:8,rarity:'Rare',role:'MOUNTED FIREARM',health:175,armor:12,damage:26,attackSpeed:.88,range:200,moveSpeed:72,unlock:'Mounted Firearms',shell:true,desc:'Mounted firearm troops.'},
+  riflemen:{id:'riflemen',name:'Riflemen',ageId:'industrialAge',ageIndex:9,rarity:'Rare',role:'FIREARM',health:205,armor:12,damage:31,attackSpeed:1.08,range:285,moveSpeed:43,unlock:'Rifling',shell:true,desc:'Accurate industrial-era infantry.'},
+  machineGunTeam:{id:'machineGunTeam',name:'Machine Gun Detachment',ageId:'worldWars',ageIndex:10,rarity:'Epic',role:'FIREARM HEAVY',health:190,armor:16,damage:36,attackSpeed:1.8,range:280,moveSpeed:29,unlock:'Machine Guns',shell:true,desc:'High-rate defensive firepower.'},
+  tank:{id:'tank',name:'Tank',ageId:'worldWars',ageIndex:10,rarity:'Epic',role:'ARMORED RANGED',health:340,armor:55,damage:44,attackSpeed:.72,range:245,moveSpeed:55,unlock:'Armored Warfare + Combustion',shell:true,desc:'Armored breakthrough vehicle.'},
+  motorized:{id:'motorized',name:'Motorized Infantry',ageId:'worldWars',ageIndex:10,rarity:'Rare',role:'FIREARM MOBILE',health:235,armor:20,damage:33,attackSpeed:1.15,range:240,moveSpeed:65,unlock:'Combustion + Organization',shell:true,desc:'Fast mobile infantry.'},
+  fighter:{id:'fighter',name:'Fighter Aircraft',ageId:'worldWars',ageIndex:10,rarity:'Legend',role:'AIR',health:210,armor:15,damage:46,attackSpeed:1.15,range:360,moveSpeed:110,unlock:'Aviation',shell:true,desc:'Air-superiority aircraft.'},
+  mechanized:{id:'mechanized',name:'Mechanized Infantry',ageId:'modernAge',ageIndex:11,rarity:'Rare',role:'FIREARM ARMORED',health:300,armor:38,damage:40,attackSpeed:1.22,range:260,moveSpeed:70,unlock:'Modern mechanization',shell:true,desc:'Protected mobile infantry.'},
+  mainBattleTank:{id:'mainBattleTank',name:'Main Battle Tank',ageId:'modernAge',ageIndex:11,rarity:'Legend',role:'ARMORED RANGED',health:430,armor:72,damage:60,attackSpeed:.78,range:310,moveSpeed:68,unlock:'Advanced Armored Warfare',shell:true,desc:'Modern armored core unit.'},
+  attackHelicopter:{id:'attackHelicopter',name:'Attack Helicopter',ageId:'modernAge',ageIndex:11,rarity:'Epic',role:'AIR RANGED',health:260,armor:24,damage:52,attackSpeed:1.20,range:360,moveSpeed:105,unlock:'Aviation + Electronics',shell:true,desc:'Mobile modern close-air support.'},
+  rocketArtillery:{id:'rocketArtillery',name:'Rocket Artillery',ageId:'modernAge',ageIndex:11,rarity:'Epic',role:'ARTILLERY RANGED',health:210,armor:18,damage:70,attackSpeed:.35,range:460,moveSpeed:50,unlock:'Rocketry + Ballistics',shell:true,desc:'Long-range saturation fire.'},
+  airDefense:{id:'airDefense',name:'Air Defense Battery',ageId:'modernAge',ageIndex:11,rarity:'Epic',role:'RANGED AIRDEFENSE',health:230,armor:22,damage:50,attackSpeed:.8,range:410,moveSpeed:45,unlock:'Radar + Electronics',shell:true,desc:'Defensive anti-air formation.'},
+  droneUnit:{id:'droneUnit',name:'Drone Detachment',ageId:'modernAge',ageIndex:11,rarity:'Legend',role:'AIR RANGED',health:170,armor:8,damage:45,attackSpeed:1.25,range:430,moveSpeed:100,unlock:'Unmanned Systems + Computing',shell:true,desc:'Networked unmanned combat unit.'},
 }
 
 export const UNIT_LEVEL_MAX = 100
@@ -257,19 +409,74 @@ function makeHistoricalStages(briefs, types, second=false){
   }))
 }
 
+export const CAMPAIGN_ORDER = [
+  'dawn','firstcities','greekPersian','romeCarthage','lateAntiquity','earlyMedieval','arabExpansion','crusadesSteppe','lateMedieval','renaissanceWars','oceansEmpires','kingsRevolution','industrialNations','worldWars','modernBattlefield'
+]
+
+// The full campaign backbone. Later campaigns intentionally use shell-level descriptions/encounters for now;
+// the names and historical progression are locked so content can be filled without redesigning the game again.
+export const CAMPAIGN_SHELL_BATTLES = {
+  bronzeKingdoms:['Battle of the Nile Valley','Siege of Ebla','Mari on the Euphrates','Sargon’s Northern Campaign','Ur III Frontier','Elamite Incursion','Old Babylonian Levy','Battle for Eshnunna','Siege of Larsa','Hammurabi’s Coalition','Hittite Border War','Hyksos Chariot Raid','Siege of Avaris','Ahmose’s Pursuit','Rise of the New Kingdom'],
+  greekPersian:['Ionian Revolt','Battle of Marathon','Thermopylae','Artemisium','Salamis','Plataea','Eurymedon','Battle of Delium','Cunaxa','Leuctra','Mantinea','Granicus','Issus','Siege of Tyre','Gaugamela'],
+  romeCarthage:['Agrigentum','Mylae','Bagradas River','Drepana','Trebia','Lake Trasimene','Cannae','Metaurus','Zama','Cynoscephalae','Pydna','Numantia','Alesia','Pharsalus','Actium'],
+  lateAntiquity:['Teutoburg Forest','Milvian Bridge','Mursa Major','Adrianople','Frigidus','Catalaunian Plains','Cape Bon','Dara','Callinicum','Tricamarum','Taginae','Mons Lactarius','Melitene','Nineveh 627','Fall of Ctesiphon'],
+  earlyMedieval:['Mons Badonicus','Vouillé','Deorham','Winwaed','Nechtansmere','Tours','Roncevaux Pass','Edington','Lechfeld','Maldon','Clontarf','Brunanburh','Stamford Bridge','Hastings','Manzikert'],
+  arabExpansion:['Badr','Uhud','The Trench','Mu’tah','Yarmouk','al-Qadisiyyah','Jalula','Nahavand','Heliopolis','Alexandria','Sufetula','Battle of the Masts','Second Fitna','Talas','Great Abbasid Muster'],
+  crusadesSteppe:['Dorylaeum','Siege of Antioch','Jerusalem 1099','Montgisard','Hattin','Arsuf','Las Navas de Tolosa','Kalka River','Legnica','Mohi','Ain Jalut','Lake Peipus','Bouvines','Muret','Fall of Acre'],
+  lateMedieval:['Bannockburn','Crécy','Poitiers','Kosovo Field','Nicopolis','Grunwald','Agincourt','Orléans','Varna','Castillon','Constantinople','Towton','Bosworth Field','Nancy','End of the Medieval Order'],
+  renaissanceWars:['Fornovo','Cerignola','Garigliano','Agnadello','Ravenna','Novara','Marignano','Bicocca','Pavia','Mohács','Vienna 1529','Ceresole','Mühlberg','St. Quentin','Rocroi'],
+  oceansEmpires:['Tenochtitlan','Cajamarca','First Panipat','Khanwa','Haldighati','Nagashino','Spanish Armada Landing Drill','Sekigahara','Kinsale','White Mountain','Breitenfeld','Lützen','Marston Moor','Dunbar','Blenheim'],
+  kingsRevolution:['Poltava','Malplaquet','Fontenoy','Plassey','Leuthen','Quebec','Saratoga','Yorktown','Valmy','Austerlitz','Jena-Auerstedt','Wagram','Borodino','Leipzig','Waterloo'],
+  industrialNations:['Alma','Balaclava','Inkerman','Solferino','First Bull Run','Antietam','Gettysburg','Vicksburg','Königgrätz','Sedan','Isandlwana','Rorke’s Drift','Omdurman','Spion Kop','Mukden'],
+  worldWars:['First Marne','Tannenberg','Verdun','The Somme','Cambrai','Amiens','Poland 1939','Fall of France','El Alamein','Stalingrad','Kursk','Normandy','Operation Bagration','Battle of the Bulge','Berlin'],
+  modernBattlefield:['Inchon','Chosin Reservoir','Dien Bien Phu','Ia Drang','Tet Offensive','Golan Heights 1973','Sinai 1973','Goose Green','73 Easting','Mogadishu','Takur Ghar','Second Fallujah','Marjah','Modern Combined-Arms Exercise','Networked Battlefield Finale']
+}
+
+const shellEnemyByAge={
+  origins:['warrior','slinger'],bronzeIron:['spear','chariot','cityArcher'],classical:['hoplite','peltast','cavalry'],lateAntiquity:['lateLegion','cataphract','hunnicHorseArcher'],earlyMedieval:['shieldwall','archer','cavalry'],medieval:['knight','crossbow','longbow'],renaissance:['arquebusier','tercio','fieldCannon'],revolution:['lineInfantry','dragoon','fieldCannon'],industrialAge:['riflemen','marines','fieldCannon'],worldWars:['motorized','machineGunTeam','tank'],modernAge:['mechanized','mainBattleTank','rocketArtillery']
+}
+function makeShellStages(names,ageId){
+  const pool=shellEnemyByAge[ageId]||['warrior']
+  return names.map((name,i)=>({
+    index:i+1,name,date:'',history:`${name} is part of the ${AGES[ageId]?.name||'historical'} campaign shell. A full historical briefing and bespoke conditions will be added during the content pass.`,
+    tip:'Use the terrain, unit counters, Rally, Focus Fire and Reinforcement to create a local advantage.',
+    terrain:i%5===1?{river:true,bridges:[2]}:i%5===3?{mountains:[{x:145,y:255,w:105,h:105},{x:350,y:330,w:90,h:95}]}:{},
+    types:Array.from({length:Math.min(6,2+Math.floor(i/4))},(_,j)=>pool[(i+j)%pool.length]),mult:.82+i*.035,gold:25+i*4,xp:18+i*2,tp:i%2===0?1:0,boss:i===names.length-1,elite:[4,9,13].includes(i)
+  }))
+}
+
 export const CAMPAIGNS = {
-  dawn: {
-    id:'dawn', name:'First Wars', era:'c. 7500–2300 BCE', maxTechTier:2,
-    desc:'From archaeological evidence of early group violence to the first documented city-state wars. Terrain and formation matter more with every battle.',
-    boss:'Coalition of the Cities', art:'firstWars',
-    stages: makeHistoricalStages(FIRST_WAR_BRIEFS, firstWarTypes)
-  },
-  firstcities: {
-    id:'firstcities', name:'Bronze & Iron Empires', era:'1457–525 BCE', maxTechTier:3, requires:'dawn',
-    desc:'Famous early battles: chariots, rivers, fortified cities and imperial armies. Each encounter includes a short historical clue you can use tactically.',
-    boss:'Battle of Pelusium', art:'bronzeEmpires',
-    stages: makeHistoricalStages(BRONZE_BRIEFS, bronzeTypes, true)
-  }
+  dawn:{id:'dawn',number:1,ageId:'origins',name:'First Wars',era:'c. 7500–2300 BCE',maxTechTier:2,desc:'From archaeological evidence of early group violence to the first documented city-state wars.',boss:'Coalition of the Cities',art:'firstWars',stages:makeHistoricalStages(FIRST_WAR_BRIEFS,firstWarTypes)},
+
+  firstcities:{id:'firstcities',number:2,ageId:'bronzeIron',name:'Bronze & Iron Empires',era:'1457–525 BCE',maxTechTier:3,requires:'dawn',desc:'Chariots, fortified cities and the great imperial armies of Egypt, Assyria and Persia.',boss:'Battle of Pelusium',art:'bronzeEmpires',stages:makeHistoricalStages(BRONZE_BRIEFS,bronzeTypes,true)},
+  greekPersian:{id:'greekPersian',number:3,ageId:'classical',name:'Greeks, Persia & Macedon',era:'499–323 BCE',maxTechTier:4,requires:'firstcities',desc:'Hoplites, Persian imperial armies and the Macedonian transformation of warfare.',boss:'Gaugamela',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.greekPersian,'classical')},
+  romeCarthage:{id:'romeCarthage',number:4,ageId:'classical',name:'Rome, Carthage & Republics',era:'264–30 BCE',maxTechTier:4,requires:'greekPersian',desc:'Legions, elephants, cavalry and the wars that created Mediterranean empires.',boss:'Actium',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.romeCarthage,'classical')},
+  lateAntiquity:{id:'lateAntiquity',number:5,ageId:'lateAntiquity',name:'Empire in Crisis',era:'9–628 CE',maxTechTier:4,requires:'romeCarthage',desc:'Late Rome, migrations, armored cavalry and the struggle for the old imperial world.',boss:'Fall of Ctesiphon',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.lateAntiquity,'lateAntiquity')},
+  earlyMedieval:{id:'earlyMedieval',number:6,ageId:'earlyMedieval',name:'Kingdoms of the Early Middle Ages',era:'500–1071',maxTechTier:5,requires:'lateAntiquity',desc:'Shieldwalls, mounted elites, Vikings and new kingdoms after Rome.',boss:'Manzikert',art:'firstWars',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.earlyMedieval,'earlyMedieval')},
+  arabExpansion:{id:'arabExpansion',number:7,ageId:'earlyMedieval',name:'Caliphates & Expansion',era:'624–900',maxTechTier:5,requires:'earlyMedieval',desc:'The rapid expansion of the early caliphates and the armies that reshaped the Mediterranean and Near East.',boss:'Great Abbasid Muster',art:'firstWars',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.arabExpansion,'earlyMedieval')},
+  crusadesSteppe:{id:'crusadesSteppe',number:8,ageId:'medieval',name:'Crusades & Steppe Empires',era:'1097–1291',maxTechTier:5,requires:'arabExpansion',desc:'Knights, horse archers, crusader states and the Mongol shock across Eurasia.',boss:'Fall of Acre',art:'firstWars',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.crusadesSteppe,'medieval')},
+  lateMedieval:{id:'lateMedieval',number:9,ageId:'medieval',name:'Late Medieval Wars',era:'1314–1485',maxTechTier:5,requires:'crusadesSteppe',desc:'Longbows, pikes, early gunpowder and the end of the medieval battlefield.',boss:'End of the Medieval Order',art:'firstWars',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.lateMedieval,'medieval')},
+  renaissanceWars:{id:'renaissanceWars',number:10,ageId:'renaissance',name:'Renaissance Wars',era:'1494–1650',maxTechTier:6,requires:'lateMedieval',desc:'Pike-and-shot, artillery and the rise of professional early-modern armies.',boss:'Rocroi',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.renaissanceWars,'renaissance')},
+  oceansEmpires:{id:'oceansEmpires',number:11,ageId:'renaissance',name:'Oceans & Empires',era:'1492–1704',maxTechTier:6,requires:'renaissanceWars',desc:'Exploration, global empires, gunpowder expansion and warfare across continents.',boss:'Blenheim',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.oceansEmpires,'renaissance')},
+  kingsRevolution:{id:'kingsRevolution',number:12,ageId:'revolution',name:'Kings, Enlightenment & Revolution',era:'1700–1815',maxTechTier:6,requires:'oceansEmpires',desc:'Line infantry, mass artillery, revolutions and Napoleonic warfare.',boss:'Waterloo',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.kingsRevolution,'revolution')},
+  industrialNations:{id:'industrialNations',number:13,ageId:'industrialAge',name:'Industrial Nations',era:'1854–1905',maxTechTier:6,requires:'kingsRevolution',desc:'Rifles, railways, machine guns and industrial-scale armies.',boss:'Mukden',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.industrialNations,'industrialAge')},
+  worldWars:{id:'worldWars',number:14,ageId:'worldWars',name:'World at War',era:'1914–1945',maxTechTier:6,requires:'industrialNations',desc:'Trenches, armor, air power and mechanized combined-arms warfare.',boss:'Berlin',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.worldWars,'worldWars')},
+  modernBattlefield:{id:'modernBattlefield',number:15,ageId:'modernAge',name:'The Modern Battlefield',era:'1950–present',maxTechTier:6,requires:'worldWars',desc:'Mechanized armies, helicopters, precision weapons and networked warfare.',boss:'Networked Battlefield Finale',art:'bronzeEmpires',stages:makeShellStages(CAMPAIGN_SHELL_BATTLES.modernBattlefield,'modernAge')}
+}
+
+
+export const ARTIFACT_CATALOG = {
+  origins:['Reinforced Leather Lamellar','Braided Sling Pouch','Stone Axe Grip','Hardened Spear Shaft','Bone Charm'],
+  bronzeIron:['Reinforced Bronze Armor','Hardened Bronze Edges','Bronze Spearheads','Composite Bow Limbs','Chariot Reinforcement'],
+  classical:['Iron Scale Armor','Pilum Bundle','Aspis Reinforcement','Macedonian Sarissa Tips','Cavalry Breastplate','Laurel Standard'],
+  lateAntiquity:['Lamellar Cuirass','Heavy Cavalry Barding','Composite Horse Bow','Late Roman Shield Boss','Imperial Eagle'],
+  earlyMedieval:['Mail Hauberk','Pattern-Welded Blade','Shieldwall Boss','Stirrup Reinforcement','Viking Banner'],
+  medieval:['Plate Reinforcement','Bodkin Arrows','Windlass Crossbow','Knightly Saddle','Trebuchet Counterweight','Crusader Standard'],
+  renaissance:['Pike Ferrules','Matchlock Mechanism','Powder Flask','Wheel-Lock Pistols','Cannon Trunnions','Royal Standard'],
+  revolution:['Flintlock Kit','Bayonet Socket','Artillery Sight','Cavalry Sabre','Regimental Colors','Officer’s Telescope'],
+  industrialAge:['Rifled Barrel','Breech Mechanism','Field Telegraph Set','Steel Breastplate','Rangefinder','Railway Logistics Kit'],
+  worldWars:['Steel Helmet','Machine-Gun Tripod','Tank Optics','Radio Set','Anti-Tank Sights','Field Medical Kit'],
+  modernAge:['Composite Armor','Thermal Sight','Precision Optics','Reactive Armor','Encrypted Radio','Drone Targeting Module']
 }
 
 export const ARTIFACT_COPY_THRESHOLDS = [1,2,4,6,8]
@@ -278,6 +485,8 @@ export const ARTIFACT_WORKSHOP_GOLD = [0,20,45,80,130]
 export const ITEMS = {
   leatherLamellar:{id:'leatherLamellar',name:'Reinforced Leather Lamellar',slot:'unit',rarity:'Common',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.06},step:{healthMult:.025},desc:'A dependable early artifact. Increases Health of the equipped army type.'},
   bronzeArmor:{id:'bronzeArmor',name:'Reinforced Bronze Armor',slot:'unit',rarity:'Uncommon',eligible:'ALL',price:45,maxLevel:5,effect:{armor:4},step:{armor:1.5},desc:'Adds flat Armor to the equipped army type.'},
+  bronzeEdges:{id:'bronzeEdges',name:'Hardened Bronze Edges',slot:'unit',rarity:'Uncommon',eligible:'MELEE',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improved edged bronze weapons for melee formations from the Bronze/Classical eras or earlier.'},
+  spearheads:{id:'spearheads',name:'Reinforced Bronze Spearheads',slot:'unit',rarity:'Uncommon',eligible:'SPEAR',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.055,armor:1},step:{damageMult:.02,armor:.5},desc:'Stronger spearheads for spear formations of the Bronze/Classical eras or earlier.'},
   edgedProjectiles:{id:'edgedProjectiles',name:'Improved Edged Projectiles',slot:'unit',rarity:'Rare',eligible:'RANGED',price:50,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improves Damage for ranged and firearm units.'},
   slingPouch:{id:'slingPouch',name:'Braided Sling Pouch',slot:'unit',rarity:'Uncommon',eligible:'SLINGER',price:38,maxLevel:5,effect:{attackSpeedMult:1.07},step:{attackSpeedMult:.025},desc:'Improves Slingers’ Attack Speed.'},
   warStandard:{id:'warStandard',name:'Carthaginian War Standard',slot:'hero',rarity:'Epic',eligible:'general',price:160,maxLevel:5,effect:{reinforceMult:1.08},step:{reinforceMult:.025},desc:'A hero relic that improves reinforcement generation.'},
@@ -347,7 +556,7 @@ export const START_META = {
   unitLevels: { warrior:1, slinger:1 },
   unlockedCampaigns: ['dawn'],
   completedCampaigns: [],
-  campaignStats: { dawn:{best:0,stars:0}, firstcities:{best:0,stars:0} },
+  campaignStats: Object.fromEntries(CAMPAIGN_ORDER.map(id=>[id,{best:0,stars:0}])),
   featureUnlocks: { artifacts:true, people:false, technology:false, relics:false },
   techSlots: 3,
   hpRank: 0,

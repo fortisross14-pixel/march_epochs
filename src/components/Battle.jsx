@@ -90,18 +90,48 @@ function segmentGroundBlocked(a,b,terrain){
   return false
 }
 function findGroundPath(start,goal,terrain){
-  const step=26,minX=20,maxX=W-20,minY=38,maxY=H-35
+  // Coarse A* navigation. Smaller cells + segment validation makes it much harder for a unit
+  // to get trapped against mountain rectangles or miss a bridge opening.
+  const step=18,minX=16,maxX=W-16,minY=26,maxY=H-24
   const snap=p=>({x:clamp(Math.round((p.x-minX)/step)*step+minX,minX,maxX),y:clamp(Math.round((p.y-minY)/step)*step+minY,minY,maxY)})
-  const nearestValid=p=>{const s=snap(p);if(!blockedGroundPoint(s.x,s.y,terrain))return s;for(let r=1;r<7;r++)for(let dx=-r;dx<=r;dx++)for(let dy=-r;dy<=r;dy++){if(Math.abs(dx)!==r&&Math.abs(dy)!==r)continue;const q={x:clamp(s.x+dx*step,minX,maxX),y:clamp(s.y+dy*step,minY,maxY)};if(!blockedGroundPoint(q.x,q.y,terrain))return q}return s}
+  const nearestValid=p=>{
+    const s=snap(p)
+    if(!blockedGroundPoint(s.x,s.y,terrain))return s
+    for(let r=1;r<12;r++){
+      const candidates=[]
+      for(let dx=-r;dx<=r;dx++)for(let dy=-r;dy<=r;dy++)if(Math.abs(dx)===r||Math.abs(dy)===r)candidates.push({x:clamp(s.x+dx*step,minX,maxX),y:clamp(s.y+dy*step,minY,maxY)})
+      candidates.sort((a,b)=>dist(a,p)-dist(b,p))
+      const ok=candidates.find(q=>!blockedGroundPoint(q.x,q.y,terrain))
+      if(ok)return ok
+    }
+    return s
+  }
   const s=nearestValid(start),g=nearestValid(goal),key=p=>`${p.x},${p.y}`,heur=p=>Math.hypot(p.x-g.x,p.y-g.y)
-  const open=[{...s,g:0,f:heur(s)}],came=new Map(),best=new Map([[key(s),0]]),closed=new Set(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]
+  const open=[{...s,g:0,f:heur(s)}],came=new Map(),best=new Map([[key(s),0]]),closed=new Set()
+  const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]
   let found=null,guard=0
-  while(open.length&&guard++<1200){open.sort((a,b)=>a.f-b.f);const cur=open.shift(),ck=key(cur);if(closed.has(ck))continue;closed.add(ck);if(Math.hypot(cur.x-g.x,cur.y-g.y)<step*.9){found=cur;break}
-    for(const[dX,dY]of dirs){const n={x:cur.x+dX*step,y:cur.y+dY*step};if(n.x<minX||n.x>maxX||n.y<minY||n.y>maxY||blockedGroundPoint(n.x,n.y,terrain))continue
+  while(open.length&&guard++<5000){
+    open.sort((a,b)=>a.f-b.f);const cur=open.shift(),ck=key(cur)
+    if(closed.has(ck))continue;closed.add(ck)
+    if(Math.hypot(cur.x-g.x,cur.y-g.y)<step*1.15){found=cur;break}
+    for(const[dX,dY]of dirs){
+      const n={x:cur.x+dX*step,y:cur.y+dY*step}
+      if(n.x<minX||n.x>maxX||n.y<minY||n.y>maxY||blockedGroundPoint(n.x,n.y,terrain))continue
       if(dX&&dY&&(blockedGroundPoint(cur.x+dX*step,cur.y,terrain)||blockedGroundPoint(cur.x,cur.y+dY*step,terrain)))continue
-      const nk=key(n),ng=cur.g+(dX&&dY?1.414:1)*step;if(ng>=(best.get(nk)??Infinity))continue;best.set(nk,ng);came.set(nk,ck);open.push({...n,g:ng,f:ng+heur(n)})}}
+      if(segmentGroundBlocked(cur,n,terrain))continue
+      const nk=key(n),ng=cur.g+(dX&&dY?1.414:1)*step
+      if(ng>=(best.get(nk)??Infinity))continue
+      best.set(nk,ng);came.set(nk,ck);open.push({...n,g:ng,f:ng+heur(n)})
+    }
+  }
   if(!found)return[]
-  const path=[];let ck=key(found);while(ck!==key(s)){const[x,y]=ck.split(',').map(Number);path.push({x,y});ck=came.get(ck);if(!ck)break}path.reverse();path.push({x:g.x,y:g.y});return path
+  const path=[];let ck=key(found),skey=key(s),safety=0
+  while(ck!==skey&&safety++<800){const[x,y]=ck.split(',').map(Number);path.push({x,y});ck=came.get(ck);if(!ck)break}
+  path.reverse();path.push({x:g.x,y:g.y})
+  // Basic smoothing: skip intermediate nodes when the straight segment is now clear.
+  const smooth=[];let anchor={x:start.x,y:start.y},i=0
+  while(i<path.length){let far=i;for(let j=path.length-1;j>=i;j--){if(!segmentGroundBlocked(anchor,path[j],terrain)){far=j;break}}smooth.push(path[far]);anchor=path[far];i=far+1}
+  return smooth
 }
 function makeEntity(side,type,pos,hpFrac,run,mult,idx){
   const stats=unitStats(type,run,side,mult),maxHp=stats.health
@@ -139,7 +169,7 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function setAction(mode,unitId=null){
     if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)
     actionRef.current={mode,unitId};setActionMode(mode);setActionUnitId(unitId)
-    if(mode){actionTimeoutRef.current=setTimeout(()=>{actionRef.current={mode:null,unitId:null};setActionMode(null);setActionUnitId(null)},mode==='rallyDestination'?2400:3000)}
+    if(mode){actionTimeoutRef.current=setTimeout(()=>{actionRef.current={mode:null,unitId:null};setActionMode(null);setActionUnitId(null)},2000)}
   }
   useEffect(()=>()=>{if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)},[])
   function resetDeployPositions(roster=run.roster){setDeployPos(roster.map((_,i)=>({...defaultPositions[i%defaultPositions.length]})));setSelectedRoster(0)}
@@ -236,8 +266,8 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     const newFlawless=flawlessCount+(hadLoss?0:1);setFlawlessCount(newFlawless)
     const survivors=b.player.filter(e=>!e.dead).map(e=>({type:e.type,hpFrac:e.hp/e.maxHp})),recovery=clamp(.05+run.tech.reduce((a,t)=>a+(TECHS[t]?.recovery||0),0)+(run.leader==='cyrus'&&run.leaderLevel>=4?.08:0),.05,.28),newRoster=survivors.map((s,i)=>({uid:`r${i}-${Date.now()}`,type:s.type,hpFrac:clamp(s.hpFrac+(1-s.hpFrac)*recovery,0,1)})),goldGain=Math.round(stage.gold*leaderGoldMult()),xpGain=stage.xp||0,tpGain=meta.featureUnlocks?.technology?(stage.tp||0):0,nextRun={...run,roster:newRoster,gold:run.gold+goldGain,xp:run.xp+xpGain,tp:run.tp+tpGain}
     setRun(nextRun)
-    if(stageIndex===14){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
-    if([4,9,13].includes(stageIndex)){setShowMilestone(true);setPhase('milestone');return}openRewards(nextRun)
+    if(stageIndex===campaign.stages.length-1){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
+    if((campaign.milestones||[4,9,Math.max(0,campaign.stages.length-2)]).includes(stageIndex)){setShowMilestone(true);setPhase('milestone');return}openRewards(nextRun)
   }
   function leaderGoldMult(){let m=1;if(run.leader==='cleopatra'){if(run.leaderLevel>=2)m=1.25;else if(run.leaderLevel>=1)m=1.15}else if(run.leader==='elder')m=1.08;else if(run.leader==='merchant')m=run.leaderLevel>=3?1.20:1.12;else if(run.leader==='ramesses'&&run.leaderLevel>=2)m=1.12;else if(run.leader==='cyrus'&&run.leaderLevel>=1)m=1.10;const relicId=run.heroEquipment?.[run.leader];const effect=relicId?itemEffectAtLevel(relicId,run.artifactLevels?.[relicId]||1):null;if(effect?.goldMult)m*=effect.goldMult;return m}
   function availableUnitTypes(){return [...new Set((run.eligibleUnits?.length?run.eligibleUnits:['warrior']).filter(id=>UNITS[id]))]}
@@ -246,16 +276,16 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function advanceStage(nextRun=run){setStageIndex(i=>i+1);setRun(nextRun);setPhase('deploy');resetDeployPositions(nextRun.roster);setAction(null);setShowBrief(true)}
   function milestone(type){if(type==='heal'){const next={...run,roster:run.roster.map(r=>({...r,hpFrac:1}))};setRun(next);setShowMilestone(false);advanceStage(next)}else{const cap=Math.min(6,run.deployCap+1),next={...run,deployCap:cap};setRun(next);setShowMilestone(false);openRewards(next,true)}}
 
-  function activateRally(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.rallyCd)return;setAction('rallyUnit')}
-  function activateFocus(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.focusCd)return;setAction('focus')}
-  function activateReinforce(){const b=battleRef.current;if(!b||phase!=='battle'||b.meter<100)return;setAction('reinforce')}
+  function activateRally(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode?.startsWith('rally')){setAction(null);return}if(b.time<b.rallyCd)return;setAction('rallyUnit')}
+  function activateFocus(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode==='focus'){setAction(null);return}if(b.time<b.focusCd)return;setAction('focus')}
+  function activateReinforce(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode==='reinforce'){setAction(null);return}if(b.meter<100)return;setAction('reinforce')}
   function activateSpecial(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.specialCd||!specialReady)return;if(run.general==='hannibal'){b.specialUntil=b.time+8;b.specialCd=b.time+34}else if(run.general==='thutmose'){b.specialUntil=b.time+7;b.specialCd=b.time+30}else if(run.general==='napoleon'){for(const e of b.enemy.filter(e=>!e.dead)){const wasAlive=!e.dead;e.hp=Math.max(0,e.hp-e.maxHp*.18);if(e.hp<=0){e.dead=true;if(wasAlive)killsRef.current++}}b.specialCd=b.time+32}updateHud(b)}
 
   function chooseActionTarget(id){
     const b=battleRef.current;if(!b)return
     const action=actionRef.current
     if(action.mode==='rallyUnit'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e)setAction('rallyDestination',e.id);return}
-    if(action.mode==='focus'){const e=b.enemy.find(u=>u.id===id&&!u.dead);if(e){b.focusTarget=e.id;b.focusUntil=b.time+5;b.focusCd=b.time+11;setAction(null);updateHud(b)}return}
+    if(action.mode==='focus'){const e=b.enemy.find(u=>u.id===id&&!u.dead);if(e){b.focusTarget=e.id;b.focusUntil=b.time+4;b.focusCd=b.time+6;setAction(null);updateHud(b)}return}
     if(action.mode==='reinforce'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e){e.hp=Math.min(e.maxHp,e.hp+e.maxHp*reinforceHeal);b.meter=0;setAction(null);updateHud(b)}return}
   }
 
@@ -270,12 +300,28 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     const b=battleRef.current;if(!b)return;const action=actionRef.current
     const nearest=(arr)=>arr.filter(e=>!e.dead).sort((a,c)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(c.x-x,c.y-y))[0]
     if(action.mode==='rallyUnit'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<38)chooseActionTarget(e.id);return}
-    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};e.navPath=null;b.rallyCd=b.time+12;setAction(null);updateHud(b)}return}
+    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};e.navPath=null;b.rallyCd=b.time+6;setAction(null);updateHud(b)}return}
     if(action.mode==='focus'){const e=nearest(b.enemy);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
     if(action.mode==='reinforce'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
   }
 
-  const statsBlock=<div className="battle-stats-card"><div className="battle-stat-title"><span>{campaign.name}</span><b>{stageIndex+1}/15 · {stage.name}</b></div><div className="battle-life"><div><span>YOUR ARMY · {hud.player}%</span><i><em style={{width:`${hud.player}%`}}/></i><small>{battleRef.current?.player?.filter(e=>!e.dead).length??run.roster.length} squads · Power {hud.powerP}</small></div><div className="enemy"><span>ENEMY · {hud.enemy}%</span><i><em style={{width:`${hud.enemy}%`}}/></i><small>{battleRef.current?.enemy?.filter(e=>!e.dead).length??stage.types.length} squads · Power {hud.powerE}</small></div></div><div className="replacement-line"><span>Replacements</span><b>{hud.meter}%</b></div></div>
+  function enhancementSummary(){
+    const chips=[]
+    if(run.upgrades.damage>1.001)chips.push(`Damage +${Math.round((run.upgrades.damage-1)*100)}%`)
+    if(run.upgrades.health>1.001)chips.push(`Health +${Math.round((run.upgrades.health-1)*100)}%`)
+    if(run.upgrades.attackSpeed>1.001)chips.push(`Attack speed +${Math.round((run.upgrades.attackSpeed-1)*100)}%`)
+    if(run.upgrades.range>1.001)chips.push(`Range +${Math.round((run.upgrades.range-1)*100)}%`)
+    if(run.upgrades.armorBonus>0)chips.push(`Armor +${run.upgrades.armorBonus}`)
+    if(reinforceMult>1.001)chips.push(`Reinforce speed +${Math.round((reinforceMult-1)*100)}%`)
+    if(reinforceHeal>.151)chips.push(`Reinforce heal ${Math.round(reinforceHeal*100)}%`)
+    if(run.general)chips.push(`${general?.name||'General'} Lv${run.generalLevel}`)
+    if(run.leader)chips.push(`${leader?.name||'Leader'} Lv${run.leaderLevel}`)
+    for(const t of run.tech)if(TECHS[t])chips.push(TECHS[t].name)
+    const rosterTypes=[...new Set(run.roster.map(r=>r.type))]
+    for(const type of rosterTypes){const lv=run.unitLevels?.[type]||1;if(lv>1)chips.push(`${UNITS[type].name} Lv${lv}`);for(const itemId of (run.unitEquipment?.[type]||[]))if(ITEMS[itemId])chips.push(ITEMS[itemId].name)}
+    return chips.length?chips:['No temporary enhancements yet']
+  }
+  const statsBlock=<div className="battle-stats-card"><div className="battle-stat-title"><span>{campaign.name}</span><b>{stageIndex+1}/{campaign.stages.length} · {stage.name}</b></div><div className="battle-life"><div><span>YOUR ARMY · {hud.player}%</span><i><em style={{width:`${hud.player}%`}}/></i><small>{battleRef.current?.player?.filter(e=>!e.dead).length??run.roster.length} squads · Power {hud.powerP}</small></div><div className="enemy"><span>ENEMY · {hud.enemy}%</span><i><em style={{width:`${hud.enemy}%`}}/></i><small>{battleRef.current?.enemy?.filter(e=>!e.dead).length??stage.types.length} squads · Power {hud.powerE}</small></div></div><div className="replacement-line"><span>Replacements</span><b>{hud.meter}%</b></div><div className="enhancement-strip"><b>YOUR ENHANCEMENTS · PLAYER ONLY</b><div>{enhancementSummary().map((x,i)=><span key={`${x}-${i}`}>{x}</span>)}</div></div></div>
   const actionButtons=phase==='deploy'?<div className="battle-actions-grid deployment"><button onClick={autoDeploy}><b>Auto Deploy</b><span>Reset formation</span></button><button className="primary-action" onClick={beginBattle}><b>Finish Deployment</b><span>Start battle</span></button></div>:<div className="battle-actions-grid"><button disabled={hud.rally>0} className={actionMode?.startsWith('rally')?'selected':''} onClick={activateRally}><b>Rally</b><span>{actionMode==='rallyUnit'?'Select unit':actionMode==='rallyDestination'?'Choose destination':hud.rally>0?`${hud.rally.toFixed(0)}s`:'Move one unit'}</span></button><button disabled={hud.focus>0} className={actionMode==='focus'?'selected':''} onClick={activateFocus}><b>Focus</b><span>{actionMode==='focus'?'Select enemy':hud.focus>0?`${hud.focus.toFixed(0)}s`:'All target one unit'}</span></button><button disabled={hud.meter<100} className={actionMode==='reinforce'?'selected':''} onClick={activateReinforce}><b>Reinforce</b><span>{actionMode==='reinforce'?'Select unit':hud.meter>=100?`Heal ${Math.round(reinforceHeal*100)}%`:`${hud.meter}%`}</span></button><button disabled={!specialReady||hud.special>0} onClick={activateSpecial}><b>Special</b><span>{!specialReady?'Disabled':hud.special>0?`${hud.special.toFixed(0)}s`:general?.special||'Special'}</span></button></div>
   const targetList=actionMode==='focus'?(battleRef.current?.enemy||[]).filter(e=>!e.dead):(actionMode==='reinforce'||actionMode==='rallyUnit')?(battleRef.current?.player||[]).filter(e=>!e.dead):[]
   const targetStrip=phase==='battle'&&actionMode?<div className="command-target-strip">{actionMode==='rallyDestination'?<div className="destination-hint"><b>Rally destination</b><span>Tap a valid point on the battlefield. Selection resumes automatically after a short timeout.</span></div>:targetList.map((e,i)=><button key={e.id} onClick={()=>chooseActionTarget(e.id)}><span>{i+1}</span><div><b>{UNITS[e.type].name}</b><small>{Math.round(e.hp/e.maxHp*100)}% HP</small></div></button>)}</div>:null
