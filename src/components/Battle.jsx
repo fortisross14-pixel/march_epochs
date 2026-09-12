@@ -84,6 +84,25 @@ function movementWaypoint(a,b,terrain){
   const mountain=lineBlocked(a,goal,terrain.mountains);if(mountain)goal=mountainWaypoint(a,goal,mountain)
   return goal
 }
+function segmentGroundBlocked(a,b,terrain){
+  const d=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.max(2,Math.ceil(d/12))
+  for(let i=1;i<=steps;i++){const t=i/steps,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;if(blockedGroundPoint(x,y,terrain))return true}
+  return false
+}
+function findGroundPath(start,goal,terrain){
+  const step=26,minX=20,maxX=W-20,minY=38,maxY=H-35
+  const snap=p=>({x:clamp(Math.round((p.x-minX)/step)*step+minX,minX,maxX),y:clamp(Math.round((p.y-minY)/step)*step+minY,minY,maxY)})
+  const nearestValid=p=>{const s=snap(p);if(!blockedGroundPoint(s.x,s.y,terrain))return s;for(let r=1;r<7;r++)for(let dx=-r;dx<=r;dx++)for(let dy=-r;dy<=r;dy++){if(Math.abs(dx)!==r&&Math.abs(dy)!==r)continue;const q={x:clamp(s.x+dx*step,minX,maxX),y:clamp(s.y+dy*step,minY,maxY)};if(!blockedGroundPoint(q.x,q.y,terrain))return q}return s}
+  const s=nearestValid(start),g=nearestValid(goal),key=p=>`${p.x},${p.y}`,heur=p=>Math.hypot(p.x-g.x,p.y-g.y)
+  const open=[{...s,g:0,f:heur(s)}],came=new Map(),best=new Map([[key(s),0]]),closed=new Set(),dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]
+  let found=null,guard=0
+  while(open.length&&guard++<1200){open.sort((a,b)=>a.f-b.f);const cur=open.shift(),ck=key(cur);if(closed.has(ck))continue;closed.add(ck);if(Math.hypot(cur.x-g.x,cur.y-g.y)<step*.9){found=cur;break}
+    for(const[dX,dY]of dirs){const n={x:cur.x+dX*step,y:cur.y+dY*step};if(n.x<minX||n.x>maxX||n.y<minY||n.y>maxY||blockedGroundPoint(n.x,n.y,terrain))continue
+      if(dX&&dY&&(blockedGroundPoint(cur.x+dX*step,cur.y,terrain)||blockedGroundPoint(cur.x,cur.y+dY*step,terrain)))continue
+      const nk=key(n),ng=cur.g+(dX&&dY?1.414:1)*step;if(ng>=(best.get(nk)??Infinity))continue;best.set(nk,ng);came.set(nk,ck);open.push({...n,g:ng,f:ng+heur(n)})}}
+  if(!found)return[]
+  const path=[];let ck=key(found);while(ck!==key(s)){const[x,y]=ck.split(',').map(Number);path.push({x,y});ck=came.get(ck);if(!ck)break}path.reverse();path.push({x:g.x,y:g.y});return path
+}
 function makeEntity(side,type,pos,hpFrac,run,mult,idx){
   const stats=unitStats(type,run,side,mult),maxHp=stats.health
   return{id:`${side}-${idx}-${Math.random().toString(36).slice(2,7)}`,side,type,x:pos.x,y:pos.y,stats,maxHp,hp:maxHp*(hpFrac??1),cool:Math.random()*.3,dead:false,moved:0,flash:0,manualDestination:null}
@@ -106,7 +125,7 @@ function drawSquad(ctx,e,selected=false,targetable=false){
 }
 
 export default function Battle({campaignId,loadout,startingRoster,startCapacity,eligibleUnits=[],meta,onFinish}){
-  const campaign=CAMPAIGNS[campaignId],canvasRef=useRef(null),battleRef=useRef(null),rafRef=useRef(null),actionRef=useRef({mode:null,unitId:null})
+  const campaign=CAMPAIGNS[campaignId],canvasRef=useRef(null),battleRef=useRef(null),rafRef=useRef(null),actionRef=useRef({mode:null,unitId:null}),actionTimeoutRef=useRef(null),killsRef=useRef(0)
   const [phase,setPhase]=useState('deploy'),[stageIndex,setStageIndex]=useState(0)
   const [run,setRun]=useState(()=>({campaign:campaignId,leader:loadout.leader||null,general:loadout.general||null,tech:(loadout.tech||[]).filter(Boolean),leaderLevel:loadout.leader?(meta.characterLevels[loadout.leader]||1):0,generalLevel:loadout.general?(meta.characterLevels[loadout.general]||1):0,roster:startingRoster.map((type,i)=>({uid:`r${i}-${Date.now()}`,type,hpFrac:1})),deployCap:startCapacity,gold:0,xp:0,tp:0,eligibleUnits:[...eligibleUnits],unitLevels:meta.unitLevels||{},unitEquipment:meta.unitEquipment||{},heroEquipment:meta.heroEquipment||{},artifactLevels:meta.artifactLevels||{},upgrades:{damage:1,health:1,attackSpeed:1,range:1,armorBonus:0,reinforceSpeed:1,reinforceHeal:0}}))
   const [deployPos,setDeployPos]=useState(()=>startingRoster.map((_,i)=>({...defaultPositions[i]}))),[selectedRoster,setSelectedRoster]=useState(0)
@@ -117,7 +136,12 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   const reinforceHeal=useMemo(()=>{let h=.15+run.upgrades.reinforceHeal;if(run.leader==='cleopatra'&&run.leaderLevel>=3)h+=.08;if(run.tech.includes('agriculture'))h+=.03;if(run.tech.includes('irrigation'))h+=.04;return clamp(h,.10,.60)},[run])
   const specialReady=!!(general?.special&&run.generalLevel>=(general.specialLevel||99))
 
-  function setAction(mode,unitId=null){actionRef.current={mode,unitId};setActionMode(mode);setActionUnitId(unitId)}
+  function setAction(mode,unitId=null){
+    if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)
+    actionRef.current={mode,unitId};setActionMode(mode);setActionUnitId(unitId)
+    if(mode){actionTimeoutRef.current=setTimeout(()=>{actionRef.current={mode:null,unitId:null};setActionMode(null);setActionUnitId(null)},mode==='rallyDestination'?2400:3000)}
+  }
+  useEffect(()=>()=>{if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)},[])
   function resetDeployPositions(roster=run.roster){setDeployPos(roster.map((_,i)=>({...defaultPositions[i%defaultPositions.length]})));setSelectedRoster(0)}
   function autoDeploy(){resetDeployPositions()}
 
@@ -150,10 +174,24 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     return live.sort((a,c)=>dist(e,a)-dist(e,c))[0]
   }
   function moveTowardPoint(e,point,dt,b){
-    const goal=movementWaypoint(e,point,b.terrain),dx=goal.x-e.x,dy=goal.y-e.y,dd=Math.hypot(dx,dy)||1,step=Math.min(dd,e.stats.moveSpeed*dt)
+    let goal=point
+    const targetKey=`${Math.round(point.x/45)},${Math.round(point.y/45)}`
+    const directBlocked=segmentGroundBlocked(e,point,b.terrain)
+    if(directBlocked){
+      if(!e.navPath||!e.navPath.length||e.navTargetKey!==targetKey||b.time>(e.navRecalc||0)){
+        e.navPath=findGroundPath(e,point,b.terrain);e.navTargetKey=targetKey;e.navRecalc=b.time+.55
+      }
+      while(e.navPath?.length&&dist(e,e.navPath[0])<14)e.navPath.shift()
+      if(e.navPath?.length)goal=e.navPath[0]
+      else goal=movementWaypoint(e,point,b.terrain)
+    }else{e.navPath=null;e.navTargetKey=null}
+    const dx=goal.x-e.x,dy=goal.y-e.y,dd=Math.hypot(dx,dy)||1,step=Math.min(dd,e.stats.moveSpeed*dt)
     let nx=e.x+dx/dd*step,ny=e.y+dy/dd*step
-    if(blockedGroundPoint(nx,ny,b.terrain)){nx=e.x;ny=e.y}
-    e.x=clamp(nx,20,W-20);e.y=clamp(ny,35,H-35);e.moved+=step
+    if(blockedGroundPoint(nx,ny,b.terrain)){
+      e.navPath=findGroundPath(e,point,b.terrain);e.navRecalc=b.time+.25
+      const next=e.navPath?.[0];if(next){const ndx=next.x-e.x,ndy=next.y-e.y,nd=Math.hypot(ndx,ndy)||1;nx=e.x+ndx/nd*Math.min(nd,e.stats.moveSpeed*dt);ny=e.y+ndy/nd*Math.min(nd,e.stats.moveSpeed*dt)}else{nx=e.x;ny=e.y}
+    }
+    e.x=clamp(nx,20,W-20);e.y=clamp(ny,35,H-35);e.moved+=Math.hypot(e.x-(e._lastX??e.x),e.y-(e._lastY??e.y));e._lastX=e.x;e._lastY=e.y
   }
   function moveEntity(e,target,dt,b){
     if(!target)return
@@ -167,7 +205,7 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     if(e.cool>0||!t||t.dead||e.manualDestination)return
     const melee=e.stats.range<=0;if(melee&&dist(e,t)>30)return;if(!melee&&!canShoot(e,t,b))return
     let dmg=e.stats.damage;if(e.side==='player'&&b.specialUntil>b.time&&run.general==='hannibal')dmg*=1.30;if(e.side==='player'&&b.specialUntil>b.time&&run.general==='thutmose'&&roleHas(e.stats,'MOUNTED'))dmg*=1.35;if(e.stats.antiMounted&&roleHas(t.stats,'MOUNTED'))dmg*=e.stats.antiMounted;if(e.stats.charge&&e.moved>70){dmg*=e.stats.charge;e.moved=0}
-    const reduced=dmg*(100/(100+t.stats.armor*2.2));t.hp-=reduced;t.flash=.12;e.cool=1/e.stats.attackSpeed;if(!melee)b.projectiles.push({x:e.x,y:e.y,tx:t.x,ty:t.y,life:.25,side:e.side});if(t.hp<=0){t.hp=0;t.dead=true}
+    const reduced=dmg*(100/(100+t.stats.armor*2.2));t.hp-=reduced;t.flash=.12;e.cool=1/e.stats.attackSpeed;if(!melee)b.projectiles.push({x:e.x,y:e.y,tx:t.x,ty:t.y,life:.25,side:e.side});if(t.hp<=0){t.hp=0;t.dead=true;if(t.side==='enemy')killsRef.current++}
   }
   function simSide(side,foes,dt,b){for(const e of side){if(e.dead)continue;e.cool-=dt;e.flash=Math.max(0,e.flash-dt);const t=chooseTarget(e,foes,b);if(!t)continue;const melee=e.stats.range<=0;if(e.manualDestination||(melee&&dist(e,t)>30)||(!melee&&!canShoot(e,t,b)))moveEntity(e,t,dt,b);attack(e,t,b)}}
   function drawBattle(b){
@@ -194,11 +232,11 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function finishBattle(victory,b){
     const hadLoss=b.player.some(e=>e.dead),totalLost=lostAny||hadLoss
     if(hadLoss)setLostAny(true)
-    if(!victory){setEndInfo({victory:false,gold:run.gold+6,xp:run.xp+2,tp:run.tp,battle:stageIndex+1,bestReached:stageIndex+1,units:run.roster.map(r=>r.type),stars:0,flawlessBattles:flawlessCount});setShowEnd(true);setPhase('ended');return}
+    if(!victory){setEndInfo({victory:false,gold:run.gold+6,xp:run.xp+2,tp:run.tp,battle:stageIndex+1,bestReached:stageIndex+1,units:run.roster.map(r=>r.type),stars:0,flawlessBattles:flawlessCount,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
     const newFlawless=flawlessCount+(hadLoss?0:1);setFlawlessCount(newFlawless)
     const survivors=b.player.filter(e=>!e.dead).map(e=>({type:e.type,hpFrac:e.hp/e.maxHp})),recovery=clamp(.05+run.tech.reduce((a,t)=>a+(TECHS[t]?.recovery||0),0)+(run.leader==='cyrus'&&run.leaderLevel>=4?.08:0),.05,.28),newRoster=survivors.map((s,i)=>({uid:`r${i}-${Date.now()}`,type:s.type,hpFrac:clamp(s.hpFrac+(1-s.hpFrac)*recovery,0,1)})),goldGain=Math.round(stage.gold*leaderGoldMult()),xpGain=stage.xp||0,tpGain=meta.featureUnlocks?.technology?(stage.tp||0):0,nextRun={...run,roster:newRoster,gold:run.gold+goldGain,xp:run.xp+xpGain,tp:run.tp+tpGain}
     setRun(nextRun)
-    if(stageIndex===14){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless});setShowEnd(true);setPhase('ended');return}
+    if(stageIndex===14){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
     if([4,9,13].includes(stageIndex)){setShowMilestone(true);setPhase('milestone');return}openRewards(nextRun)
   }
   function leaderGoldMult(){let m=1;if(run.leader==='cleopatra'){if(run.leaderLevel>=2)m=1.25;else if(run.leaderLevel>=1)m=1.15}else if(run.leader==='elder')m=1.08;else if(run.leader==='merchant')m=run.leaderLevel>=3?1.20:1.12;else if(run.leader==='ramesses'&&run.leaderLevel>=2)m=1.12;else if(run.leader==='cyrus'&&run.leaderLevel>=1)m=1.10;const relicId=run.heroEquipment?.[run.leader];const effect=relicId?itemEffectAtLevel(relicId,run.artifactLevels?.[relicId]||1):null;if(effect?.goldMult)m*=effect.goldMult;return m}
@@ -211,7 +249,15 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function activateRally(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.rallyCd)return;setAction('rallyUnit')}
   function activateFocus(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.focusCd)return;setAction('focus')}
   function activateReinforce(){const b=battleRef.current;if(!b||phase!=='battle'||b.meter<100)return;setAction('reinforce')}
-  function activateSpecial(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.specialCd||!specialReady)return;if(run.general==='hannibal'){b.specialUntil=b.time+8;b.specialCd=b.time+34}else if(run.general==='thutmose'){b.specialUntil=b.time+7;b.specialCd=b.time+30}else if(run.general==='napoleon'){for(const e of b.enemy.filter(e=>!e.dead)){e.hp=Math.max(0,e.hp-e.maxHp*.18);if(e.hp<=0)e.dead=true}b.specialCd=b.time+32}updateHud(b)}
+  function activateSpecial(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.specialCd||!specialReady)return;if(run.general==='hannibal'){b.specialUntil=b.time+8;b.specialCd=b.time+34}else if(run.general==='thutmose'){b.specialUntil=b.time+7;b.specialCd=b.time+30}else if(run.general==='napoleon'){for(const e of b.enemy.filter(e=>!e.dead)){const wasAlive=!e.dead;e.hp=Math.max(0,e.hp-e.maxHp*.18);if(e.hp<=0){e.dead=true;if(wasAlive)killsRef.current++}}b.specialCd=b.time+32}updateHud(b)}
+
+  function chooseActionTarget(id){
+    const b=battleRef.current;if(!b)return
+    const action=actionRef.current
+    if(action.mode==='rallyUnit'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e)setAction('rallyDestination',e.id);return}
+    if(action.mode==='focus'){const e=b.enemy.find(u=>u.id===id&&!u.dead);if(e){b.focusTarget=e.id;b.focusUntil=b.time+5;b.focusCd=b.time+11;setAction(null);updateHud(b)}return}
+    if(action.mode==='reinforce'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e){e.hp=Math.min(e.maxHp,e.hp+e.maxHp*reinforceHeal);b.meter=0;setAction(null);updateHud(b)}return}
+  }
 
   function handleCanvasClick(ev){
     const c=canvasRef.current,rect=c.getBoundingClientRect(),x=(ev.clientX-rect.left)*W/rect.width,y=(ev.clientY-rect.top)*H/rect.height
@@ -223,15 +269,17 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     }
     const b=battleRef.current;if(!b)return;const action=actionRef.current
     const nearest=(arr)=>arr.filter(e=>!e.dead).sort((a,c)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(c.x-x,c.y-y))[0]
-    if(action.mode==='rallyUnit'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<38){setAction('rallyDestination',e.id)}return}
-    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};b.rallyCd=b.time+16;setAction(null);updateHud(b)}return}
-    if(action.mode==='focus'){const e=nearest(b.enemy);if(e&&Math.hypot(e.x-x,e.y-y)<40){b.focusTarget=e.id;b.focusUntil=b.time+8;b.focusCd=b.time+14;setAction(null);updateHud(b)}return}
-    if(action.mode==='reinforce'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<40){e.hp=Math.min(e.maxHp,e.hp+e.maxHp*reinforceHeal);b.meter=0;setAction(null);updateHud(b)}return}
+    if(action.mode==='rallyUnit'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<38)chooseActionTarget(e.id);return}
+    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};e.navPath=null;b.rallyCd=b.time+12;setAction(null);updateHud(b)}return}
+    if(action.mode==='focus'){const e=nearest(b.enemy);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
+    if(action.mode==='reinforce'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
   }
 
   const statsBlock=<div className="battle-stats-card"><div className="battle-stat-title"><span>{campaign.name}</span><b>{stageIndex+1}/15 · {stage.name}</b></div><div className="battle-life"><div><span>YOUR ARMY · {hud.player}%</span><i><em style={{width:`${hud.player}%`}}/></i><small>{battleRef.current?.player?.filter(e=>!e.dead).length??run.roster.length} squads · Power {hud.powerP}</small></div><div className="enemy"><span>ENEMY · {hud.enemy}%</span><i><em style={{width:`${hud.enemy}%`}}/></i><small>{battleRef.current?.enemy?.filter(e=>!e.dead).length??stage.types.length} squads · Power {hud.powerE}</small></div></div><div className="replacement-line"><span>Replacements</span><b>{hud.meter}%</b></div></div>
   const actionButtons=phase==='deploy'?<div className="battle-actions-grid deployment"><button onClick={autoDeploy}><b>Auto Deploy</b><span>Reset formation</span></button><button className="primary-action" onClick={beginBattle}><b>Finish Deployment</b><span>Start battle</span></button></div>:<div className="battle-actions-grid"><button disabled={hud.rally>0} className={actionMode?.startsWith('rally')?'selected':''} onClick={activateRally}><b>Rally</b><span>{actionMode==='rallyUnit'?'Select unit':actionMode==='rallyDestination'?'Choose destination':hud.rally>0?`${hud.rally.toFixed(0)}s`:'Move one unit'}</span></button><button disabled={hud.focus>0} className={actionMode==='focus'?'selected':''} onClick={activateFocus}><b>Focus</b><span>{actionMode==='focus'?'Select enemy':hud.focus>0?`${hud.focus.toFixed(0)}s`:'All target one unit'}</span></button><button disabled={hud.meter<100} className={actionMode==='reinforce'?'selected':''} onClick={activateReinforce}><b>Reinforce</b><span>{actionMode==='reinforce'?'Select unit':hud.meter>=100?`Heal ${Math.round(reinforceHeal*100)}%`:`${hud.meter}%`}</span></button><button disabled={!specialReady||hud.special>0} onClick={activateSpecial}><b>Special</b><span>{!specialReady?'Disabled':hud.special>0?`${hud.special.toFixed(0)}s`:general?.special||'Special'}</span></button></div>
-  const commandBlock=<div className="battle-command-card"><div className="general-mini">{generalMini?<img src={generalMini} alt={general?.name||'Commander'}/>:<div>{general?.icon||'⚔'}</div>}<span><b>{general?.name||'Field Command'}</b><small>{phase==='deploy'?UNITS[run.roster[selectedRoster]?.type]?.name||'Select a squad':actionMode?'Battle paused for selection':'Command ready'}</small></span></div>{actionButtons}</div>
+  const targetList=actionMode==='focus'?(battleRef.current?.enemy||[]).filter(e=>!e.dead):(actionMode==='reinforce'||actionMode==='rallyUnit')?(battleRef.current?.player||[]).filter(e=>!e.dead):[]
+  const targetStrip=phase==='battle'&&actionMode?<div className="command-target-strip">{actionMode==='rallyDestination'?<div className="destination-hint"><b>Rally destination</b><span>Tap a valid point on the battlefield. Selection resumes automatically after a short timeout.</span></div>:targetList.map((e,i)=><button key={e.id} onClick={()=>chooseActionTarget(e.id)}><span>{i+1}</span><div><b>{UNITS[e.type].name}</b><small>{Math.round(e.hp/e.maxHp*100)}% HP</small></div></button>)}</div>:null
+  const commandBlock=<div className="battle-command-card"><div className="general-mini">{generalMini?<img src={generalMini} alt={general?.name||'Commander'}/>:<div>{general?.icon||'⚔'}</div>}<span><b>{general?.name||'Field Command'}</b><small>{phase==='deploy'?UNITS[run.roster[selectedRoster]?.type]?.name||'Select a squad':actionMode?'Battle paused briefly for selection':'Command ready'}</small></span></div>{actionButtons}{targetStrip}</div>
 
   return <div className="battle-shell-with-header"><header className="mobile-game-header battle-game-header"><img src={ASSETS.logo} alt="March of Epochs"/><div className="header-currencies"><span className="xp">✦ <b>{meta.xp}</b><small>EXP</small></span><span className="gold">◉ <b>{meta.gold}</b><small>GOLD</small></span><span className={`tp ${meta.featureUnlocks?.technology?'':'locked'}`}>⚗ <b>{meta.tp}</b><small>TP</small></span></div></header><div className="battle-page">
     <div className="battlefield-panel"><canvas ref={canvasRef} width={W} height={H} onClick={handleCanvasClick}/><div className="mobile-stats-overlay">{statsBlock}</div><div className="mobile-command-overlay">{commandBlock}</div></div>

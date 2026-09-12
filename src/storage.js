@@ -1,6 +1,6 @@
 import { START_META } from './data'
 
-const KEY = 'march-of-epochs-react-v09'
+const KEY = 'march-of-epochs-react-v011'
 
 export function loadMeta(){
   try{

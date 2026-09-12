@@ -136,21 +136,21 @@ export const TECHS = {
 }
 
 export const UNITS = {
-  warrior: { id:'warrior', name:'Warriors', rarity:'Common', role:'MELEE', health:112, armor:4, damage:11, attackSpeed:1.0, range:0, moveSpeed:42, desc:'Basic close-combat squad.' },
-  spear: { id:'spear', name:'Spearmen', rarity:'Common', role:'SPEAR', health:118, armor:6, damage:10, attackSpeed:1.05, range:0, moveSpeed:39, antiMounted:1.7, desc:'+70% damage against mounted units.' },
-  slinger: { id:'slinger', name:'Slingers', rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:190, moveSpeed:37, desc:'Primitive ranged harassment.' },
-  archer: { id:'archer', name:'Archers', rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:235, moveSpeed:34, requires:['archery'], desc:'Long-range projectile squad.' },
-  cavalry: { id:'cavalry', name:'Horsemen', rarity:'Rare', role:'MOUNTED', health:126, armor:5, damage:15, attackSpeed:1.15, range:0, moveSpeed:71, charge:1.55, requires:['domestication'], desc:'Fast flanking unit.' },
-  horseArcher: { id:'horseArcher', name:'Horse Archers', rarity:'Epic', role:'MOUNTED RANGED', health:94, armor:3, damage:11.5, attackSpeed:1.08, range:205, moveSpeed:67, requires:['archery','domestication'], desc:'Mobile ranged cavalry.' },
-  chariot: { id:'chariot', name:'Chariots', rarity:'Epic', role:'MOUNTED', health:140, armor:8, damage:17, attackSpeed:1.2, range:0, moveSpeed:75, charge:1.78, requires:['wheel','domestication'], desc:'Shock chariots.' },
-  rangedChariot: { id:'rangedChariot', name:'Ranged Chariots', rarity:'Epic', role:'MOUNTED RANGED', health:108, armor:5, damage:13, attackSpeed:1.14, range:212, moveSpeed:71, requires:['wheel','archery','domestication'], desc:'Mobile archery platform.' },
-  axeman: { id:'axeman', name:'Bronze Axemen', rarity:'Rare', role:'MELEE', health:122, armor:10, damage:15, attackSpeed:1.08, range:0, moveSpeed:40, requires:['bronze'], desc:'High-damage bronze melee troops.' },
-  bronzeGuard: { id:'bronzeGuard', name:'Bronze Guard', rarity:'Epic', role:'MELEE', health:155, armor:26, damage:13, attackSpeed:1.05, range:0, moveSpeed:36, requires:['bronze','organization'], desc:'Durable bronze infantry.' },
-  cityArcher: { id:'cityArcher', name:'City Bowmen', rarity:'Rare', role:'RANGED', health:84, armor:4, damage:11, attackSpeed:1.15, range:250, moveSpeed:32, requires:['archery','writing'], desc:'Organized city archers.' },
-  warElephant: { id:'warElephant', name:'War Elephants', rarity:'Legend', role:'MOUNTED HEAVY', health:220, armor:18, damage:20, attackSpeed:.74, range:0, moveSpeed:46, charge:1.9, signature:'hannibal', fear:true, desc:'Hannibal signature shock unit.' },
-  egyptianGuard: { id:'egyptianGuard', name:'Royal Egyptian Guard', rarity:'Legend', role:'MELEE', health:176, armor:24, damage:16, attackSpeed:1.02, range:0, moveSpeed:38, signature:'cleopatra', desc:'Elite guard unlocked by Cleopatra at high level.' },
-  imperialGuard: { id:'imperialGuard', name:'Imperial Guard', rarity:'Legend', role:'FIREARM', health:166, armor:19, damage:22, attackSpeed:1.0, range:185, moveSpeed:44, signature:'napoleon', desc:'Napoleon signature infantry.' },
-  marines: { id:'marines', name:'Marines', rarity:'Legend', role:'FIREARM MELEE', health:220, armor:20, damage:19, attackSpeed:1.22, range:210, moveSpeed:50, requires:['firearms','organization'], desc:'A future-era professional formation. Its Level 1 base stats intentionally exceed a fully trained primitive Warrior.' },
+  warrior: { id:'warrior', name:'Warriors', rarity:'Common', role:'MELEE', health:112, armor:4, damage:11, attackSpeed:1.0, range:0, moveSpeed:42, unlock:'Starting army', desc:'Basic close-combat squad.' },
+  spear: { id:'spear', name:'Spearmen', rarity:'Common', role:'SPEAR', health:118, armor:6, damage:10, attackSpeed:1.05, range:0, moveSpeed:39, antiMounted:1.7, requires:['copper'], unlock:'Research Copper Working', desc:'+70% damage against mounted units.' },
+  slinger: { id:'slinger', name:'Slingers', rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:190, moveSpeed:37, unlock:'Starting army', desc:'Primitive ranged harassment.' },
+  archer: { id:'archer', name:'Archers', rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:235, moveSpeed:34, requires:['archery'], unlock:'Research Archery', desc:'Long-range projectile squad.' },
+  cavalry: { id:'cavalry', name:'Horsemen', rarity:'Rare', role:'MOUNTED', health:126, armor:5, damage:15, attackSpeed:1.15, range:0, moveSpeed:71, charge:1.55, requires:['domestication'], unlock:'Research Domestication', desc:'Fast flanking unit.' },
+  horseArcher: { id:'horseArcher', name:'Horse Archers', rarity:'Epic', role:'MOUNTED RANGED', health:94, armor:3, damage:11.5, attackSpeed:1.08, range:205, moveSpeed:67, requires:['archery','domestication'], unlock:'Research Archery + Domestication', desc:'Mobile ranged cavalry.' },
+  chariot: { id:'chariot', name:'Chariots', rarity:'Epic', role:'MOUNTED', health:140, armor:8, damage:17, attackSpeed:1.2, range:0, moveSpeed:75, charge:1.78, requires:['wheel','domestication'], unlock:'Research Wheel + Domestication, or obtain Thutmose III / Ramesses II', desc:'Shock chariots.' },
+  rangedChariot: { id:'rangedChariot', name:'Ranged Chariots', rarity:'Epic', role:'MOUNTED RANGED', health:108, armor:5, damage:13, attackSpeed:1.14, range:212, moveSpeed:71, requires:['wheel','archery','domestication'], unlock:'Research Wheel + Archery + Domestication', desc:'Mobile archery platform.' },
+  axeman: { id:'axeman', name:'Bronze Axemen', rarity:'Rare', role:'MELEE', health:122, armor:10, damage:15, attackSpeed:1.08, range:0, moveSpeed:40, requires:['bronze'], unlock:'Research Bronze Working', desc:'High-damage bronze melee troops.' },
+  bronzeGuard: { id:'bronzeGuard', name:'Bronze Guard', rarity:'Epic', role:'MELEE', health:155, armor:26, damage:13, attackSpeed:1.05, range:0, moveSpeed:36, requires:['bronze','organization'], unlock:'Research Bronze Working + Military Organization, or obtain Sargon', desc:'Durable bronze infantry.' },
+  cityArcher: { id:'cityArcher', name:'City Bowmen', rarity:'Rare', role:'RANGED', health:84, armor:4, damage:11, attackSpeed:1.15, range:250, moveSpeed:32, requires:['archery','writing'], unlock:'Research Archery + Writing', desc:'Organized city archers.' },
+  warElephant: { id:'warElephant', name:'War Elephants', rarity:'Legend', role:'MOUNTED HEAVY', health:220, armor:18, damage:20, attackSpeed:.74, range:0, moveSpeed:46, charge:1.9, signature:'hannibal', unlock:'Obtain Hannibal', fear:true, desc:'Hannibal signature shock unit.' },
+  egyptianGuard: { id:'egyptianGuard', name:'Royal Egyptian Guard', rarity:'Legend', role:'MELEE', health:176, armor:24, damage:16, attackSpeed:1.02, range:0, moveSpeed:38, signature:'cleopatra', unlock:'Raise Cleopatra to Level 5', desc:'Elite guard unlocked by Cleopatra at high level.' },
+  imperialGuard: { id:'imperialGuard', name:'Imperial Guard', rarity:'Legend', role:'FIREARM', health:166, armor:19, damage:22, attackSpeed:1.0, range:185, moveSpeed:44, signature:'napoleon', unlock:'Obtain Napoleon', desc:'Napoleon signature infantry.' },
+  marines: { id:'marines', name:'Marines', rarity:'Legend', role:'FIREARM MELEE', health:220, armor:20, damage:19, attackSpeed:1.22, range:210, moveSpeed:50, requires:['firearms','organization'], unlock:'Research Firearms + Military Organization', desc:'A future-era professional formation. Its Level 1 base stats intentionally exceed a fully trained primitive Warrior.' },
 }
 
 export const UNIT_LEVEL_MAX = 100
@@ -190,7 +190,11 @@ export function unitNextLevelBonus(level){
 function clampLevel(level){return Math.max(1,Math.min(UNIT_LEVEL_MAX,Math.floor(level||1)))}
 
 const firstWarTypes = [
-  ['warrior','slinger'], ['warrior','spear'], ['spear','slinger','warrior'], ['slinger','slinger','warrior'], ['warrior','spear','slinger'],
+  ['warrior'],
+  ['warrior','slinger'],
+  ['warrior','warrior','slinger'],
+  ['warrior','slinger','slinger'],
+  ['warrior','spear','slinger'],
   ['spear','warrior','slinger'], ['spear','spear','slinger'], ['warrior','archer','spear'], ['spear','archer','warrior'], ['spear','spear','archer'],
   ['warrior','spear','archer','slinger'], ['spear','archer','archer','warrior'], ['spear','spear','archer','warrior'], ['spear','spear','archer','slinger','warrior'], ['spear','spear','archer','archer','warrior']
 ]
@@ -244,9 +248,9 @@ function makeHistoricalStages(briefs, types, second=false){
     types:types[i],
     // Campaign I is deliberately a tutorial wall: a fresh account normally wins 0–2 battles.
     // Account progression, artifacts, unit levels and People should make the next 2–3 runs visibly deeper.
-    mult: second ? (.91 + i*.032) : (.80 + i*.027),
-    gold: (second?22:12) + i*(second?4:3),
-    xp: (second?14:10) + i*2,
+    mult: second ? (.88 + i*.030) : ([.72,.72,.62,.74,.64,.68,.68,.72,.74,.76,.76,.78,.80,.80,.84][i] ?? .76),
+    gold: second ? (20 + i*4) : ([10,12,14,16,24,22,24,26,28,30,34,38,42,48,60][i] ?? 20),
+    xp: second ? (14 + i*2) : ([8,9,10,11,16,14,15,16,17,18,20,22,24,27,34][i] ?? 10),
     tp: second && [0,2,4,6,8,10,12,14].includes(i) ? 1 : 0,
     boss:i===14,
     elite:[3,7,10,12].includes(i)
@@ -295,20 +299,31 @@ export function itemEffectAtLevel(itemId,level=1){
 }
 
 export const ACHIEVEMENTS = {
-  firstMarch:{id:'firstMarch',name:'First March',desc:'Begin your first campaign run.',reward:10,stat:'runsStarted',target:1},
-  firstVictory:{id:'firstVictory',name:'First Victory',desc:'Win your first battle.',reward:20,stat:'battlesWon',target:1},
-  twoVictories:{id:'twoVictories',name:'Survivors',desc:'Win 2 battles across your expeditions.',reward:20,stat:'battlesWon',target:2},
-  fiveVictories:{id:'fiveVictories',name:'Learning the Field',desc:'Win 5 battles.',reward:45,stat:'battlesWon',target:5},
-  firstUnitLevel:{id:'firstUnitLevel',name:'Training Day',desc:'Level any army once.',reward:20,stat:'unitLevelsBought',target:1},
-  peopleUnlocked:{id:'peopleUnlocked',name:'Command Structure',desc:'Reach battle 1-6 and unlock People.',reward:25,stat:'peopleFeatureUnlocked',target:1},
-  firstTech:{id:'firstTech',name:'Technological Advance',desc:'Research your first technology after Campaign I.',reward:35,stat:'techUnlocked',target:1},
-  risingCommander:{id:'risingCommander',name:'Rising Commander',desc:'Upgrade any Leader or General once.',reward:60,stat:'peopleUpgraded',target:1},
-  firstPack:{id:'firstPack',name:'Open the Chronicle',desc:'Open your first historical pack.',reward:15,stat:'packsOpened',target:1},
-  quartermaster:{id:'quartermaster',name:'Quartermaster',desc:'Equip your first artifact.',reward:30,stat:'itemsEquipped',target:1},
-  workshop:{id:'workshop',name:'Workshop Apprentice',desc:'Evolve an artifact once.',reward:35,stat:'artifactsEvolved',target:1},
-  collector:{id:'collector',name:'Growing Collection',desc:'Discover 5 different people.',reward:80,stat:'peopleDiscovered',target:5},
-  campaigner:{id:'campaigner',name:'Campaigner',desc:'Complete your first campaign.',reward:100,stat:'campaignsCompleted',target:1},
-  flawless:{id:'flawless',name:'Flawless Battle',desc:'Win a battle without losing a squad.',reward:35,stat:'flawlessBattles',target:1}
+  win1:{id:'win1',family:'Victories',order:1,name:'First Victory',desc:'Win 1 battle.',reward:20,stat:'battlesWon',target:1},
+  win3:{id:'win3',family:'Victories',order:2,name:'Battle Tested',desc:'Win 3 battles.',reward:25,stat:'battlesWon',target:3},
+  win5:{id:'win5',family:'Victories',order:3,name:'Learning the Field',desc:'Win 5 battles.',reward:40,stat:'battlesWon',target:5},
+  win10:{id:'win10',family:'Victories',order:4,name:'Seasoned Army',desc:'Win 10 battles.',reward:60,stat:'battlesWon',target:10},
+  win20:{id:'win20',family:'Victories',order:5,name:'Veterans',desc:'Win 20 battles.',reward:90,stat:'battlesWon',target:20},
+  win50:{id:'win50',family:'Victories',order:6,name:'Conquerors',desc:'Win 50 battles.',reward:160,stat:'battlesWon',target:50},
+  win100:{id:'win100',family:'Victories',order:7,name:'Century of Victories',desc:'Win 100 battles.',reward:300,stat:'battlesWon',target:100},
+  kill1:{id:'kill1',family:'Enemy Units',order:1,name:'First Blood',desc:'Destroy 1 enemy squad.',reward:12,stat:'unitsKilled',target:1},
+  kill2:{id:'kill2',family:'Enemy Units',order:2,name:'Break Their Line',desc:'Destroy 2 enemy squads.',reward:15,stat:'unitsKilled',target:2},
+  kill5:{id:'kill5',family:'Enemy Units',order:3,name:'Squad Hunter',desc:'Destroy 5 enemy squads.',reward:25,stat:'unitsKilled',target:5},
+  kill10:{id:'kill10',family:'Enemy Units',order:4,name:'Battlefield Threat',desc:'Destroy 10 enemy squads.',reward:40,stat:'unitsKilled',target:10},
+  kill25:{id:'kill25',family:'Enemy Units',order:5,name:'Line Breaker',desc:'Destroy 25 enemy squads.',reward:75,stat:'unitsKilled',target:25},
+  kill50:{id:'kill50',family:'Enemy Units',order:6,name:'Army Breaker',desc:'Destroy 50 enemy squads.',reward:120,stat:'unitsKilled',target:50},
+  kill100:{id:'kill100',family:'Enemy Units',order:7,name:'Legend of the Field',desc:'Destroy 100 enemy squads.',reward:220,stat:'unitsKilled',target:100},
+  firstMarch:{id:'firstMarch',family:'Progression',order:1,name:'First March',desc:'Begin your first campaign run.',reward:10,stat:'runsStarted',target:1},
+  firstUnitLevel:{id:'firstUnitLevel',family:'Progression',order:2,name:'Training Day',desc:'Level any army once.',reward:20,stat:'unitLevelsBought',target:1},
+  peopleUnlocked:{id:'peopleUnlocked',family:'Progression',order:3,name:'Command Structure',desc:'Reach battle 1-6 and unlock People.',reward:25,stat:'peopleFeatureUnlocked',target:1},
+  firstTech:{id:'firstTech',family:'Progression',order:4,name:'Technological Advance',desc:'Research your first technology after Campaign I.',reward:35,stat:'techUnlocked',target:1},
+  risingCommander:{id:'risingCommander',family:'People',order:1,name:'Rising Commander',desc:'Upgrade any Leader or General once.',reward:60,stat:'peopleUpgraded',target:1},
+  firstPack:{id:'firstPack',family:'Collection',order:1,name:'Open the Chronicle',desc:'Open your first pack.',reward:15,stat:'packsOpened',target:1},
+  quartermaster:{id:'quartermaster',family:'Artifacts',order:1,name:'Quartermaster',desc:'Equip your first artifact.',reward:30,stat:'itemsEquipped',target:1},
+  workshop:{id:'workshop',family:'Artifacts',order:2,name:'Workshop Apprentice',desc:'Evolve an artifact once.',reward:35,stat:'artifactsEvolved',target:1},
+  collector:{id:'collector',family:'Collection',order:2,name:'Growing Collection',desc:'Discover 5 different people.',reward:80,stat:'peopleDiscovered',target:5},
+  campaigner:{id:'campaigner',family:'Progression',order:5,name:'Campaigner',desc:'Complete your first campaign.',reward:100,stat:'campaignsCompleted',target:1},
+  flawless:{id:'flawless',family:'Combat',order:1,name:'Flawless Battle',desc:'Win a battle without losing a squad.',reward:35,stat:'flawlessBattles',target:1}
 }
 
 export const REWARD_POOL = [
@@ -328,8 +343,8 @@ export const START_META = {
   ownedTech: [],
   characterCopies: {},
   characterLevels: {},
-  discoveredUnits: ['warrior'],
-  unitLevels: { warrior:1 },
+  discoveredUnits: ['warrior','slinger'],
+  unitLevels: { warrior:1, slinger:1 },
   unlockedCampaigns: ['dawn'],
   completedCampaigns: [],
   campaignStats: { dawn:{best:0,stars:0}, firstcities:{best:0,stars:0} },
@@ -342,7 +357,7 @@ export const START_META = {
   artifactLevels: {},
   unitEquipment: {},
   heroEquipment: {},
-  stats: { runsStarted:0,battlesWon:0,flawlessBattles:0,techUnlocked:0,peopleUpgraded:0,packsOpened:0,itemsEquipped:0,artifactsEvolved:0,peopleDiscovered:0,campaignsCompleted:0,unitLevelsBought:0,peopleFeatureUnlocked:0 },
+  stats: { runsStarted:0,battlesWon:0,unitsKilled:0,flawlessBattles:0,techUnlocked:0,peopleUpgraded:0,packsOpened:0,itemsEquipped:0,artifactsEvolved:0,peopleDiscovered:0,campaignsCompleted:0,unitLevelsBought:0,peopleFeatureUnlocked:0 },
   claimedAchievements: [],
   loadout: { leader:null, general:null, tech:[] },
 }

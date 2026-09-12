@@ -26,3 +26,17 @@
 - Better individual campaign/battle artwork
 - Audio, impact sounds, music and haptics
 - Daily/challenge modes only after the core progression curve is stable
+
+
+## v0.11 implemented
+- A* terrain routing for mountain/river navigation.
+- Short command-selection pause with explicit target list.
+- Warriors + Slingers starter army.
+- Explicit unlock route on every current unit.
+- Compact Army collection + unit detail/training/equipment view.
+- Pack-based Artifact acquisition; direct Artifact purchasing removed.
+- Central Pack Store inside Artifacts for Artifact and Hero packs.
+- Achievement families and long-form victory/kill chains.
+- Persistent bottom navigation above modal overlays.
+- Rebalanced Campaign I early encounters.
+- Illustrated First Wars campaign card and cleaned unit miniature crops.

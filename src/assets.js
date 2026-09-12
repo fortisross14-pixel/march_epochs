@@ -23,7 +23,7 @@ import slingerMini from './assets/minis/slinger.png'
 import archerMini from './assets/minis/archer.png'
 import cavalryMini from './assets/minis/cavalry.png'
 import warElephantMini from './assets/minis/warElephant.png'
-import firstWarsArt from './assets/campaigns/first-wars.svg'
+import firstWarsArt from './assets/campaigns/first-wars.png'
 import bronzeEmpiresArt from './assets/campaigns/bronze-empires.svg'
 
 import fireArt from './assets/tech/fire.svg'
