@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 128 128">
+<defs><radialGradient id="g"><stop stop-color="#d7b36f" stop-opacity=".35"/><stop offset="1" stop-color="#48525c"/></radialGradient></defs>
+<rect x="4" y="4" width="120" height="120" rx="24" fill="#0a1724" stroke="#d5b161" stroke-width="3"/>
+<rect x="11" y="11" width="106" height="106" rx="20" fill="url(#g)" stroke="#ffffff22"/>
+<circle cx="64" cy="64" r="38" fill="#07111d66" stroke="#d7b36f" stroke-width="2"/>
+<path d="M64 19V30M64 98V109M19 64H30M98 64H109M32 32L40 40M88 88L96 96M96 32L88 40M40 88L32 96" stroke="#d7b36f" stroke-width="2" opacity=".75"/>
+<text x="64" y="79" text-anchor="middle" font-size="48" fill="#fff" font-family="Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif">⚙</text>
+</svg>

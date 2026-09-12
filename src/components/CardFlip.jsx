@@ -18,7 +18,7 @@ export default function CardFlip({ id, meta, onUpgrade, compact=false }){
   const nextGold = level < maxLevel ? GOLD_UPGRADE_COSTS[level] : null
   const canUpgrade = nextCopies && copies >= nextCopies && meta.gold >= nextGold
 
-  if(art){
+  if(art?.front && art?.back){
     return <div className={`premium-flip ${compact?'compact':''}`}>
       <div className={`premium-flip-inner ${flipped?'flipped':''}`} onClick={()=>setFlipped(v=>!v)}>
         <div className="premium-face premium-front">

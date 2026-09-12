@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+<defs><linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d4a371"/><stop offset="1" stop-color="#765037"/></linearGradient><linearGradient id="sand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b98450"/><stop offset="1" stop-color="#765033"/></linearGradient></defs>
+<rect width="1200" height="500" fill="url(#sky2)"/><circle cx="1010" cy="90" r="60" fill="#f6db9b" opacity=".95"/>
+<path d="M0 285 Q210 220 420 290 Q640 210 820 286 Q1000 220 1200 275 V500 H0Z" fill="url(#sand)"/>
+<path d="M520 0 Q475 140 535 500 H690 Q635 145 686 0" fill="#4e8ca4" opacity=".95"/>
+<path d="M530 220 H676" stroke="#9bd3df" stroke-width="6" opacity=".8"/>
+<g stroke="#5f3e2b" stroke-width="4"><rect x="170" y="260" width="230" height="145" fill="#a87143"/><rect x="135" y="220" width="70" height="185" fill="#b97d4b"/><rect x="365" y="210" width="70" height="195" fill="#b97d4b"/><path d="M130 220h80l-10-25h-60z" fill="#765036"/><path d="M360 210h80l-10-25h-60z" fill="#765036"/><rect x="255" y="315" width="60" height="90" fill="#553722"/></g>
+<g transform="translate(800 320)" fill="none" stroke="#4a3022" stroke-width="8" stroke-linecap="round"><circle cx="0" cy="0" r="14" fill="#b9835c" stroke="none"/><path d="M0 15V65M0 28L-33 48M0 29L40 45M0 64L-20 96M0 64L25 96"/><path d="M40 45L68 20" stroke="#d8c18e" stroke-width="5"/></g>
+<g transform="translate(885 332)" fill="none" stroke="#4a3022" stroke-width="8" stroke-linecap="round"><circle cx="0" cy="0" r="14" fill="#b9835c" stroke="none"/><path d="M0 15V62M0 28L-25 50M0 30L34 30M0 62L-18 93M0 62L22 93"/><ellipse cx="-14" cy="34" rx="16" ry="25" fill="#b88946" stroke="#64472e"/></g>
+<g transform="translate(965 330)"><ellipse cx="0" cy="25" rx="54" ry="23" fill="#7f6549" stroke="#4e3929" stroke-width="5"/><circle cx="48" cy="11" r="15" fill="#7f6549"/><path d="M-35 44V76M-10 45V80M27 45V80" stroke="#4e3929" stroke-width="7"/><rect x="-20" y="-5" width="45" height="30" fill="#a86b3e" stroke="#5a3927" stroke-width="4"/><circle cx="0" cy="-18" r="12" fill="#bd8965"/></g>
+<text x="50" y="75" font-family="Georgia,serif" font-size="42" fill="#fff3d4" font-weight="700">BRONZE &amp; IRON EMPIRES</text><text x="54" y="112" font-family="system-ui" font-size="20" fill="#f1dcc1">Chariots, canals, fortified cities and the first documented great battles</text>
+</svg>

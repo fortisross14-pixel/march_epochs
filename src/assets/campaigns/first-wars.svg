@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500">
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#85b5c8"/><stop offset="1" stop-color="#e0b37b"/></linearGradient>
+<linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#708d51"/><stop offset="1" stop-color="#34442f"/></linearGradient>
+</defs>
+<rect width="1200" height="500" fill="url(#sky)"/><circle cx="970" cy="92" r="58" fill="#f4d58a" opacity=".9"/>
+<path d="M0 250 Q170 175 330 245 Q485 145 650 240 Q805 155 990 240 Q1080 190 1200 235 V500 H0Z" fill="#566b48"/>
+<path d="M0 318 Q220 255 420 332 Q625 235 800 325 Q1000 245 1200 306 V500 H0Z" fill="url(#land)"/>
+<path d="M470 245 Q520 310 495 500 H720 Q675 330 724 244 Z" fill="#4d91a7"/><path d="M520 330 Q600 300 680 330" stroke="#98d0dd" stroke-width="5" fill="none" opacity=".8"/>
+<g fill="#6f4c32" stroke="#3d291d" stroke-width="4"><rect x="165" y="320" width="90" height="70" rx="6"/><path d="M145 325 L210 270 L275 325 Z" fill="#b17b45"/><rect x="290" y="345" width="70" height="55"/><path d="M278 350 L325 305 L372 350 Z" fill="#ad7641"/></g>
+<g fill="#203020"><circle cx="90" cy="355" r="32"/><circle cx="108" cy="330" r="24"/><circle cx="985" cy="347" r="34"/><circle cx="1020" cy="330" r="25"/></g>
+<g transform="translate(780 325)"><circle cx="0" cy="0" r="12" fill="#b98962"/><path d="M-10 14L-18 62M10 14L18 62M0 10L0 48" stroke="#4a2c21" stroke-width="9" stroke-linecap="round"/><path d="M-6 18L-36 42M6 18L35 35" stroke="#4a2c21" stroke-width="8" stroke-linecap="round"/><path d="M35 35L65 10" stroke="#cdbb87" stroke-width="5"/></g>
+<g transform="translate(850 338)"><circle cx="0" cy="0" r="11" fill="#b98962"/><path d="M-8 14L-15 56M8 14L15 56M0 11L0 45" stroke="#3b2c23" stroke-width="8"/><path d="M3 18L38 20" stroke="#3b2c23" stroke-width="7"/><path d="M37 20Q58 5 65 24" stroke="#d2b579" stroke-width="4" fill="none"/></g>
+<text x="54" y="75" font-family="Georgia,serif" font-size="42" fill="#fff4d5" font-weight="700">FIRST WARS</text><text x="58" y="112" font-family="system-ui" font-size="20" fill="#e7e0d1">Rivers, raiding, early settlements and the first organized armies</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 128 128">
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#173453"/><stop offset="1" stop-color="#08131f"/></linearGradient></defs>
+<circle cx="64" cy="64" r="60" fill="url(#bg)" stroke="#d4b05e" stroke-width="4"/>
+<path d="M30 118 Q34 87 64 84 Q94 87 98 118" fill="#35654f" stroke="#07111d" stroke-width="4"/>
+<circle cx="64" cy="65" r="28" fill="#a06d4e" stroke="#07111d" stroke-width="4"/>
+<path d="M39 61 Q43 33 64 31 Q87 34 90 61 Q80 50 64 48 Q48 50 39 61" fill="#dac39e"/>
+<path d="M40 48 Q64 23 88 48 Q84 58 76 63 Q64 51 52 63 Q44 58 40 48" fill="#263f32"/><path d="M96 62 Q112 75 103 92" stroke="#d5b377" stroke-width="4" fill="none"/><path d="M100 61 L111 52" stroke="#d5b377" stroke-width="3"/>
+<circle cx="54" cy="66" r="4" fill="#111827"/><circle cx="74" cy="66" r="4" fill="#111827"/>
+<path d="M57 78 Q64 82 71 78" stroke="#6c3b2d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<circle cx="100" cy="101" r="17" fill="#0a1724" stroke="#d4b05e" stroke-width="3"/><text x="100" y="107" text-anchor="middle" font-size="19" fill="#f6dc91" font-family="serif">➹</text>
+</svg>
