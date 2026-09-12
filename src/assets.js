@@ -84,3 +84,33 @@ export const ASSETS = {
     leatherLamellar:leatherLamellarArt, warStandard:warStandardArt, ptolemaicCoin:ptolemaicCoinArt, bicorne:bicorneArt,
   }
 }
+
+// v0.13 reusable UI asset library
+import uiCoin from './assets/ui-kit/icon-coin.svg'
+import uiXp from './assets/ui-kit/icon-xp.svg'
+import uiTp from './assets/ui-kit/icon-tp.svg'
+import uiTrophy from './assets/ui-kit/icon-trophy.svg'
+import uiCampaign from './assets/ui-kit/icon-campaign.svg'
+import uiArtifacts from './assets/ui-kit/icon-artifacts.svg'
+import uiPeople from './assets/ui-kit/icon-people.svg'
+import uiArmies from './assets/ui-kit/icon-armies.svg'
+import uiTechnology from './assets/ui-kit/icon-technology.svg'
+import uiStore from './assets/ui-kit/icon-store.svg'
+import uiCampaignActive from './assets/ui-kit/icon-campaign-active.svg'
+import uiArtifactsActive from './assets/ui-kit/icon-artifacts-active.svg'
+import uiPeopleActive from './assets/ui-kit/icon-people-active.svg'
+import uiArmiesActive from './assets/ui-kit/icon-armies-active.svg'
+import uiTechnologyActive from './assets/ui-kit/icon-technology-active.svg'
+import uiStoreActive from './assets/ui-kit/icon-store-active.svg'
+import uiLock from './assets/ui-kit/icon-lock.svg'
+import uiStar from './assets/ui-kit/icon-star.svg'
+import uiArrowLeft from './assets/ui-kit/icon-arrow-left.svg'
+import uiArrowRight from './assets/ui-kit/icon-arrow-right.svg'
+import uiClose from './assets/ui-kit/icon-close.svg'
+
+ASSETS.ui = {
+  coin:uiCoin, xp:uiXp, tp:uiTp, trophy:uiTrophy,
+  campaign:uiCampaign, artifacts:uiArtifacts, people:uiPeople, armies:uiArmies, technology:uiTechnology, store:uiStore,
+  campaignActive:uiCampaignActive, artifactsActive:uiArtifactsActive, peopleActive:uiPeopleActive, armiesActive:uiArmiesActive, technologyActive:uiTechnologyActive, storeActive:uiStoreActive,
+  lock:uiLock, star:uiStar, arrowLeft:uiArrowLeft, arrowRight:uiArrowRight, close:uiClose,
+}

@@ -1,4 +1,4 @@
-# March of Epochs — React v0.12.0
+# March of Epochs — React v0.13.0
 
 This pass stabilizes the early-game UX and establishes the full historical content shell.
 
@@ -46,3 +46,6 @@ The first two retain the current more-developed historical briefings. Later camp
 
 ## Save compatibility
 The v0.11 localStorage key is intentionally retained so current browser progression is preserved.
+
+## v0.13 visual system
+This build adds a reusable image-backed mobile UI kit and applies it across the non-battle game shell. See `UI-KIT.md`.
