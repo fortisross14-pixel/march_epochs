@@ -1,6 +1,6 @@
 import { START_META } from './data'
 
-const KEY = 'march-of-epochs-react-v06'
+const KEY = 'march-of-epochs-react-v07'
 
 export function loadMeta(){
   try{
@@ -13,6 +13,7 @@ export function loadMeta(){
       loadout: { ...START_META.loadout, ...(parsed.loadout||{}) },
       characterCopies: { ...START_META.characterCopies, ...(parsed.characterCopies||{}) },
       characterLevels: { ...START_META.characterLevels, ...(parsed.characterLevels||{}) },
+      campaignStats: { ...START_META.campaignStats, ...(parsed.campaignStats||{}) },
     }
   }catch{
     return structuredClone(START_META)

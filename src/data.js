@@ -189,6 +189,7 @@ export const START_META = {
   discoveredUnits: ['warrior','spear','slinger','archer','warElephant'],
   unlockedCampaigns: ['dawn'],
   completedCampaigns: [],
+  campaignStats: { dawn:{best:0,stars:0}, firstcities:{best:0,stars:0} },
   techSlots: 3,
   hpRank: 0,
   fieldMedicine: 0,
