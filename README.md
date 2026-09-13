@@ -1,4 +1,4 @@
-# March of Epochs — React v0.14.0
+# March of Epochs — React v0.15.0
 
 This pass focuses on a cleaner collectible UI, better landscape responsiveness, and a more logical campaign-start flow.
 

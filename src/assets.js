@@ -49,6 +49,8 @@ import rocketryArt from './assets/tech/rocketry.svg'
 
 import bronzeArmorArt from './assets/items/bronzeArmor.svg'
 import edgedProjectilesArt from './assets/items/edgedProjectiles.svg'
+import bronzeEdgesArt from './assets/items/bronzeEdges.svg'
+import spearheadsArt from './assets/items/spearheads.svg'
 import slingPouchArt from './assets/items/slingPouch.svg'
 import leatherLamellarArt from './assets/items/leatherLamellar.svg'
 import warStandardArt from './assets/items/warStandard.svg'
@@ -80,7 +82,7 @@ export const ASSETS = {
   },
   campaigns: { firstWars:firstWarsArt, bronzeEmpires:bronzeEmpiresArt },
   items: {
-    bronzeArmor:bronzeArmorArt, edgedProjectiles:edgedProjectilesArt, slingPouch:slingPouchArt,
+    bronzeArmor:bronzeArmorArt, bronzeEdges:bronzeEdgesArt, spearheads:spearheadsArt, edgedProjectiles:edgedProjectilesArt, slingPouch:slingPouchArt,
     leatherLamellar:leatherLamellarArt, warStandard:warStandardArt, ptolemaicCoin:ptolemaicCoinArt, bicorne:bicorneArt,
   }
 }
