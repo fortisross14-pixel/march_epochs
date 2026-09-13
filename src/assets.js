@@ -108,9 +108,16 @@ import uiArrowLeft from './assets/ui-kit/icon-arrow-left.svg'
 import uiArrowRight from './assets/ui-kit/icon-arrow-right.svg'
 import uiClose from './assets/ui-kit/icon-close.svg'
 
+import uiItemSlotEpic from './assets/ui-kit/item-slot-epic.svg'
+import uiItemSlotRare from './assets/ui-kit/item-slot-rare.svg'
+import uiItemSlotCommon from './assets/ui-kit/item-slot-common.svg'
+import uiItemSlotLegend from './assets/ui-kit/item-slot-legend.svg'
+import uiUpgradeReady from './assets/ui-kit/upgrade-ready.svg'
+
 ASSETS.ui = {
   coin:uiCoin, xp:uiXp, tp:uiTp, trophy:uiTrophy,
   campaign:uiCampaign, artifacts:uiArtifacts, people:uiPeople, armies:uiArmies, technology:uiTechnology, store:uiStore,
   campaignActive:uiCampaignActive, artifactsActive:uiArtifactsActive, peopleActive:uiPeopleActive, armiesActive:uiArmiesActive, technologyActive:uiTechnologyActive, storeActive:uiStoreActive,
   lock:uiLock, star:uiStar, arrowLeft:uiArrowLeft, arrowRight:uiArrowRight, close:uiClose,
+  itemSlotEpic:uiItemSlotEpic, itemSlotRare:uiItemSlotRare, itemSlotCommon:uiItemSlotCommon, itemSlotLegend:uiItemSlotLegend, upgradeReady:uiUpgradeReady,
 }
