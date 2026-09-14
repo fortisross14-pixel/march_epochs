@@ -8,11 +8,21 @@ const DEPLOY_TOP=455
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v))
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y)
 const roleHas=(u,s)=>u.role.includes(s)
-const defaultPositions=[
-  {x:115,y:625},{x:260,y:640},{x:405,y:625},
-  {x:150,y:535},{x:300,y:550},{x:430,y:535}
-]
-const enemyCells=Array.from({length:18},(_,i)=>({x:55+(i%6)*82,y:95+Math.floor(i/6)*76}))
+function formationPositions(count,side='player'){
+  if(count<=0)return []
+  const layout=count<=2?[count]:count===3?[2,1]:count===4?[2,2]:count===5?[3,2]:[3,3]
+  const baseRows=side==='player'?[628,540]:[186,272]
+  const spacings=side==='player'?[144,128]:[118,108]
+  const out=[]
+  layout.forEach((n,row)=>{
+    const center=W/2
+    const start=center-((n-1)*spacings[row])/2
+    for(let i=0;i<n;i++)out.push({x:start+i*spacings[row],y:baseRows[row]+Math.abs(i-(n-1)/2)*4})
+  })
+  return out.slice(0,count)
+}
+const defaultPositions=formationPositions(6,'player')
+const enemyCells=Array.from({length:18},(_,i)=>({x:64+(i%6)*78,y:124+Math.floor(i/6)*72}))
 
 const spriteCache=new Map()
 function getSprite(src){
@@ -147,35 +157,43 @@ function makeEntity(side,type,pos,hpFrac,run,mult,idx){
   const stats=unitStats(type,run,side,mult),maxHp=stats.health
   return{id:`${side}-${idx}-${Math.random().toString(36).slice(2,7)}`,side,type,x:pos.x,y:pos.y,stats,maxHp,hp:maxHp*(hpFrac??1),cool:Math.random()*.3,dead:false,moved:0,flash:0,manualDestination:null}
 }
-function drawSquad(ctx,e,selected=false,targetable=false){
-  const u=e.stats,hp=e.hp/e.maxHp,pal=squadPalette(e.side),sprite=getSprite(ASSETS.units?.[e.type]),count=Math.max(1,Math.ceil(hp*4))
+function drawSquad(ctx,e,selected=false,targetable=false,badgeLabel=''){
+  const u=e.stats,hp=e.hp/e.maxHp,pal=squadPalette(e.side),sprite=getSprite(ASSETS.units?.[e.type]),count=Math.max(2,Math.ceil(hp*5))
   ctx.save();ctx.translate(e.x,e.y)
-  ctx.fillStyle='rgba(0,0,0,.24)';ctx.beginPath();ctx.ellipse(0,20,34,12,0,0,Math.PI*2);ctx.fill()
-  if(selected||targetable){ctx.strokeStyle=selected?'#86ff9d':pal.ring;ctx.lineWidth=3.5;drawDiamond(ctx,34,16);ctx.stroke()}
-  ctx.fillStyle=pal.base;drawDiamond(ctx,28,13);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
-  ctx.fillStyle=pal.base2;ctx.globalAlpha=.3;drawDiamond(ctx,18,8);ctx.fill();ctx.globalAlpha=1
+  ctx.fillStyle='rgba(0,0,0,.32)';ctx.beginPath();ctx.ellipse(0,29,49,17,0,0,Math.PI*2);ctx.fill()
+  if(selected||targetable){ctx.strokeStyle=selected?'#86ff9d':pal.ring;ctx.lineWidth=4;drawDiamond(ctx,47,22);ctx.stroke()}
+  ctx.fillStyle=pal.base;drawDiamond(ctx,40,18);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2.2;ctx.stroke()
+  ctx.fillStyle=pal.base2;ctx.globalAlpha=.34;drawDiamond(ctx,28,11);ctx.fill();ctx.globalAlpha=1
   for(let i=0;i<count;i++){
-    const px=(i-(count-1)/2)*10,py=14+Math.abs(i-(count-1)/2)*2
-    ctx.fillStyle=e.side==='player'?'#d9f6ff':'#ffe2d8';ctx.beginPath();ctx.arc(px,py,3.4,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(7,17,29,.5)';ctx.lineWidth=1;ctx.stroke()
+    const px=(i-(count-1)/2)*11,py=19+Math.abs(i-(count-1)/2)*2.5
+    ctx.fillStyle=e.side==='player'?'#d9f6ff':'#ffe2d8';ctx.beginPath();ctx.arc(px,py,4.4,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(7,17,29,.55)';ctx.lineWidth=1;ctx.stroke()
   }
-  if(e.flash>0){ctx.globalAlpha=.52;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,-2,22,18,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
-  if(sprite){ctx.drawImage(sprite,-30,-42,60,60)}else{
-    ctx.fillStyle=e.side==='player'?'#75c9ff':'#ef7474';ctx.beginPath();ctx.arc(0,-6,15,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
-    if(roleHas(u,'SPEAR')){ctx.strokeStyle='#e9d09b';ctx.beginPath();ctx.moveTo(4,-5);ctx.lineTo(17,-18);ctx.stroke()}
-    if(roleHas(u,'RANGED')||roleHas(u,'FIREARM')){ctx.strokeStyle='#f3dd9d';ctx.beginPath();ctx.moveTo(-8,-8);ctx.lineTo(11,4);ctx.stroke()}
+  if(e.flash>0){ctx.globalAlpha=.52;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,0,31,24,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
+  if(sprite){ctx.drawImage(sprite,-48,-66,96,96)}else{
+    ctx.fillStyle=e.side==='player'?'#75c9ff':'#ef7474';ctx.beginPath();ctx.arc(0,-12,20,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
+    if(roleHas(u,'SPEAR')){ctx.strokeStyle='#e9d09b';ctx.beginPath();ctx.moveTo(8,-11);ctx.lineTo(25,-30);ctx.stroke()}
+    if(roleHas(u,'RANGED')||roleHas(u,'FIREARM')){ctx.strokeStyle='#f3dd9d';ctx.beginPath();ctx.moveTo(-11,-13);ctx.lineTo(18,5);ctx.stroke()}
   }
-  if(roleHas(u,'MOUNTED')){ctx.strokeStyle='#d2ac73';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,10,24,10,0,0,Math.PI*2);ctx.stroke()}
-  if(e.type==='warElephant'){ctx.fillStyle='rgba(87,98,105,.78)';ctx.beginPath();ctx.ellipse(0,5,26,17,0,0,Math.PI*2);ctx.fill()}
-  ctx.fillStyle=pal.banner;ctx.fillRect(-30,-49,60,9);ctx.fillStyle='#f8efcf';ctx.font='700 8px system-ui';ctx.textAlign='center';ctx.fillText(UNITS[e.type].name,0,-42)
-  ctx.fillStyle='rgba(7,17,29,.78)';ctx.fillRect(-26,29,52,6);ctx.fillStyle=hp>.5?'#75d3a1':hp>.25?'#f2c66c':'#ef7474';ctx.fillRect(-26,29,52*hp,6)
+  if(roleHas(u,'MOUNTED')){ctx.strokeStyle='#d2ac73';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,12,31,12,0,0,Math.PI*2);ctx.stroke()}
+  if(e.type==='warElephant'){ctx.fillStyle='rgba(87,98,105,.78)';ctx.beginPath();ctx.ellipse(0,7,33,20,0,0,Math.PI*2);ctx.fill()}
+  ctx.fillStyle=pal.banner;ctx.fillRect(-40,-70,80,11)
+  ctx.fillStyle='#f8efcf';ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillText(UNITS[e.type].name,0,-61)
+  ctx.fillStyle='rgba(7,17,29,.80)';ctx.fillRect(-35,40,70,8)
+  ctx.fillStyle=hp>.5?'#75d3a1':hp>.25?'#f2c66c':'#ef7474';ctx.fillRect(-35,40,70*hp,8)
+  if(badgeLabel){
+    ctx.fillStyle=selected?'#86ff9d':'#f6d27a'
+    ctx.beginPath();ctx.arc(38,-18,12,0,Math.PI*2);ctx.fill()
+    ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
+    ctx.fillStyle='#07111d';ctx.font='900 11px system-ui';ctx.fillText(String(badgeLabel),38,-14)
+  }
   ctx.restore()
 }
 
 export default function Battle({campaignId,loadout,startingRoster,startCapacity,eligibleUnits=[],meta,onFinish}){
-  const campaign=CAMPAIGNS[campaignId],canvasRef=useRef(null),battleRef=useRef(null),rafRef=useRef(null),actionRef=useRef({mode:null,unitId:null}),actionTimeoutRef=useRef(null),killsRef=useRef(0)
+  const campaign=CAMPAIGNS[campaignId],canvasRef=useRef(null),battleRef=useRef(null),rafRef=useRef(null),actionRef=useRef({mode:null,unitId:null}),killsRef=useRef(0)
   const [phase,setPhase]=useState('deploy'),[stageIndex,setStageIndex]=useState(0)
   const [run,setRun]=useState(()=>({campaign:campaignId,leader:loadout.leader||null,general:loadout.general||null,tech:(loadout.tech||[]).filter(Boolean),leaderLevel:loadout.leader?(meta.characterLevels[loadout.leader]||1):0,generalLevel:loadout.general?(meta.characterLevels[loadout.general]||1):0,roster:startingRoster.map((type,i)=>({uid:`r${i}-${Date.now()}`,type,hpFrac:1})),deployCap:startCapacity,gold:0,xp:0,tp:0,eligibleUnits:[...eligibleUnits],unitLevels:meta.unitLevels||{},unitEquipment:meta.unitEquipment||{},heroEquipment:meta.heroEquipment||{},artifactLevels:meta.artifactLevels||{},upgrades:{damage:1,health:1,attackSpeed:1,range:1,armorBonus:0,reinforceSpeed:1,reinforceHeal:0}}))
-  const [deployPos,setDeployPos]=useState(()=>startingRoster.map((_,i)=>({...defaultPositions[i]}))),[selectedRoster,setSelectedRoster]=useState(0)
+  const [deployPos,setDeployPos]=useState(()=>formationPositions(startingRoster.length,'player')),[selectedRoster,setSelectedRoster]=useState(0)
   const [hud,setHud]=useState({player:100,enemy:100,powerP:0,powerE:0,meter:0,enemyMeter:0,rally:0,focus:0,special:0}),[actionMode,setActionMode]=useState(null),[actionUnitId,setActionUnitId]=useState(null)
   const [rewardChoices,setRewardChoices]=useState([]),[showReward,setShowReward]=useState(false),[showMilestone,setShowMilestone]=useState(false),[showEnd,setShowEnd]=useState(false),[endInfo,setEndInfo]=useState(null),[lostAny,setLostAny]=useState(false),[flawlessCount,setFlawlessCount]=useState(0),[showBrief,setShowBrief]=useState(true)
   const stage=campaign.stages[stageIndex],terrain=useMemo(()=>terrainFor(stage),[stage]),leader=PEOPLE[run.leader]||null,general=PEOPLE[run.general]||null,generalMini=run.general?ASSETS.people[run.general]?.mini:null
@@ -184,40 +202,55 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   const specialReady=!!(general?.special&&run.generalLevel>=(general.specialLevel||99))
 
   function setAction(mode,unitId=null){
-    if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)
     actionRef.current={mode,unitId};setActionMode(mode);setActionUnitId(unitId)
-    if(mode){actionTimeoutRef.current=setTimeout(()=>{actionRef.current={mode:null,unitId:null};setActionMode(null);setActionUnitId(null)},2000)}
   }
-  useEffect(()=>()=>{if(actionTimeoutRef.current)clearTimeout(actionTimeoutRef.current)},[])
-  function resetDeployPositions(roster=run.roster){setDeployPos(roster.map((_,i)=>({...defaultPositions[i%defaultPositions.length]})));setSelectedRoster(0)}
+  function resetDeployPositions(roster=run.roster){setDeployPos(formationPositions(Math.max(1,Math.min(6,roster.length)),'player'));setSelectedRoster(0)}
   function autoDeploy(){resetDeployPositions()}
 
   function drawTerrain(ctx,t,st,showDeploy=false){
     ctx.clearRect(0,0,W,H)
-    const sky=ctx.createLinearGradient(0,0,0,250)
-    sky.addColorStop(0,campaignId==='dawn'?'#90c4df':'#f0c48e')
-    sky.addColorStop(1,campaignId==='dawn'?'#31546c':'#97633d')
+    const sky=ctx.createLinearGradient(0,0,0,260)
+    sky.addColorStop(0,campaignId==='dawn'?'#a7d4f2':'#f2cb92')
+    sky.addColorStop(.58,campaignId==='dawn'?'#6ca0c4':'#c58d57')
+    sky.addColorStop(1,campaignId==='dawn'?'#436985':'#92633d')
     ctx.fillStyle=sky;ctx.fillRect(0,0,W,H)
-    ctx.fillStyle='rgba(255,255,255,.06)';for(let i=0;i<16;i++)ctx.fillRect((i*67)%W,18+(i*29)%110,2,2)
-    ctx.fillStyle='rgba(27,46,60,.42)';ctx.beginPath();ctx.moveTo(0,172);ctx.bezierCurveTo(95,120,175,138,260,166);ctx.bezierCurveTo(338,131,430,132,520,183);ctx.lineTo(520,230);ctx.lineTo(0,230);ctx.closePath();ctx.fill()
-    const ground=ctx.createLinearGradient(0,145,0,H)
-    ground.addColorStop(0,campaignId==='dawn'?'#809f6b':'#ba8757')
-    ground.addColorStop(.65,campaignId==='dawn'?'#4d6842':'#8e613a')
-    ground.addColorStop(1,campaignId==='dawn'?'#304632':'#634228')
-    ctx.fillStyle=ground;ctx.fillRect(0,150,W,H-150)
-    ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1
-    for(let y=172;y<H+40;y+=36){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y-44);ctx.stroke()}
-    for(let x=-W;x<W*2;x+=44){ctx.beginPath();ctx.moveTo(x,164);ctx.lineTo(x+W*.45,H);ctx.stroke()}
-    ctx.fillStyle='rgba(255,255,255,.055)';for(let i=0;i<9;i++){const y=188+i*56;ctx.beginPath();ctx.moveTo(20,y);ctx.lineTo(W-20,y-22);ctx.lineTo(W-20,y-6);ctx.lineTo(20,y+16);ctx.closePath();ctx.fill()}
-    if(t.river){const[y1,y2]=t.riverY;const river=ctx.createLinearGradient(0,y1,0,y2);river.addColorStop(0,'rgba(70,140,182,.93)');river.addColorStop(.5,'rgba(44,103,146,.97)');river.addColorStop(1,'rgba(31,79,122,.93)');ctx.fillStyle=river;ctx.fillRect(0,y1,W,y2-y1);ctx.fillStyle='rgba(186,205,172,.36)';ctx.fillRect(0,y1-10,W,8);ctx.fillRect(0,y2+2,W,8);ctx.fillStyle='rgba(185,232,255,.18)';for(let y=y1+9;y<y2;y+=12){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y-12);ctx.lineTo(W,y-8);ctx.lineTo(0,y+4);ctx.closePath();ctx.fill()}for(const b of t.bridges){ctx.fillStyle='#765131';ctx.beginPath();ctx.moveTo(b.x,y1-4);ctx.lineTo(b.x+b.w,y1-14);ctx.lineTo(b.x+b.w,y2+2);ctx.lineTo(b.x,y2+12);ctx.closePath();ctx.fill();ctx.fillStyle='#b98c59';for(let x=b.x+6;x<b.x+b.w-2;x+=11){ctx.beginPath();ctx.moveTo(x,y1-2);ctx.lineTo(x+6,y1-4);ctx.lineTo(x+6,y2+7);ctx.lineTo(x,y2+9);ctx.closePath();ctx.fill()}}}
-    for(const r of t.mountains){ctx.fillStyle='#4e5660';ctx.beginPath();ctx.moveTo(r.x,r.y+r.h);ctx.lineTo(r.x+r.w*.24,r.y+r.h*.28);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.12);ctx.lineTo(r.x+r.w,r.y+r.h*.78);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.closePath();ctx.fill();ctx.fillStyle='#66707c';ctx.beginPath();ctx.moveTo(r.x+r.w*.24,r.y+r.h*.28);ctx.lineTo(r.x+r.w*.42,r.y);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.12);ctx.lineTo(r.x+r.w*.42,r.y+r.h*.3);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(196,213,224,.32)';ctx.stroke()}
-    for(let i=0;i<7;i++){const x=24+(i*71)%W,y=190+(i*83)%(H-220);ctx.fillStyle='rgba(30,56,33,.55)';ctx.beginPath();ctx.ellipse(x,y+8,10,4,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#24452b';ctx.beginPath();ctx.moveTo(x,y-12);ctx.lineTo(x-10,y+5);ctx.lineTo(x+10,y+5);ctx.closePath();ctx.fill()}
-    if(showDeploy){ctx.fillStyle='rgba(117,211,161,.08)';ctx.beginPath();ctx.moveTo(18,DEPLOY_TOP+8);ctx.lineTo(W-18,DEPLOY_TOP-20);ctx.lineTo(W-18,H-28);ctx.lineTo(18,H-6);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(117,211,161,.5)';ctx.setLineDash([8,8]);ctx.stroke();ctx.setLineDash([])}
+    ctx.fillStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.ellipse(92,72,42,15,-.2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(142,82,58,17,.1,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(385,58,65,18,-.05,0,Math.PI*2);ctx.fill()
+
+    ctx.fillStyle='rgba(39,67,88,.32)';ctx.beginPath();ctx.moveTo(0,180);ctx.bezierCurveTo(70,148,150,146,238,176);ctx.bezierCurveTo(322,138,412,138,520,188);ctx.lineTo(520,238);ctx.lineTo(0,238);ctx.closePath();ctx.fill()
+    const ground=ctx.createLinearGradient(0,156,0,H)
+    ground.addColorStop(0,campaignId==='dawn'?'#8fb174':'#c99a66')
+    ground.addColorStop(.5,campaignId==='dawn'?'#688953':'#aa7a4a')
+    ground.addColorStop(1,campaignId==='dawn'?'#425d39':'#7c542f')
+    ctx.fillStyle=ground
+    ctx.beginPath();ctx.moveTo(0,162);ctx.lineTo(W,162);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill()
+
+    for(let row=0;row<10;row++){
+      const y=180+row*50
+      ctx.fillStyle=row%2===0?'rgba(255,255,255,.045)':'rgba(255,255,255,.025)'
+      ctx.beginPath();ctx.moveTo(18,y);ctx.lineTo(W-18,y-24);ctx.lineTo(W-18,y+8);ctx.lineTo(18,y+32);ctx.closePath();ctx.fill()
+    }
+    ctx.strokeStyle='rgba(255,255,255,.085)';ctx.lineWidth=1
+    for(let y=176;y<H+30;y+=34){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y-28);ctx.stroke()}
+    for(let x=-180;x<W+170;x+=42){ctx.beginPath();ctx.moveTo(x,170);ctx.lineTo(x+168,H);ctx.stroke()}
+
+    ctx.fillStyle='rgba(189,154,97,.32)'
+    ctx.beginPath();ctx.moveTo(132,208);ctx.lineTo(208,194);ctx.lineTo(357,330);ctx.lineTo(298,348);ctx.closePath();ctx.fill()
+    ctx.beginPath();ctx.moveTo(218,267);ctx.lineTo(276,255);ctx.lineTo(470,421);ctx.lineTo(424,438);ctx.closePath();ctx.fill()
+
+    if(t.river){const[y1,y2]=t.riverY;ctx.save();ctx.translate(0,-24);ctx.fillStyle='rgba(44,83,116,.28)';ctx.beginPath();ctx.moveTo(-20,y1+20);ctx.bezierCurveTo(98,y1+2,180,y2-20,290,y1+6);ctx.bezierCurveTo(378,y2+16,443,y1+9,540,y2-18);ctx.lineTo(540,y2+35);ctx.bezierCurveTo(434,y2+65,365,y2+57,285,y2+37);ctx.bezierCurveTo(175,y2+5,99,y2+25,-20,y2+45);ctx.closePath();ctx.fill();const river=ctx.createLinearGradient(0,y1,0,y2+50);river.addColorStop(0,'#76b6d9');river.addColorStop(.5,'#4f8db8');river.addColorStop(1,'#2d628d');ctx.fillStyle=river;ctx.beginPath();ctx.moveTo(-20,y1+8);ctx.bezierCurveTo(95,y1-8,176,y2-24,292,y1+2);ctx.bezierCurveTo(381,y2+18,449,y1+7,540,y2-22);ctx.lineTo(540,y2+22);ctx.bezierCurveTo(450,y2+49,379,y2+60,285,y2+28);ctx.bezierCurveTo(173,y1+5,94,y2+12,-20,y2+31);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(199,239,255,.45)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-5,y1+19);ctx.bezierCurveTo(91,y1+4,170,y2-11,288,y1+16);ctx.stroke();ctx.restore();for(const b of t.bridges){ctx.fillStyle='#654224';ctx.beginPath();ctx.moveTo(b.x,y1-1);ctx.lineTo(b.x+b.w,y1-16);ctx.lineTo(b.x+b.w,y2+14);ctx.lineTo(b.x,y2+28);ctx.closePath();ctx.fill();ctx.fillStyle='#bf8f5e';for(let x=b.x+4;x<b.x+b.w-2;x+=9){ctx.beginPath();ctx.moveTo(x,y1+2);ctx.lineTo(x+5,y1);ctx.lineTo(x+5,y2+22);ctx.lineTo(x,y2+24);ctx.closePath();ctx.fill()}}}
+
+    for(const r of t.mountains){ctx.fillStyle='#525b67';ctx.beginPath();ctx.moveTo(r.x,r.y+r.h);ctx.lineTo(r.x+r.w*.12,r.y+r.h*.54);ctx.lineTo(r.x+r.w*.36,r.y+r.h*.14);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.03);ctx.lineTo(r.x+r.w*.78,r.y+r.h*.28);ctx.lineTo(r.x+r.w,r.y+r.h*.74);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.closePath();ctx.fill();ctx.fillStyle='#73808d';ctx.beginPath();ctx.moveTo(r.x+r.w*.36,r.y+r.h*.14);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.03);ctx.lineTo(r.x+r.w*.69,r.y+r.h*.23);ctx.lineTo(r.x+r.w*.48,r.y+r.h*.33);ctx.closePath();ctx.fill();ctx.fillStyle='rgba(28,34,41,.28)';ctx.beginPath();ctx.moveTo(r.x+r.w*.55,r.y+r.h*.22);ctx.lineTo(r.x+r.w,r.y+r.h*.74);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.lineTo(r.x+r.w*.55,r.y+r.h);ctx.closePath();ctx.fill()}
+
+    for(let i=0;i<9;i++){const x=30+(i*57)%W,y=190+(i*73)%(H-220);ctx.fillStyle='rgba(22,47,27,.35)';ctx.beginPath();ctx.ellipse(x,y+8,12,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2b5633';ctx.beginPath();ctx.moveTo(x,y-14);ctx.lineTo(x-11,y+6);ctx.lineTo(x+11,y+6);ctx.closePath();ctx.fill();ctx.fillStyle='#3a7445';ctx.beginPath();ctx.moveTo(x,y-9);ctx.lineTo(x-8,y+4);ctx.lineTo(x+8,y+4);ctx.closePath();ctx.fill()}
+
+    if(showDeploy){ctx.fillStyle='rgba(117,211,161,.08)';ctx.beginPath();ctx.moveTo(18,DEPLOY_TOP+8);ctx.lineTo(W-18,DEPLOY_TOP-20);ctx.lineTo(W-18,H-28);ctx.lineTo(18,H-6);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(117,211,161,.56)';ctx.setLineDash([8,8]);ctx.stroke();ctx.setLineDash([])}
   }
   function drawDeploy(){
     const c=canvasRef.current;if(!c)return;const ctx=c.getContext('2d');drawTerrain(ctx,terrain,stage,true)
-    run.roster.slice(0,run.deployCap).forEach((r,i)=>{const p=deployPos[i]||defaultPositions[i];if(!p)return;drawSquad(ctx,makeEntity('player',r.type,p,r.hpFrac,run,1,i),i===selectedRoster,false)})
-    stage.types.forEach((type,i)=>drawSquad(ctx,makeEntity('enemy',type,enemyCells[i%enemyCells.length],1,run,stage.mult,i),false,false))
+    const playerSlots=formationPositions(Math.max(1,run.deployCap),'player')
+    const enemySlots=formationPositions(stage.types.length,'enemy')
+    run.roster.slice(0,run.deployCap).forEach((r,i)=>{const p=deployPos[i]||playerSlots[i]||defaultPositions[i];if(!p)return;drawSquad(ctx,makeEntity('player',r.type,p,r.hpFrac,run,1,i),i===selectedRoster,false)})
+    stage.types.forEach((type,i)=>drawSquad(ctx,makeEntity('enemy',type,enemySlots[i]||enemyCells[i%enemyCells.length],1,run,stage.mult,i),false,false))
   }
   useEffect(()=>{if(phase==='deploy')drawDeploy()},[phase,deployPos,selectedRoster,stageIndex,run])
   useEffect(()=>()=>cancelAnimationFrame(rafRef.current),[])
@@ -225,7 +258,7 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function beginBattle(){
     const current=run.roster.slice(0,run.deployCap)
     if(current.length<1)return
-    const player=current.map((r,i)=>makeEntity('player',r.type,deployPos[i]||defaultPositions[i],r.hpFrac,run,1,i)),enemy=stage.types.map((type,i)=>makeEntity('enemy',type,enemyCells[i],1,run,stage.mult,i))
+    const enemySlots=formationPositions(stage.types.length,'enemy'),player=current.map((r,i)=>makeEntity('player',r.type,deployPos[i]||formationPositions(current.length,'player')[i]||defaultPositions[i],r.hpFrac,run,1,i)),enemy=stage.types.map((type,i)=>makeEntity('enemy',type,enemySlots[i]||enemyCells[i],1,run,stage.mult,i))
     battleRef.current={player,enemy,projectiles:[],time:0,last:performance.now(),terrain,meter:35,enemyMeter:0,rallyCd:0,focusUntil:0,focusCd:0,focusTarget:null,specialUntil:0,specialCd:0,done:false}
     setPhase('battle');setAction(null);tick(performance.now())
   }
@@ -274,9 +307,11 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     const c=canvasRef.current;if(!c)return;const ctx=c.getContext('2d');drawTerrain(ctx,b.terrain,stage,false)
     for(const p of b.projectiles){ctx.strokeStyle=p.side==='player'?'#ffe08a':'#ffc0c0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.tx,p.ty);ctx.stroke()}
     const mode=actionRef.current.mode,selectedId=actionRef.current.unitId
-    b.enemy.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='focus'))
-    b.player.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='reinforce'||mode==='rallyUnit'))
-    if(mode){ctx.fillStyle='#07111daa';ctx.fillRect(95,350,330,62);ctx.strokeStyle='#77a6c8';ctx.strokeRect(95,350,330,62);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 17px system-ui';const title=mode==='focus'?'SELECT ENEMY':mode==='reinforce'?'SELECT UNIT TO REINFORCE':mode==='rallyUnit'?'SELECT UNIT TO MOVE':'SELECT DESTINATION';ctx.fillText(title,260,375);ctx.font='700 10px system-ui';ctx.fillText('Battle paused',260,395)}
+    const enemyTargets=mode==='focus'?b.enemy.filter(e=>!e.dead):[]
+    const playerTargets=(mode==='reinforce'||mode==='rallyUnit')?b.player.filter(e=>!e.dead):[]
+    b.enemy.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='focus',mode==='focus'?(enemyTargets.findIndex(x=>x.id===e.id)+1):''))
+    b.player.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='reinforce'||mode==='rallyUnit',(mode==='reinforce'||mode==='rallyUnit')?(playerTargets.findIndex(x=>x.id===e.id)+1):''))
+    if(mode){ctx.fillStyle='#07111dcc';ctx.fillRect(82,344,356,68);ctx.strokeStyle='#77a6c8';ctx.lineWidth=2;ctx.strokeRect(82,344,356,68);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 17px system-ui';const title=mode==='focus'?'SELECT ENEMY':mode==='reinforce'?'SELECT UNIT TO REINFORCE':mode==='rallyUnit'?'SELECT UNIT TO MOVE':'SELECT DESTINATION';ctx.fillText(title,260,370);ctx.font='700 10px system-ui';ctx.fillText('Battle remains paused until you pick a target or cancel the command.',260,392)}
   }
   function updateHud(b){
     const sum=(arr,k)=>arr.reduce((a,e)=>a+(e.dead?0:e[k]),0),max=arr=>arr.reduce((a,e)=>a+e.maxHp,0),power=arr=>Math.round(arr.filter(e=>!e.dead).reduce((a,e)=>a+e.hp*(e.stats.damage*e.stats.attackSpeed+e.stats.armor*.4),0)/10)
@@ -324,9 +359,13 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
   function handleCanvasClick(ev){
     const c=canvasRef.current,rect=c.getBoundingClientRect(),x=(ev.clientX-rect.left)*W/rect.width,y=(ev.clientY-rect.top)*H/rect.height
     if(phase==='deploy'){
-      const points=run.roster.slice(0,run.deployCap).map((r,i)=>({i,p:deployPos[i]||defaultPositions[i]})),hit=points.sort((a,b)=>Math.hypot(a.p.x-x,a.p.y-y)-Math.hypot(b.p.x-x,b.p.y-y))[0]
+      const fallbackSlots=formationPositions(Math.max(1,run.deployCap),'player')
+      const points=run.roster.slice(0,run.deployCap).map((r,i)=>({i,p:deployPos[i]||fallbackSlots[i]||defaultPositions[i]})),hit=points.sort((a,b)=>Math.hypot(a.p.x-x,a.p.y-y)-Math.hypot(b.p.x-x,b.p.y-y))[0]
       if(hit&&Math.hypot(hit.p.x-x,hit.p.y-y)<31){setSelectedRoster(hit.i);return}
-      if(y>=DEPLOY_TOP&&!blockedGroundPoint(x,y,terrain)){setDeployPos(pos=>pos.map((p,i)=>i===selectedRoster?{x:clamp(x,28,W-28),y:clamp(y,DEPLOY_TOP+22,H-35)}:p));return}
+      if(y>=DEPLOY_TOP&&!blockedGroundPoint(x,y,terrain)){setDeployPos(pos=>{
+        const base=run.roster.slice(0,run.deployCap).map((_,i)=>pos[i]||fallbackSlots[i]||defaultPositions[i])
+        return base.map((p,i)=>i===selectedRoster?{x:clamp(x,28,W-28),y:clamp(y,DEPLOY_TOP+22,H-35)}:p)
+      });return}
       return
     }
     const b=battleRef.current;if(!b)return;const action=actionRef.current
@@ -354,19 +393,24 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     return chips.length?chips:['No temporary enhancements yet']
   }
   const statsBlock=<div className="battle-stats-card"><div className="battle-stat-title"><span>{campaign.name}</span><b>{stageIndex+1}/{campaign.stages.length} · {stage.name}</b></div><div className="battle-life"><div><span>YOUR ARMY · {hud.player}%</span><i><em style={{width:`${hud.player}%`}}/></i><small>{battleRef.current?.player?.filter(e=>!e.dead).length??run.roster.length} squads · Power {hud.powerP}</small></div><div className="enemy"><span>ENEMY · {hud.enemy}%</span><i><em style={{width:`${hud.enemy}%`}}/></i><small>{battleRef.current?.enemy?.filter(e=>!e.dead).length??stage.types.length} squads · Power {hud.powerE}</small></div></div><div className="replacement-line"><span>Replacements</span><b>{hud.meter}%</b></div><div className="enhancement-strip"><b>YOUR ENHANCEMENTS · PLAYER ONLY</b><div>{enhancementSummary().map((x,i)=><span key={`${x}-${i}`}>{x}</span>)}</div></div></div>
-  const actionButtons=phase==='deploy'?<div className="battle-actions-grid deployment"><button onClick={autoDeploy}><b>Auto Deploy</b><span>Reset formation</span></button><button className="primary-action" onClick={beginBattle}><b>Finish Deployment</b><span>Start battle</span></button></div>:<div className="battle-actions-grid"><button disabled={hud.rally>0} className={actionMode?.startsWith('rally')?'selected':''} onClick={activateRally}><b>Rally</b><span>{actionMode==='rallyUnit'?'Select unit':actionMode==='rallyDestination'?'Choose destination':hud.rally>0?`${hud.rally.toFixed(0)}s`:'Move one unit'}</span></button><button disabled={hud.focus>0} className={actionMode==='focus'?'selected':''} onClick={activateFocus}><b>Focus</b><span>{actionMode==='focus'?'Select enemy':hud.focus>0?`${hud.focus.toFixed(0)}s`:'All target one unit'}</span></button><button disabled={hud.meter<100} className={actionMode==='reinforce'?'selected':''} onClick={activateReinforce}><b>Reinforce</b><span>{actionMode==='reinforce'?'Select unit':hud.meter>=100?`Heal ${Math.round(reinforceHeal*100)}%`:`${hud.meter}%`}</span></button><button disabled={!specialReady||hud.special>0} onClick={activateSpecial}><b>Special</b><span>{!specialReady?'Disabled':hud.special>0?`${hud.special.toFixed(0)}s`:general?.special||'Special'}</span></button></div>
+  const actionButtons=phase==='deploy'?<div className="battle-actions-grid deployment illustrated-deploy-actions"><button className="battle-action-btn action-secondary" onClick={autoDeploy}><img className="deploy-action-icon" src={ASSETS.ui.armies} alt=""/><b>Auto Deploy</b><span>Reset formation</span></button><button className="battle-action-btn action-primary primary-action" onClick={beginBattle}><img className="deploy-action-icon" src={ASSETS.ui.campaign} alt=""/><b>Finish Deployment</b><span>Start battle</span></button></div>:<div className="battle-actions-grid illustrated-actions">
+    <button disabled={hud.rally>0} className={`battle-action-btn illustrated ${actionMode?.startsWith('rally')?'selected':''}`} onClick={activateRally}><img src={ASSETS.commandCards?.rally} alt="Rally"/><span className="action-state">{actionMode==='rallyUnit'?'Select unit':actionMode==='rallyDestination'?'Choose destination':hud.rally>0?`${hud.rally.toFixed(0)}s`:'Ready'}</span></button>
+    <button disabled={hud.focus>0} className={`battle-action-btn illustrated ${actionMode==='focus'?'selected':''}`} onClick={activateFocus}><img src={ASSETS.commandCards?.focus} alt="Focus"/><span className="action-state">{actionMode==='focus'?'Select enemy':hud.focus>0?`${hud.focus.toFixed(0)}s`:'Ready'}</span></button>
+    <button disabled={hud.meter<100} className={`battle-action-btn illustrated ${actionMode==='reinforce'?'selected':''}`} onClick={activateReinforce}><img src={ASSETS.commandCards?.reinforce} alt="Reinforce"/><span className="action-state">{actionMode==='reinforce'?'Select unit':hud.meter>=100?`Heal ${Math.round(reinforceHeal*100)}%`:`${hud.meter}%`}</span></button>
+    <button disabled={!specialReady||hud.special>0} className="battle-action-btn illustrated" onClick={activateSpecial}><img src={ASSETS.commandCards?.special} alt="Special"/><span className="action-state">{!specialReady?'Locked':hud.special>0?`${hud.special.toFixed(0)}s`:'Ready'}</span></button>
+  </div>
   const targetList=actionMode==='focus'?(battleRef.current?.enemy||[]).filter(e=>!e.dead):(actionMode==='reinforce'||actionMode==='rallyUnit')?(battleRef.current?.player||[]).filter(e=>!e.dead):[]
-  const targetStrip=phase==='battle'&&actionMode?<div className="command-target-strip">{actionMode==='rallyDestination'?<div className="destination-hint"><b>Rally destination</b><span>Tap a valid point on the battlefield. Selection resumes automatically after a short timeout.</span></div>:targetList.map((e,i)=><button key={e.id} onClick={()=>chooseActionTarget(e.id)}><span>{i+1}</span><div><b>{UNITS[e.type].name}</b><small>{Math.round(e.hp/e.maxHp*100)}% HP</small></div></button>)}</div>:null
-  const commandBlock=<div className="battle-command-card"><div className="general-mini">{generalMini?<img src={generalMini} alt={general?.name||'Commander'}/>:<div>{general?.icon||'⚔'}</div>}<span><b>{general?.name||'Field Command'}</b><small>{phase==='deploy'?UNITS[run.roster[selectedRoster]?.type]?.name||'Select a squad':actionMode?'Battle paused briefly for selection':'Command ready'}</small></span></div>{actionButtons}{targetStrip}</div>
+  const targetStrip=phase==='battle'&&actionMode?<div className="command-target-strip">{actionMode==='rallyDestination'?<div className="destination-hint"><b>Rally destination</b><span>Tap a valid point on the battlefield, or tap Rally again to cancel.</span></div>:targetList.map((e,i)=><button key={e.id} className="target-choice" onClick={()=>chooseActionTarget(e.id)}><span className="target-index">{i+1}</span><div className="target-art">{ASSETS.units?.[e.type]?<img src={ASSETS.units[e.type]} alt={UNITS[e.type].name}/>:<span>⚔</span>}</div><div><b>{UNITS[e.type].name}</b><small>{Math.round(e.hp/e.maxHp*100)}% HP</small></div></button>)}</div>:null
+  const commandBlock=<div className="battle-command-card"><div className="general-mini">{generalMini?<img src={generalMini} alt={general?.name||'Commander'}/>:<div>{general?.icon||'⚔'}</div>}<span><b>{general?.name||'Field Command'}</b><small>{phase==='deploy'?UNITS[run.roster[selectedRoster]?.type]?.name||'Select a squad':actionMode?'Battle paused until you select or cancel':'Command ready'}</small></span></div>{actionButtons}{targetStrip}</div>
 
-  return <div className="battle-shell-with-header"><header className="mobile-game-header battle-game-header"><img src={ASSETS.logo} alt="March of Epochs"/><div className="header-currencies"><span className="xp">✦ <b>{meta.xp}</b><small>EXP</small></span><span className="gold">◉ <b>{meta.gold}</b><small>GOLD</small></span><span className={`tp ${meta.featureUnlocks?.technology?'':'locked'}`}>⚗ <b>{meta.tp}</b><small>TP</small></span></div></header><div className="battle-page">
+  return <div className="battle-shell-with-header"><header className="mobile-game-header battle-game-header"><img src={ASSETS.logo} alt="March of Epochs"/><div className="header-currencies"><span className="xp"><img src={ASSETS.ui.xp} alt=""/><b>{meta.xp}</b><small>EXP</small></span><span className="gold"><img src={ASSETS.ui.coin} alt=""/><b>{meta.gold}</b><small>GOLD</small></span><span className={`tp ${meta.featureUnlocks?.technology?'':'locked'}`}><img src={ASSETS.ui.tp} alt=""/><b>{meta.tp}</b><small>TP</small></span></div></header><div className="battle-page">
     <div className="battlefield-panel"><canvas ref={canvasRef} width={W} height={H} onClick={handleCanvasClick}/><div className="mobile-stats-overlay">{statsBlock}</div><div className="mobile-command-overlay">{commandBlock}</div></div>
     <aside className="desktop-battle-sidebar"><div>{statsBlock}</div><div>{commandBlock}</div></aside>
 
     <Modal open={showBrief&&phase==='deploy'} onClose={()=>setShowBrief(false)} title={`${stage.name} · ${stage.date||''}`} wide><div className="battle-brief"><div><span className="brief-kicker">WHY IT MATTERS</span><p>{stage.history}</p></div><div className="brief-tactical"><span className="brief-kicker">TACTICAL CLUE</span><p>{stage.tip}</p><div className="brief-condition"><b>Terrain condition</b><span>{terrain.river?'Water blocks ground movement except at bridges. Ranged attacks can cross water.':terrain.mountains.length?'High ground / obstacles block movement and ranged line of sight.':'Open ground: formation, range and unit counters decide the fight.'}</span></div></div><button className="primary" onClick={()=>setShowBrief(false)}>Study Battlefield & Deploy</button></div></Modal>
 
-    <Modal open={showReward} title="Evolution — choose one" wide><div className="reward-grid">{rewardChoices.map(c=><button key={c.id||c.name} className="reward-card" onClick={()=>chooseReward(c)}><strong>{c.icon}</strong><h4>{c.name}</h4><p>{c.desc}</p></button>)}</div></Modal>
-    <Modal open={showMilestone} title={`Campaign milestone after battle ${stageIndex+1}`} wide><div className="milestone-grid"><button onClick={()=>milestone('size')}><strong>⚑＋</strong><h4>Expand Army</h4><p>Increase deployment capacity by one, then recruit a new squad.</p></button><button onClick={()=>milestone('heal')}><strong>✚</strong><h4>Full Recovery</h4><p>Restore every surviving squad to 100%. Destroyed squads stay dead.</p></button></div></Modal>
+    <Modal open={showReward} title="Evolution — choose one" wide><div className="reward-grid">{rewardChoices.map(c=>{const icon={damage:ASSETS.statIcons?.damage,armor:ASSETS.statIcons?.armor,speed:ASSETS.statIcons?.speed,range:ASSETS.statIcons?.range,reinforceSpeed:ASSETS.commandCards?.reinforce,reinforceHeal:ASSETS.commandCards?.reinforce,health:ASSETS.statIcons?.health}[c.id];return <button key={c.id||c.name} className="reward-card" onClick={()=>chooseReward(c)}>{icon?<img className="reward-art" src={icon} alt=""/>:<strong>{c.icon}</strong>}<h4>{c.name}</h4><p>{c.desc}</p></button>})}</div></Modal>
+    <Modal open={showMilestone} title={`Campaign milestone after battle ${stageIndex+1}`} wide><div className="milestone-grid"><button onClick={()=>milestone('size')}><img className="reward-art" src={ASSETS.ui.armies} alt=""/><h4>Expand Army</h4><p>Increase deployment capacity by one, then recruit a new squad.</p></button><button onClick={()=>milestone('heal')}><img className="reward-art" src={ASSETS.statIcons?.health} alt=""/><h4>Full Recovery</h4><p>Restore every surviving squad to 100%. Destroyed squads stay dead.</p></button></div></Modal>
     <Modal open={showEnd} title={endInfo?.victory?'Campaign conquered':'Your army has fallen'}><div className="end-summary"><h3>{endInfo?.victory?'Victory!':`Defeated at battle ${endInfo?.battle}`}</h3><p>You bank <b>◉ {endInfo?.gold||0}</b> Gold and <b>✦ {endInfo?.xp||0}</b> EXP{meta.featureUnlocks?.technology?<> plus <b>⚗ {endInfo?.tp||0}</b> TP</>:''}.</p>{endInfo?.victory&&<p>Stars earned: <b>{endInfo.stars}/3</b></p>}<button className="primary" onClick={()=>onFinish({...endInfo,campaign:campaignId})}>Return to Campaign</button></div></Modal>
   </div></div>
 }

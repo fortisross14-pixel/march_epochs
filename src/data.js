@@ -343,12 +343,20 @@ function clampLevel(level){return Math.max(1,Math.min(UNIT_LEVEL_MAX,Math.floor(
 
 const firstWarTypes = [
   ['warrior'],
+  ['warrior'],
+  ['warrior','slinger'],
+  ['warrior','warrior'],
   ['warrior','slinger'],
   ['warrior','warrior','slinger'],
   ['warrior','slinger','slinger'],
-  ['warrior','spear','slinger'],
-  ['spear','warrior','slinger'], ['spear','spear','slinger'], ['warrior','archer','spear'], ['spear','archer','warrior'], ['spear','spear','archer'],
-  ['warrior','spear','archer','slinger'], ['spear','archer','archer','warrior'], ['spear','spear','archer','warrior'], ['spear','spear','archer','slinger','warrior'], ['spear','spear','archer','archer','warrior']
+  ['warrior','warrior','slinger'],
+  ['warrior','warrior','slinger','slinger'],
+  ['warrior','warrior','warrior','slinger'],
+  ['warrior','warrior','slinger','slinger'],
+  ['warrior','warrior','warrior','slinger','slinger'],
+  ['warrior','warrior','slinger','slinger','slinger'],
+  ['warrior','warrior','warrior','slinger','slinger'],
+  ['warrior','warrior','warrior','slinger','slinger','slinger']
 ]
 const bronzeTypes = [
   ['warrior','spear'], ['chariot','spear'], ['axeman','cityArcher'], ['chariot','cityArcher','spear'], ['bronzeGuard','cityArcher','spear'],
@@ -398,11 +406,12 @@ function makeHistoricalStages(briefs, types, second=false){
     index:i+1,
     ...brief,
     types:types[i],
-    // Campaign I is deliberately a tutorial wall: a fresh account normally wins 0–2 battles.
-    // Account progression, artifacts, unit levels and People should make the next 2–3 runs visibly deeper.
-    mult: second ? (.88 + i*.030) : ([.72,.72,.62,.74,.64,.68,.68,.72,.74,.76,.76,.78,.80,.80,.84][i] ?? .76),
-    gold: second ? (20 + i*4) : ([10,12,14,16,24,22,24,26,28,30,34,38,42,48,60][i] ?? 20),
-    xp: second ? (14 + i*2) : ([8,9,10,11,16,14,15,16,17,18,20,22,24,27,34][i] ?? 10),
+    // Campaign I is now tuned as a full Age I onboarding arc: a fresh account should be able
+    // to progress steadily, unlock People mid-run journey, and clear the campaign with a couple
+    // of retries once artifacts / levels / better formations are understood.
+    mult: second ? (.88 + i*.030) : ([.60,.62,.60,.62,.62,.64,.66,.68,.70,.72,.73,.74,.76,.78,.80][i] ?? .70),
+    gold: second ? (20 + i*4) : ([12,14,16,18,20,22,24,26,28,30,34,38,44,50,65][i] ?? 22),
+    xp: second ? (14 + i*2) : ([8,9,10,12,14,14,15,16,18,19,21,23,26,30,36][i] ?? 12),
     tp: second && [0,2,4,6,8,10,12,14].includes(i) ? 1 : 0,
     boss:i===14,
     elite:[3,7,10,12].includes(i)
@@ -484,7 +493,9 @@ export const ARTIFACT_WORKSHOP_GOLD = [0,20,45,80,130]
 
 export const ITEMS = {
   leatherLamellar:{id:'leatherLamellar',name:'Reinforced Leather Lamellar',slot:'unit',rarity:'Common',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.06},step:{healthMult:.025},desc:'A dependable early artifact. Increases Health of the equipped army type.'},
-  bronzeArmor:{id:'bronzeArmor',name:'Reinforced Bronze Armor',slot:'unit',rarity:'Uncommon',eligible:'ALL',price:45,maxLevel:5,effect:{armor:4},step:{armor:1.5},desc:'Adds flat Armor to the equipped army type.'},
+  stoneAxeGrip:{id:'stoneAxeGrip',name:'Stone Axe Grip',slot:'unit',rarity:'Common',eligible:'MELEE',price:32,maxLevel:5,effect:{damageMult:1.05},step:{damageMult:.022},desc:'A wrapped haft and balanced grip that improves melee damage for close-combat formations.'},
+  boneCharm:{id:'boneCharm',name:'Bone Charm',slot:'unit',rarity:'Uncommon',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.04,armor:1},step:{healthMult:.018,armor:.4},desc:'A protective charm worn by early warbands. Slightly improves Health and Armor.'},
+  bronzeArmor:{id:'bronzeArmor',name:'Reinforced Bronze Armor',slot:'unit',rarity:'Rare',eligible:'ALL',price:45,maxLevel:5,effect:{armor:4},step:{armor:1.5},desc:'Adds flat Armor to the equipped army type.'},
   bronzeEdges:{id:'bronzeEdges',name:'Hardened Bronze Edges',slot:'unit',rarity:'Uncommon',eligible:'MELEE',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improved edged bronze weapons for melee formations from the Bronze/Classical eras or earlier.'},
   spearheads:{id:'spearheads',name:'Reinforced Bronze Spearheads',slot:'unit',rarity:'Uncommon',eligible:'SPEAR',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.055,armor:1},step:{damageMult:.02,armor:.5},desc:'Stronger spearheads for spear formations of the Bronze/Classical eras or earlier.'},
   edgedProjectiles:{id:'edgedProjectiles',name:'Improved Edged Projectiles',slot:'unit',rarity:'Rare',eligible:'RANGED',price:50,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improves Damage for ranged and firearm units.'},
@@ -546,8 +557,8 @@ export const REWARD_POOL = [
 ]
 
 export const START_META = {
-  gold: 0,
-  xp: 0,
+  gold: 120,
+  xp: 20,
   tp: 0,
   ownedTech: [],
   characterCopies: {},
@@ -562,8 +573,8 @@ export const START_META = {
   hpRank: 0,
   fieldMedicine: 0,
   freePack: 0,
-  inventory: {},
-  artifactLevels: {},
+  inventory: { leatherLamellar:1, slingPouch:1 },
+  artifactLevels: { leatherLamellar:1, slingPouch:1 },
   unitEquipment: {},
   heroEquipment: {},
   stats: { runsStarted:0,battlesWon:0,unitsKilled:0,flawlessBattles:0,techUnlocked:0,peopleUpgraded:0,packsOpened:0,itemsEquipped:0,artifactsEvolved:0,peopleDiscovered:0,campaignsCompleted:0,unitLevelsBought:0,peopleFeatureUnlocked:0 },

@@ -1,0 +1,25 @@
+March of Epochs React v0.17.0 — Age I quality pass
+
+This pass focuses on making Campaign 1 / Age I feel end-to-end playable and more polished.
+
+Included highlights:
+- Always-mobile / vertical-first layout, including on desktop and laptop.
+- Battle screen stacked in a mobile-style layout instead of a broken desktop split view.
+- Command selection now remains paused until the player chooses a target or cancels.
+- Larger battlefield armies, improved spacing, and numbered target markers to reduce overlap/confusion.
+- Better target cards for Rally / Focus / Reinforce.
+- Campaign 1 encounter rebalance so a fresh account can progress through Age I with learning/progression.
+- Starter onboarding boost: initial Gold / EXP and 2 starter artifacts.
+- Added 2 new early artifacts: Stone Axe Grip and Bone Charm.
+- Updated artifact pack pools to include the new early artifacts.
+- Mobile-width UI polish across campaign, artifacts, armies, loadouts, and achievements.
+- Local storage key bumped to v017 to start from a clean save state for this pass.
+
+Main edited files:
+- src/components/Battle.jsx
+- src/data.js
+- src/styles.css
+- src/assets.js
+- src/storage.js
+- src/assets/items/stoneAxeGrip.svg
+- src/assets/items/boneCharm.svg

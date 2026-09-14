@@ -18,16 +18,21 @@ export default function CardFlip({ id, meta, onUpgrade, compact=false }){
   const nextGold = level < maxLevel ? GOLD_UPGRADE_COSTS[level] : null
   const canUpgrade = nextCopies && copies >= nextCopies && meta.gold >= nextGold
 
-  if(art?.front && art?.back){
-    return <div className={`premium-flip ${compact?'compact':''}`}>
+  if(art?.front){
+    return <div className={`premium-flip age1-card ${compact?'compact':''}`} style={{'--rarity':RARITIES[p.rarity].color}}>
       <div className={`premium-flip-inner ${flipped?'flipped':''}`} onClick={()=>setFlipped(v=>!v)}>
-        <div className="premium-face premium-front">
-          <img src={art.front} alt={`${p.name} card front`} />
+        <div className={`premium-face premium-front ${art.dynamic?'dynamic-person-front':'has-image'}`}>
+          {art.dynamic?<><div className="dynamic-front-portrait"><img src={art.mini||art.front} alt={p.name}/></div><div className="dynamic-front-meta"><b>{p.name}</b><span>{p.type}</span><small>{p.rarity}</small></div></>:<img src={art.front} alt={`${p.name} card front`} />}
           <div className="premium-hud premium-hud-left"><span>{stars(level,maxLevel)}</span></div>
           <div className="premium-hud premium-hud-right"><b>{copies}/{nextCopies||copies}</b></div>
         </div>
-        <div className="premium-face premium-back">
-          <img src={art.back} alt={`${p.name} card back`} />
+        <div className={`premium-face premium-back ${art.back?'has-image':'dynamic-person-back'}`}>
+          {art.back?<img src={art.back} alt={`${p.name} card back`} />:<>
+            <div className="dynamic-back-portrait">{art.mini?<img src={art.mini} alt=""/>:<span>{p.icon}</span>}</div>
+            <div className="dynamic-back-heading"><b>{p.name}</b><span>{p.rarity} · {p.type}</span></div>
+            <p>{p.bio}</p>
+            <div className="dynamic-level-list">{p.levels.slice(0,maxLevel).map((x,i)=><div key={i} className={i<level?'active':''}><b>Lv {i+1}</b><span>{x}</span></div>)}</div>
+          </>}
           <div className="premium-hud premium-hud-left"><span>{stars(level,maxLevel)}</span></div>
           <div className="premium-hud premium-hud-right"><b>{copies}/{nextCopies||copies}</b></div>
         </div>
