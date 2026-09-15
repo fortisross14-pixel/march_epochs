@@ -1,0 +1,372 @@
+/* Pass 3: portrait menu system. All rules are scoped away from the battlefield.
+   Important declarations intentionally supersede the legacy menu overrides. */
+.app-shell.menu-shell {
+  --menu-gold: #d9b66d;
+  --menu-muted: #adc1cf;
+  --menu-line: #345069;
+  --menu-panel: #0e2435;
+  width: min(480px,100%) !important;
+  max-width: 480px !important;
+  padding: calc(70px + env(safe-area-inset-top)) 12px calc(88px + env(safe-area-inset-bottom)) !important;
+  color: #f1ead9;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.app-shell.menu-shell *, .app-shell.menu-shell *::before, .app-shell.menu-shell *::after {box-sizing:border-box;min-width:0;border-image:none !important;text-shadow:none !important}
+.app-shell.menu-shell button, .app-shell.menu-shell summary {touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.app-shell.menu-shell button {min-height:44px;font-size:13px;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.app-shell.menu-shell button:active:not(:disabled) {transform:translateY(1px);filter:brightness(1.15)}
+.app-shell.menu-shell button:focus-visible,.app-shell.menu-shell summary:focus-visible {outline:3px solid #91d3fa;outline-offset:3px}
+.app-shell.menu-shell button:disabled {opacity:.62;cursor:default}
+.app-shell.menu-shell button.primary,.app-shell.menu-shell .primary.big {
+  min-height:50px !important;border:1px solid #f0d493 !important;border-radius:12px !important;
+  background:linear-gradient(#e8c982,#b88a3e) !important;color:#211a10 !important;
+  box-shadow:inset 0 1px #fff4c4,0 4px 12px #0005 !important;font:700 15px/1.3 Georgia,serif !important;
+  padding:12px 16px !important;letter-spacing:.01em;
+}
+.app-shell.menu-shell button.primary:disabled {background:linear-gradient(#4f5f66,#33444e) !important;color:#b6c1c6 !important;border-color:#637078 !important;box-shadow:none !important;opacity:1}
+.app-shell.menu-shell .secondary-wide,.app-shell.menu-shell .store-jump,.app-shell.menu-shell .research-capacity button,.app-shell.menu-shell .achievement-card>button,.app-shell.menu-shell .subtabs button {
+  border:1px solid #49677c;border-radius:10px;background:linear-gradient(#19364b,#102639);color:#dfdfd5;font-weight:700;padding:10px 12px;
+}
+.app-shell.menu-shell .danger {border:1px solid #a46a62;border-radius:10px;background:#42242b;padding:10px;color:#ffccc1}
+.app-shell.menu-shell .selected,.app-shell.menu-shell [aria-pressed="true"] {border-color:var(--menu-gold) !important;box-shadow:inset 0 0 0 1px var(--menu-gold) !important}
+.app-shell.menu-shell .army-overview-card,.app-shell.menu-shell .collection-person,.app-shell.menu-shell .tech-node,.app-shell.menu-shell .muster-compact-slot.filled,.app-shell.menu-shell .person-thumb,.app-shell.menu-shell .equipment-slot,.app-shell.menu-shell .pack-box,.app-shell.menu-shell .achievement-card {border:1px solid #526b7c !important;border-radius:14px !important}
+.app-shell.menu-shell .muster-compact-slot.filled {border-color:#6d986e !important}
+.app-shell.menu-shell .muster-compact-slot.selected {border-color:#e5bf6c !important;box-shadow:inset 0 0 0 1px #e5bf6c !important}
+.app-shell.menu-shell .collection-person {border-color:#998154 !important}
+.app-shell.menu-shell .tech-node.owned {border-color:#56877a !important}
+.app-shell.menu-shell .screen-panel.mobile-screen {background-image:none !important}
+.app-shell.menu-shell .simple-screen-title,.app-shell.menu-shell .campaign-mobile-heading {background-image:none !important}
+.app-shell.menu-shell .pack-box::before {display:none !important}
+.app-shell.menu-shell .army-overview-art,.app-shell.menu-shell .collection-person .mini-card-art,.app-shell.menu-shell .muster-compact-art,.app-shell.menu-shell .loadout-slot.prep-card {border-width:1px !important;border-radius:10px !important}
+.app-shell.menu-shell .subtabs button,.app-shell.menu-shell .secondary-wide,.app-shell.menu-shell .store-jump,.app-shell.menu-shell .research-capacity button {background:linear-gradient(#19364b,#102639) !important;border:1px solid #49677c !important;border-radius:10px !important;color:#dfdfd5 !important;min-height:44px !important}
+.app-shell.menu-shell .subtabs button.active {border-color:#d4b272 !important;background:#343323 !important;color:#ffe5ae !important}
+.app-shell.menu-shell .subtabs button::after {display:none !important}
+.app-shell.menu-shell .pack-box h3,.app-shell.menu-shell .pack-box p,.app-shell.menu-shell .pack-box>b {text-align:left !important}
+.app-shell.menu-shell h1,.app-shell.menu-shell h2,.app-shell.menu-shell h3 {color:#f3e3bb}
+.app-shell.menu-shell h1 {font:700 28px/1.1 Georgia,serif !important;letter-spacing:-.025em;margin:6px 0 0 !important}
+.app-shell.menu-shell p {line-height:1.55}
+.app-shell.menu-shell .mobile-game-header {width:min(480px,100%) !important;height:calc(62px + env(safe-area-inset-top)) !important;padding:calc(7px + env(safe-area-inset-top)) 12px 7px !important;gap:8px;border-bottom:1px solid #9b773b66}
+.app-shell.menu-shell .mobile-game-header>img {width:88px !important;height:43px !important;object-fit:contain}
+.app-shell.menu-shell .header-currencies {flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px !important}
+.app-shell.menu-shell .header-currencies>span {min-width:0 !important;padding:5px 4px !important;gap:2px 4px;border-radius:9px !important;display:grid !important;grid-template-columns:18px minmax(0,1fr);background:#102a3d !important;border:1px solid #4c6375 !important;align-content:center}
+.app-shell.menu-shell .header-currencies img {position:static !important;grid-row:1/3;width:17px !important;height:17px !important;object-fit:contain;align-self:center;transform:none !important}
+.app-shell.menu-shell .header-currencies b {font-size:11px !important;font-variant-numeric:tabular-nums}
+.app-shell.menu-shell .header-currencies small {font-size:8px !important;grid-column:2;line-height:1.1 !important}
+.app-shell.menu-shell main {padding:0 !important}
+.app-shell.menu-shell .screen-panel.mobile-screen {border:0 !important;border-radius:0 !important;background:none !important;box-shadow:none !important;overflow:visible !important}
+.app-shell.menu-shell .simple-screen-title,.app-shell.menu-shell .campaign-mobile-heading {padding:14px 2px 18px !important;background:none !important;border:0 !important;min-height:0 !important}
+.app-shell.menu-shell .simple-screen-title>span,.app-shell.menu-shell .campaign-mobile-heading>div>span,.app-shell.menu-shell .flow-context>span {font-size:10px;color:var(--menu-gold);letter-spacing:.16em;font-weight:800}
+.app-shell.menu-shell .simple-screen-title p {font-size:13px !important;color:var(--menu-muted);margin:9px 0 0}
+.app-shell.menu-shell .content-pad {padding:0 !important}
+.app-shell.menu-shell .section-head {display:flex !important;align-items:center;margin:18px 0 10px !important;gap:12px;padding:0 !important;background:none !important}
+.app-shell.menu-shell .section-head::after,.app-shell.menu-shell .simple-screen-title::before,.app-shell.menu-shell .simple-screen-title::after,.app-shell.menu-shell .campaign-mobile-heading::before,.app-shell.menu-shell .campaign-mobile-heading::after {display:none !important}
+.app-shell.menu-shell .section-head h3 {font-size:15px !important;text-transform:none;letter-spacing:0;margin:0}
+.app-shell.menu-shell .section-head>span {font-size:11px !important;color:var(--menu-muted);text-align:right;max-width:50%}
+.app-shell.menu-shell .bottom-nav.progression-nav {width:min(480px,100%) !important;bottom:0 !important;padding:6px 8px calc(6px + env(safe-area-inset-bottom)) !important;gap:2px;border-radius:14px 14px 0 0 !important;border-color:#8b6b37;box-shadow:0 -8px 25px #0005}
+.app-shell.menu-shell .bottom-nav[hidden] {display:none !important}
+.app-shell.menu-shell .bottom-nav button {min-height:60px !important;padding:5px 0 !important;border:1px solid transparent}
+.app-shell.menu-shell .bottom-nav button>small {font-size:10px !important;letter-spacing:0}
+.app-shell.menu-shell .bottom-nav button.active {background:linear-gradient(#284358,#172b3c);border-color:#ac8a4a;color:#f6dfab}
+.app-shell.menu-shell .bottom-nav button>span,.app-shell.menu-shell .bottom-nav button img {width:29px !important;height:29px !important}
+.app-shell.menu-shell .achievement-pill {min-width:44px !important;min-height:44px !important;font-size:11px !important;padding:7px 9px !important;max-width:116px;border-radius:11px}
+.app-shell.menu-shell .campaign-mobile-heading {align-items:center;gap:10px}
+.app-shell.menu-shell .campaign-mobile-heading h1 {font-size:25px !important}
+.app-shell.menu-shell .campaign-selector {display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--menu-muted);font-size:12px}
+.app-shell.menu-shell .campaign-selector-actions {display:flex;gap:7px}
+.app-shell.menu-shell .campaign-selector button {width:44px;height:44px;border:1px solid #6d613f;background:#122a3d;border-radius:10px;font-size:28px;line-height:1}
+.app-shell.menu-shell .campaign-browser {display:block !important}
+.app-shell.menu-shell .campaign-showcase {display:block !important;border-radius:16px !important;overflow:hidden;border:1px solid #94713b !important;background:#0e2233 !important}
+.app-shell.menu-shell .campaign-art-img {height:auto !important;aspect-ratio:1.62}
+.app-shell.menu-shell .campaign-art-img>img {width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.app-shell.menu-shell .campaign-art-img>div {padding:12px !important}
+.app-shell.menu-shell .campaign-art-img b {font-size:22px !important}
+.app-shell.menu-shell .campaign-showcase-body {padding:14px !important}
+.app-shell.menu-shell .campaign-meta-grid {gap:6px !important}
+.app-shell.menu-shell .campaign-meta-grid div {padding:8px 4px !important;background:#091b29;border-radius:8px}
+.app-shell.menu-shell .campaign-meta-grid span {font-size:10px !important}
+.app-shell.menu-shell .campaign-meta-grid b {font-size:16px !important}
+.app-shell.menu-shell .campaign-desc {font-size:13px !important;margin:12px 0 16px !important;color:#c1cdd1}
+.app-shell.menu-shell .campaign-start {width:100% !important}
+.app-shell.menu-shell .campaign-shell-summary {display:block !important;background:none !important;border:0 !important;padding:0 !important;box-shadow:none}
+.app-shell.menu-shell .battle-shell-list.compact-nodes {grid-template-columns:repeat(5,minmax(0,1fr)) !important;gap:6px !important}
+.app-shell.menu-shell .battle-shell-list.compact-nodes>div {aspect-ratio:auto;min-height:36px !important;border-radius:8px !important}
+.app-shell.menu-shell .battle-shell-list.compact-nodes>div b {font-size:12px !important}
+.app-shell.menu-shell .progression-hint {padding:12px !important;margin:14px 0 !important;font-size:12px;border:1px solid #526349;background:#14272a}
+.app-shell.menu-shell .progression-hint b {font-size:12px !important;color:#e5cf97}
+.app-shell.menu-shell .progression-hint span {font-size:12px !important;line-height:1.5}
+.app-shell.menu-shell .menu-disclosure {margin:16px 0 0;border-top:1px solid #344b5c;border-bottom:1px solid #344b5c;background:#0b1d2a;border-radius:10px}
+.app-shell.menu-shell .menu-disclosure summary {min-height:48px;padding:13px 12px;cursor:pointer;color:#cfdbdf;font-size:13px;font-weight:650}
+.app-shell.menu-shell .menu-disclosure summary>span {float:right;color:var(--menu-muted);font-size:10px;font-weight:400;line-height:22px}
+.app-shell.menu-shell .menu-disclosure>div {margin:0 !important;padding:10px !important}
+.app-shell.menu-shell .campaign-roadmap-strip {grid-auto-flow:row !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important;grid-auto-columns:auto !important;overflow:visible !important;max-width:100% !important}
+.app-shell.menu-shell .age-roster-grid,.app-shell.menu-shell .artifact-age-shell,.app-shell.menu-shell .technology-age-shell,.app-shell.menu-shell .army-age-catalog {display:grid;grid-template-columns:1fr !important;gap:8px}
+.app-shell.menu-shell .development-tools {margin-top:22px;opacity:.7}
+.app-shell.menu-shell .development-tools>button {margin:0 12px 12px}
+.app-shell.menu-shell .subtabs {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-bottom:16px;flex-wrap:nowrap}
+.app-shell.menu-shell .subtabs button {font-size:11px !important;padding:8px 5px !important;line-height:1.25;border-radius:10px !important}
+.app-shell.menu-shell .subtabs button.active {border-color:#d4b272;background:#343323;color:#ffe5ae;box-shadow:inset 0 -2px #d9b66d}
+.app-shell.menu-shell .inner-store-tabs {grid-template-columns:1fr 1fr}
+.app-shell.menu-shell .empty-state {padding:26px 18px !important;min-height:210px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:12px;border:1px solid #435a6b;border-radius:16px;background:radial-gradient(ellipse at top,#1c3b50,#0b1b29)}
+.app-shell.menu-shell .empty-state>b {font:700 21px/1.2 Georgia,serif;color:#f0ddb4}
+.app-shell.menu-shell .empty-state>span {font-size:13px;color:var(--menu-muted)}
+.app-shell.menu-shell .empty-state .primary {width:100%;margin-top:8px}
+.app-shell.menu-shell .artifact-tile-grid,.app-shell.menu-shell .people-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px !important;align-items:start}
+.app-shell.menu-shell .artifact-tile,.app-shell.menu-shell .artifact-tile.illustrated-artifact {width:100%;max-width:none !important;aspect-ratio:132/180 !important;border-radius:12px !important;overflow:hidden !important;padding:0}
+.app-shell.menu-shell .artifact-illustrated-card {object-fit:contain !important;box-shadow:none}
+.app-shell.menu-shell .artifact-tile.illustrated-artifact .artifact-upgrade-ready {right:3px !important;bottom:30px !important;width:28px !important;height:28px !important}
+.app-shell.menu-shell .artifact-tile.illustrated-artifact .artifact-count {right:8px !important;bottom:7px !important}
+.app-shell.menu-shell .artifact-tile.illustrated-artifact .artifact-corner.level {right:8px !important;top:8px !important;font-size:12px !important}
+.app-shell.menu-shell .collection-person {padding:0 !important;border:1px solid #a0824a;border-radius:13px !important;overflow:hidden;display:block;background:#0e2435;text-align:left}
+.app-shell.menu-shell .collection-person .mini-card-art {height:auto !important;aspect-ratio:4/5;width:100% !important;border-radius:0 !important}
+.app-shell.menu-shell .mini-card-art {overflow:hidden;position:relative}
+.app-shell.menu-shell .mini-card-art>img {width:100% !important;height:100% !important;object-fit:cover !important;object-position:50% 28% !important;display:block}
+.app-shell.menu-shell .mini-top-mask {display:none}
+.app-shell.menu-shell .mini-badge {font-size:10px !important;max-width:calc(100% - 12px);padding:3px 5px;background:#071522dc;line-height:1.3}
+.app-shell.menu-shell .mini-badge.left {top:7px;left:7px;right:auto}
+.app-shell.menu-shell .mini-badge.right {top:auto;bottom:7px;right:7px;left:auto}
+.app-shell.menu-shell .collection-person-meta {position:static !important;background:#0d2232;border:0;border-radius:0;display:flex;flex-direction:column;gap:5px;padding:11px !important;min-height:72px}
+.app-shell.menu-shell .collection-person-meta b {font:700 16px/1.15 Georgia,serif;color:#eee0bf}
+.app-shell.menu-shell .collection-person-meta span {font-size:11px;color:var(--menu-muted)}
+.app-shell.menu-shell .store-jump {width:100%;margin-top:18px;font-size:13px !important}
+.app-shell.menu-shell .pack-grid.mobile-packs {grid-template-columns:1fr !important;gap:12px}
+.app-shell.menu-shell .pack-box {display:grid !important;grid-template-columns:100px minmax(0,1fr);column-gap:14px;min-height:176px !important;padding:16px !important;align-content:center;border-radius:15px !important;text-align:left}
+.app-shell.menu-shell .pack-chest-art {grid-row:1/4;width:100px !important;height:125px !important;object-fit:contain;align-self:center;margin:0 !important}
+.app-shell.menu-shell .pack-box h3 {font:700 21px/1.15 Georgia,serif !important;margin:0 0 6px}
+.app-shell.menu-shell .pack-box p {font-size:12px !important;margin:0 0 10px;min-height:0 !important}
+.app-shell.menu-shell .pack-box>b {font-size:14px;color:#f7d58a}
+.app-shell.menu-shell .army-overview-grid {grid-template-columns:1fr !important;gap:12px !important}
+.app-shell.menu-shell .army-overview-card {grid-template-columns:88px minmax(0,1fr) 12px !important;gap:12px;padding:12px !important;border-radius:14px;background:linear-gradient(135deg,#173145,#0c1e2d);min-height:128px !important}
+.app-shell.menu-shell .army-overview-art {width:88px !important;height:104px !important;overflow:hidden;border-radius:11px;background:radial-gradient(ellipse,#344c5c,#102738)}
+.app-shell.menu-shell .army-overview-art img,.app-shell.menu-shell .unit-detail-art img,.app-shell.menu-shell .muster-compact-art img,.app-shell.menu-shell .mini-unit-glyph img,.app-shell.menu-shell .unit-icon img {width:100% !important;height:100% !important;object-fit:cover !important;object-position:center !important;padding:0 !important;transform:scale(1.1)}
+.app-shell.menu-shell .army-overview-copy h3 {font-size:18px !important;line-height:1.15}
+.app-shell.menu-shell .army-overview-copy>div:first-child {flex-wrap:wrap;gap:5px}
+.app-shell.menu-shell .army-overview-copy>div>b {font-size:11px !important}
+.app-shell.menu-shell .army-overview-stats {display:grid;grid-template-columns:1fr 1fr;gap:5px !important;margin:8px 0}
+.app-shell.menu-shell .army-overview-stats span {font-size:11px !important}
+.app-shell.menu-shell .army-overview-stats img {width:19px;height:19px;object-fit:contain}
+.app-shell.menu-shell .army-overview-copy small {font-size:11px !important}
+.app-shell.menu-shell .research-capacity {display:flex;flex-wrap:wrap;gap:12px;padding:14px;margin-bottom:14px;border-radius:12px;background:#102739;border:1px solid #39546a}
+.app-shell.menu-shell .research-capacity>div {flex:1 1 140px}
+.app-shell.menu-shell .research-capacity b {font-size:14px}
+.app-shell.menu-shell .research-capacity span {display:block;font-size:12px;color:var(--menu-muted);margin-top:4px}
+.app-shell.menu-shell .research-capacity button {font-size:12px;flex:1 1 130px}
+.app-shell.menu-shell .tech-tree {grid-template-columns:1fr !important;gap:12px !important}
+.app-shell.menu-shell .tech-node,.app-shell.menu-shell .tech-node.illustrated-tech {display:grid;grid-template-columns:80px minmax(0,1fr) !important;padding:12px !important;gap:14px !important;min-height:144px !important;border-radius:14px;text-align:left}
+.app-shell.menu-shell .tech-icon.full-card {width:80px !important;height:116px !important;box-shadow:none !important}
+.app-shell.menu-shell .tech-icon.full-card img {object-fit:contain !important}
+.app-shell.menu-shell .tech-icon.full-card {height:86px !important;border:1px solid #5c6b75 !important;border-radius:12px !important;background:#142c3d !important}
+.app-shell.menu-shell .tech-icon.full-card img {object-fit:cover !important;object-position:50% 32% !important;transform:scale(1.05)}
+.app-shell.menu-shell .tech-copy>b {font:700 19px/1.15 Georgia,serif !important}
+.app-shell.menu-shell .tech-copy>span {font-size:11px !important}
+.app-shell.menu-shell .tech-copy>small {font-size:12px !important;line-height:1.45 !important;margin-top:7px}
+.app-shell.menu-shell .research-status {display:block;font-style:normal;font-size:11px;font-weight:700;margin-top:8px;color:#e6c27c}
+.app-shell.menu-shell .tech-node.owned {opacity:1;background:#102d2b;border-color:#56877a}
+.app-shell.menu-shell .tech-node.owned .research-status {color:#9fd4b9}
+.app-shell.menu-shell .tech-node.locked {opacity:.8}
+/* Dialogs fill the phone's width, never a desktop modal width. */
+.app-shell.menu-shell .modal-backdrop.menu-dialog {inset:0 !important;bottom:0 !important;padding:12px !important;display:flex !important;align-items:center !important;justify-content:center;background:#030a12eb;z-index:100 !important;overflow:hidden !important}
+.app-shell.menu-shell .menu-dialog .modal-card,.app-shell.menu-shell .menu-dialog .modal-card.wide {width:min(456px,100%) !important;max-width:456px !important;max-height:calc(100dvh - 24px) !important;min-height:0;overflow-y:auto !important;overflow-x:hidden !important;overscroll-behavior:contain;border:1px solid #a88547 !important;border-radius:18px !important;background:linear-gradient(#112a3e,#081926) !important;outline:none;scroll-padding-top:76px;scrollbar-width:thin}
+.app-shell.menu-shell .menu-dialog .modal-header {padding:10px 12px !important;min-height:65px;gap:12px;backdrop-filter:blur(16px);background:#0c2034f5;border-color:#85693666;z-index:8}
+.app-shell.menu-shell .modal-header h2 {font:700 23px/1.15 Georgia,serif !important;overflow-wrap:anywhere}
+.app-shell.menu-shell .modal-header button {flex:0 0 44px;width:44px !important;height:44px !important;border:1px solid #577085 !important;border-radius:11px !important;background:#173448 !important;padding:10px}
+.app-shell.menu-shell .modal-header.has-back button>span {display:block !important;font-size:32px !important;color:#f1d997}
+.app-shell.menu-shell .modal-header button img {width:22px;height:22px;object-fit:contain}
+.app-shell.menu-shell .modal-header.has-back {justify-content:flex-start}
+.app-shell.menu-shell .modal-header.has-back button {order:-1;font-size:32px;line-height:1;padding:0}
+.app-shell.menu-shell .modal-backdrop.menu-flow {padding:0 !important}
+.app-shell.menu-shell .menu-flow .modal-card,.app-shell.menu-shell .menu-flow .modal-card.wide {width:min(480px,100%) !important;max-width:480px !important;height:100dvh;max-height:100dvh !important;border-radius:0 !important;border-top:0 !important;border-bottom:0 !important}
+.app-shell.menu-shell .menu-flow .modal-header {padding-top:calc(10px + env(safe-area-inset-top)) !important}
+.app-shell.menu-shell .campaign-prep-layout,.app-shell.menu-shell .muster-compact-layout {display:flex !important;flex-direction:column;align-items:stretch !important;gap:0 !important;padding:16px 14px 0 !important;min-height:calc(100dvh - 66px - env(safe-area-inset-top));}
+.app-shell.menu-shell .flow-context {display:flex;flex-direction:column;gap:5px;margin-bottom:16px}
+.app-shell.menu-shell .flow-context>b {font:700 23px/1.2 Georgia,serif;color:#f0e0b7}
+.app-shell.menu-shell .flow-context>small {font-size:12px;color:var(--menu-muted)}
+.app-shell.menu-shell .campaign-prep-art {height:120px;border:1px solid #7d673e;border-radius:12px;overflow:hidden}
+.app-shell.menu-shell .campaign-prep-art img {width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+.app-shell.menu-shell .loadout-grid.command-loadout.prep-grid,.app-shell.menu-shell .loadout-grid.technology-loadout.prep-grid {grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px !important}
+.app-shell.menu-shell .loadout-slot.prep-card {min-height:0 !important;border:1px solid #8d7548;border-radius:12px !important;padding:0 0 12px !important;background:#0d2334}
+.app-shell.menu-shell .loadout-slot.person .mini-card-art {height:164px !important;width:100%;border-radius:0 !important}
+.app-shell.menu-shell .loadout-slot>span {position:static;display:block;text-align:center;border:0;border-bottom:1px solid #91754366;border-radius:0;padding:8px;font-size:10px;background:#24313b;color:#e8cd94}
+.app-shell.menu-shell .loadout-slot>b {font:700 16px/1.15 Georgia,serif !important;padding:0 10px;margin-top:10px;color:#f1dfb6}
+.app-shell.menu-shell .loadout-slot>small {font-size:11px !important;margin-bottom:0;padding:0 10px;color:var(--menu-muted)}
+.app-shell.menu-shell .tech-big.art {height:72px !important;font-size:28px}
+.app-shell.menu-shell .tech-big.art img {height:100% !important;width:100% !important;object-fit:contain !important;padding:6px !important}
+.app-shell.menu-shell .feature-lock-banner.inline {display:flex;gap:14px;align-items:center;padding:14px;margin:0;min-height:78px;background:#0c1d2c;border:1px solid #405567;border-radius:12px}
+.app-shell.menu-shell .feature-lock-banner>img {width:32px;height:38px;object-fit:contain;opacity:.8}
+.app-shell.menu-shell .feature-lock-banner b {font-size:14px;display:block;color:#c4c8c7}
+.app-shell.menu-shell .feature-lock-banner span {font-size:12px;display:block;color:var(--menu-muted);margin-top:4px}
+.app-shell.menu-shell .modal-footer-actions {display:flex;flex-direction:column;gap:10px;padding:14px 0 calc(14px + env(safe-area-inset-bottom)) !important;width:100%;margin:14px 0 0 !important}
+.app-shell.menu-shell .modal-footer-actions>* {width:100% !important}
+.app-shell.menu-shell .menu-flow .modal-footer-actions {position:sticky;bottom:0;z-index:6;margin-top:auto !important;background:linear-gradient(#0b1c29f5,#0b1c29 20%);border-top:1px solid #8c713c66}
+.app-shell.menu-shell .muster-compact-slots {display:grid !important;grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px !important;margin-bottom:18px}
+.app-shell.menu-shell .muster-compact-slot {display:flex !important;flex-direction:column;align-items:center;gap:0;min-height:220px !important;padding:0 0 12px !important;border:1px dashed #6d7b7d;border-radius:14px;background:radial-gradient(ellipse at top,#203c51,#0b2032);text-align:center;overflow:hidden;position:relative}
+.app-shell.menu-shell .muster-compact-slot.filled {border-style:solid;border-color:#b29c5c;background:linear-gradient(#243f50,#112736)}
+.app-shell.menu-shell .muster-compact-slot .slot-number {position:static !important;display:block;width:100%;font-size:10px !important;letter-spacing:.1em;background:#0a1d2bd9;padding:9px 4px;color:#e6d498;border-bottom:1px solid #576747}
+.app-shell.menu-shell .muster-compact-art {width:100% !important;height:116px !important;border-radius:0;background:radial-gradient(ellipse,#354e5f,#10293c);overflow:hidden;position:static !important}
+.app-shell.menu-shell .muster-compact-art img {object-fit:contain !important;transform:scale(1.13)}
+.app-shell.menu-shell .muster-compact-copy {width:100%;padding:9px 8px 0}
+.app-shell.menu-shell .muster-compact-slot b {font:700 18px/1.15 Georgia,serif !important;color:#f5e4b9}
+.app-shell.menu-shell .muster-compact-slot small {display:block;font-size:10px !important;margin-top:5px;color:#b9cbd4;line-height:1.3}
+.app-shell.menu-shell .muster-inline-stats {display:flex;justify-content:center;gap:14px;margin-top:9px}
+.app-shell.menu-shell .muster-inline-stats span {display:flex;align-items:center;gap:4px;font-size:12px !important}
+.app-shell.menu-shell .muster-inline-stats img {width:19px;height:19px;object-fit:contain}
+.app-shell.menu-shell .muster-add {width:60px;height:70px;display:grid;place-items:center;font-size:40px;color:#d6bd81;margin:16px 0 9px}
+.app-shell.menu-shell .muster-eligible-panel {border:0 !important;padding:0 !important;margin-bottom:12px}
+.app-shell.menu-shell .muster-eligible-panel .section-head {margin-top:0 !important}
+.app-shell.menu-shell .muster-pool-list.compact {display:grid !important;grid-template-columns:1fr !important;max-height:none !important;overflow:visible !important;gap:7px}
+.app-shell.menu-shell .muster-pool-item {display:grid;grid-template-columns:48px minmax(0,1fr) 24px;gap:12px;padding:8px 12px !important;min-height:64px;border-radius:10px;background:#10293b;border:1px solid #435e71;text-align:left;align-items:center}
+.app-shell.menu-shell .mini-unit-glyph {width:48px !important;height:48px !important;overflow:hidden;border-radius:8px}
+.app-shell.menu-shell .muster-pool-item b {display:block;font-size:14px !important;color:#eadab7}
+.app-shell.menu-shell .muster-pool-item small {display:block;font-size:11px;color:var(--menu-muted);margin-top:4px}
+.app-shell.menu-shell .muster-pool-item>span {font-size:23px !important;color:#c6bd93}
+.app-shell.menu-shell .micro-copy {font-size:11px !important;color:var(--menu-muted);margin:10px 0;line-height:1.5}
+.app-shell.menu-shell .picker-people,.app-shell.menu-shell .tech-picker,.app-shell.menu-shell .units-grid.picker,.app-shell.menu-shell .equip-target-grid,.app-shell.menu-shell .equip-artifact-grid {grid-template-columns:1fr !important;gap:10px;padding:14px !important}
+.app-shell.menu-shell .person-thumb {display:grid;grid-template-columns:88px minmax(0,1fr);padding:8px;gap:14px}
+.app-shell.menu-shell .person-thumb .mini-card-art {width:88px !important;height:110px !important;border-radius:9px}
+.app-shell.menu-shell .person-thumb b {font:700 19px/1.15 Georgia,serif}
+.app-shell.menu-shell .person-thumb span,.app-shell.menu-shell .person-thumb small {font-size:12px;margin-top:5px}
+.app-shell.menu-shell .tech-picker>button {display:grid;grid-template-columns:56px minmax(0,1fr);align-items:center;column-gap:12px;padding:12px}
+.app-shell.menu-shell .tech-picker-art {grid-row:1/3;width:56px !important;height:64px !important}
+.app-shell.menu-shell .tech-picker>button>span:first-child {grid-row:1/3;display:grid;place-items:center}
+.app-shell.menu-shell .tech-picker-art img {width:100%;height:100%;object-fit:contain}
+.app-shell.menu-shell .tech-picker b {font-size:15px}
+.app-shell.menu-shell .tech-picker small {font-size:12px}
+.app-shell.menu-shell .unit-card {display:grid;grid-template-columns:64px minmax(0,1fr) !important;gap:12px;min-height:0 !important}
+.app-shell.menu-shell .unit-icon {overflow:hidden}
+.app-shell.menu-shell .unit-stats {grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:5px}
+.app-shell.menu-shell .unit-card h4 {font-size:17px !important}
+.app-shell.menu-shell .unit-role,.app-shell.menu-shell .unit-card p {font-size:11px !important}
+.app-shell.menu-shell .unit-stat {min-height:57px !important;gap:3px;padding:7px 3px !important}
+.app-shell.menu-shell .unit-stat span {font-size:9px !important;line-height:1.2 !important}
+.app-shell.menu-shell .unit-stat b {font-size:13px !important}
+.app-shell.menu-shell .unit-stat-icon {width:21px !important;height:21px !important}
+.app-shell.menu-shell .unit-detail-layout,.app-shell.menu-shell .artifact-detail-layout,.app-shell.menu-shell .person-detail-layout {display:flex;flex-direction:column;gap:16px;padding:16px !important;grid-template-columns:1fr !important}
+.app-shell.menu-shell .unit-detail-hero {width:100%}
+.app-shell.menu-shell .unit-detail-art {width:100% !important;height:196px !important;border-radius:13px;overflow:hidden;background:radial-gradient(ellipse,#2b4658,#0b2031)}
+.app-shell.menu-shell .unit-detail-art img {object-fit:contain !important;transform:scale(1.14)}
+.app-shell.menu-shell .unit-level-ribbon {margin:0;padding:10px 12px;display:flex;justify-content:space-between;font-size:12px}
+.app-shell.menu-shell .unit-detail-copy>p,.app-shell.menu-shell .artifact-detail-copy>p {font-size:13px !important;margin:0 0 16px;color:#c3d0d4}
+.app-shell.menu-shell .unit-detail-stats {grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:7px}
+.app-shell.menu-shell .level-up-panel {display:flex !important;flex-direction:column;align-items:stretch;gap:12px;padding:14px;margin-top:16px}
+.app-shell.menu-shell .level-up-panel b {font-size:14px !important}
+.app-shell.menu-shell .level-up-panel span {font-size:12px !important;margin-top:3px}
+.app-shell.menu-shell .level-up-panel button {width:100%}
+.app-shell.menu-shell .equipment-slot-grid {grid-template-columns:1fr !important;gap:9px}
+.app-shell.menu-shell .equipment-slot {min-height:90px !important;display:grid;grid-template-columns:52px minmax(0,1fr) 44px !important;padding:10px !important;gap:10px;position:relative;align-items:center}
+.app-shell.menu-shell .equipment-slot:not(.filled) {display:block}
+.app-shell.menu-shell .empty-equip {width:100%;min-height:64px;font-size:23px !important;display:flex;justify-content:center;align-items:center;gap:12px}
+.app-shell.menu-shell .empty-equip span {font-size:14px !important}
+.app-shell.menu-shell .equipment-slot-art {width:52px !important;height:70px !important}
+.app-shell.menu-shell .equipment-slot-art img {width:100% !important;height:100% !important;object-fit:contain !important}
+.app-shell.menu-shell .equipment-slot b {font-size:14px !important;line-height:1.2}
+.app-shell.menu-shell .equipment-slot span {font-size:11px !important;line-height:1.4}
+.app-shell.menu-shell .icon-only-close {position:static !important;width:44px !important;height:44px !important;padding:12px !important;border-radius:10px !important}
+.app-shell.menu-shell .unlock-note {font-size:12px !important;padding:12px;margin-top:14px}
+.app-shell.menu-shell .unlock-note span {font-size:12px !important}
+.app-shell.menu-shell .artifact-detail-hero.has-illustrated-card {width:min(200px,75%) !important;max-width:200px !important;aspect-ratio:132/180 !important;height:auto !important;margin:0 auto;overflow:hidden;border-radius:13px}
+.app-shell.menu-shell .artifact-detail-card-image {width:100% !important;height:100% !important;object-fit:contain !important}
+.app-shell.menu-shell .artifact-tile.menu-artifact-card {display:flex;flex-direction:column;width:100%;height:auto !important;aspect-ratio:auto !important;min-height:250px !important;border:1px solid var(--rarity,#988150) !important;border-radius:13px !important;background:linear-gradient(#19354a,#0b1d2b) !important;overflow:hidden !important;padding:0 !important;text-align:left}
+.app-shell.menu-shell .artifact-card-top {display:flex;justify-content:space-between;gap:8px;padding:9px 10px;background:#081c2be6;font-size:11px;color:#e8d59f}
+.app-shell.menu-shell .artifact-card-top small {font-size:10px;color:#b9cbd5}
+.app-shell.menu-shell .menu-artifact-art {position:relative;overflow:hidden;aspect-ratio:1;width:100%;height:auto;background:radial-gradient(ellipse,#274255,#102638);border-radius:10px}
+.app-shell.menu-shell .menu-artifact-art img {display:block;width:100% !important;height:100% !important;object-fit:contain !important;padding:10px !important;position:static;aspect-ratio:auto !important}
+.app-shell.menu-shell .menu-artifact-art.cutout img {padding:0 !important;transform:scale(2.4)}
+.app-shell.menu-shell .menu-artifact-art[data-artifact="boneCharm"] img {transform:scale(2.6) translate(-5%,-9%)}
+.app-shell.menu-shell .menu-artifact-art[data-artifact="slingPouch"] img {transform:scale(2.3) translate(-2%,0)}
+.app-shell.menu-shell .menu-artifact-art[data-artifact="bronzeArmor"] img {clip-path:inset(37% 0 0 0)}
+.app-shell.menu-shell .menu-artifact-art.atlas img,.app-shell.menu-shell .pack-result .pack-card-art .atlas img {padding:0 !important;object-fit:cover !important;object-position:100% 40% !important;transform:scale(1.35) translate(-9%,0)}
+.app-shell.menu-shell .artifact-tile-grid {align-items:stretch !important}
+.app-shell.menu-shell .artifact-tile.menu-artifact-card {height:100% !important}
+.app-shell.menu-shell .artifact-card-caption {padding:11px 10px 12px;flex:1;background:#0b1c29}
+.app-shell.menu-shell .artifact-card-caption b {font:700 16px/1.15 Georgia,serif;color:#ecdfba;display:block}
+.app-shell.menu-shell .artifact-card-caption small {display:block;font-size:11px;color:#b5c8d2;margin-top:7px}
+.app-shell.menu-shell .artifact-card-caption>span {display:block;margin-top:7px;font-size:10px;color:#cce4ab}
+.app-shell.menu-shell .artifact-detail-hero.menu-artifact-hero {width:min(230px,85%) !important;max-width:230px;aspect-ratio:auto !important;margin:0 auto;border:1px solid var(--rarity);border-radius:14px;overflow:hidden}
+.app-shell.menu-shell .artifact-hero-caption {display:flex;justify-content:space-between;padding:12px;font-size:12px;background:#0b2131;color:#eddfbb}
+.app-shell.menu-shell .equipment-slot-art .menu-artifact-art,.app-shell.menu-shell .equip-choice .menu-artifact-art {height:100%;aspect-ratio:auto}
+.app-shell.menu-shell .pack-result .pack-card-art {aspect-ratio:1 !important}
+.app-shell.menu-shell .pack-result .pack-card-art img {transform:scale(2.4)}
+.app-shell.menu-shell .pack-result .pack-card-art [data-artifact="boneCharm"] img {transform:scale(2.6) translate(-5%,-9%)}
+.app-shell.menu-shell .artifact-title-row {display:none}
+.app-shell.menu-shell .artifact-detail-stats {display:grid;grid-template-columns:1fr;gap:8px}
+.app-shell.menu-shell .artifact-detail-stats>div {padding:12px}
+.app-shell.menu-shell .artifact-detail-stats span {font-size:11px !important}
+.app-shell.menu-shell .artifact-detail-stats b {font-size:13px !important;line-height:1.4}
+.app-shell.menu-shell .equip-choice {grid-template-columns:68px minmax(0,1fr) !important;padding:12px !important}
+.app-shell.menu-shell .equip-choice .artifact-art {width:68px;height:80px}
+.app-shell.menu-shell .equip-choice img {width:100% !important;height:100% !important;object-fit:contain !important}
+.app-shell.menu-shell .equip-choice h3 {font-size:17px;margin:0}
+.app-shell.menu-shell .equip-choice p {font-size:12px}
+.app-shell.menu-shell .person-profile {width:100%}
+.app-shell.menu-shell .person-profile-art {width:min(240px,90%);aspect-ratio:4/5;margin:0 auto 16px;border:2px solid var(--rarity);border-radius:14px;overflow:hidden;position:relative;background:#183a51}
+.app-shell.menu-shell .person-profile-art>img {width:100%;height:100%;object-fit:cover;object-position:50% 28%;display:block}
+.app-shell.menu-shell .person-profile-art>.profile-rarity {position:absolute;bottom:0;left:0;right:0;padding:12px 6px;background:linear-gradient(transparent,#061322 30%);font-size:12px;color:#f3d797;text-align:center;text-transform:capitalize}
+.app-shell.menu-shell .profile-progress {display:grid;grid-template-columns:1fr auto;gap:5px;font-size:14px}
+.app-shell.menu-shell .profile-progress>span {color:#e6c074;font-size:14px}
+.app-shell.menu-shell .profile-progress>small {grid-column:1/-1;font-size:12px;color:var(--menu-muted)}
+.app-shell.menu-shell .person-profile>.primary {width:100%;margin-top:12px}
+.app-shell.menu-shell .person-profile>p {font-size:13px;color:#c2d0d7;margin:18px 0}
+.app-shell.menu-shell .person-profile>h3 {font-size:17px}
+.app-shell.menu-shell .profile-abilities {list-style:none;display:grid;gap:8px;margin:0 0 16px;padding:0}
+.app-shell.menu-shell .profile-abilities li {border:1px solid #395060;border-radius:10px;padding:12px;background:#0c2030;color:#aebfc9;font-size:13px}
+.app-shell.menu-shell .profile-abilities li.active {border-color:#907740;background:#23342d;color:#efdfb8}
+.app-shell.menu-shell .profile-abilities b {display:block;font-size:11px;margin-bottom:5px}
+.app-shell.menu-shell .signature-callout {font-size:13px}
+.app-shell.menu-shell .sealed-pack.illustrated {border:0;width:100%;min-height:380px !important;height:auto !important;padding:28px 16px 32px !important;border-radius:0;display:flex !important;background:radial-gradient(ellipse at center,#364339,#0b1d2e 72%);color:#f2dfb4}
+.app-shell.menu-shell .sealed-pack .sealed-chest {width:min(240px,80%) !important;height:220px !important;object-fit:contain}
+.app-shell.menu-shell .sealed-pack h3 {font-size:28px !important;margin:12px 0 6px}
+.app-shell.menu-shell .sealed-pack p {font-size:13px !important;max-width:270px}
+.app-shell.menu-shell .pack-results,.app-shell.menu-shell .pack-results.slim,.app-shell.menu-shell .pack-results.artifact-results {grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px;padding:16px !important}
+.app-shell.menu-shell .pack-result:only-child {grid-column:1/-1;width:70%;max-width:230px;justify-self:center}
+.app-shell.menu-shell .pack-result {padding:8px;border-radius:12px;overflow:hidden}
+.app-shell.menu-shell .pack-result .mini-card-art {height:auto !important;width:100% !important;aspect-ratio:4/5}
+.app-shell.menu-shell .pack-result .pack-card-art {display:block !important;height:auto !important;width:100% !important;aspect-ratio:1 !important;padding:0 !important;background:none;border:0}
+.app-shell.menu-shell .pack-result .pack-card-art img {width:100% !important;height:100% !important;object-fit:contain !important;aspect-ratio:auto;padding:0 !important}
+.app-shell.menu-shell .pack-result>b {font:700 16px/1.2 Georgia,serif;margin:10px 0 5px;color:#f0dfb5}
+.app-shell.menu-shell .pack-result>span {font-size:10px;color:#aeddc2}
+.app-shell.menu-shell .pack-result>small {display:block;font-size:11px;color:#b8c8d0;margin-top:6px}
+.app-shell.menu-shell .menu-dialog .modal-card>div>.pack-results~button.primary {width:calc(100% - 32px);margin:0 16px 16px !important}
+.app-shell.menu-shell .achievement-modal-content {padding:16px !important}
+.app-shell.menu-shell .achievement-grid {grid-template-columns:1fr !important}
+.app-shell.menu-shell .achievement-card {grid-template-columns:36px minmax(0,1fr) !important;gap:12px !important;padding:14px !important}
+.app-shell.menu-shell .achievement-icon,.app-shell.menu-shell .achievement-icon img {width:36px;height:42px;object-fit:contain}
+.app-shell.menu-shell .achievement-card h3 {font-size:18px !important;margin:0 0 5px}
+.app-shell.menu-shell .achievement-card p {font-size:12px !important}
+.app-shell.menu-shell .achievement-card small,.app-shell.menu-shell .achievement-progress>span {font-size:11px !important}
+.app-shell.menu-shell .achievement-family-title {margin:14px 0 10px}
+.app-shell.menu-shell .achievement-family-title b {font-size:15px}
+.app-shell.menu-shell .achievement-family-title span {font-size:11px}
+.app-shell.menu-shell .achievement-card.ready>button {background:linear-gradient(#e8c982,#b88a3e) !important;color:#211a10 !important;border:1px solid #f0cf84 !important;border-radius:10px !important;font:700 14px/1.3 Georgia,serif !important}
+.app-shell.menu-shell .achievement-card:not(.ready)>button {display:none}
+.app-shell.menu-shell .unlock-rewards {padding:20px 16px;text-align:center;display:grid;gap:18px}
+.app-shell.menu-shell .unlock-rewards img {width:72px;height:72px;object-fit:contain}
+.app-shell.menu-shell .unlock-rewards h3 {font:700 25px/1.15 Georgia,serif;margin:10px 0}
+.app-shell.menu-shell .unlock-rewards p {font-size:14px;color:var(--menu-muted)}
+.app-shell.menu-shell .toast {width:max-content;max-width:min(420px,calc(100% - 32px));border-radius:12px;font-size:12px !important;line-height:1.45;text-align:center;bottom:calc(86px + env(safe-area-inset-bottom));z-index:120}
+@media(max-width:350px) {
+  .app-shell.menu-shell {padding-inline:10px !important}
+  .app-shell.menu-shell .mobile-game-header>img {width:64px !important}
+  .app-shell.menu-shell .header-currencies img {width:14px !important;height:14px !important}
+  .app-shell.menu-shell .header-currencies b {font-size:10px !important}
+  .app-shell.menu-shell .campaign-mobile-heading h1 {font-size:22px !important}
+  .app-shell.menu-shell .achievement-pill {max-width:94px;font-size:10px !important}
+  .app-shell.menu-shell .pack-box {grid-template-columns:76px minmax(0,1fr);gap:10px;padding:12px !important}
+  .app-shell.menu-shell .pack-chest-art {width:76px !important;height:100px !important}
+  .app-shell.menu-shell .pack-box h3 {font-size:19px !important}
+  .app-shell.menu-shell .army-overview-card {grid-template-columns:72px minmax(0,1fr) 10px !important;gap:9px}
+  .app-shell.menu-shell .army-overview-art {width:72px !important;height:96px !important}
+  .app-shell.menu-shell .army-overview-copy h3 {font-size:16px !important}
+  .app-shell.menu-shell .modal-header h2 {font-size:21px !important}
+  .app-shell.menu-shell .muster-compact-slot b {font-size:16px !important}
+  .app-shell.menu-shell .muster-compact-slot {min-height:215px !important}
+}
+@media(prefers-reduced-motion:reduce) {.app-shell.menu-shell button {transition:none}}
+
+/* Guaranteed Age I supplies reuse the existing inventory card frame. */
+.app-shell.menu-shell .supply-card > b,
+.app-shell.menu-shell .supply-card > small,
+.app-shell.menu-shell .supply-card > span {display:block;padding:0 12px 10px;line-height:1.35}
+.app-shell.menu-shell .supply-card > b {font-size:16px;color:#f5dfab}
+.app-shell.menu-shell .supply-card > small {font-size:12px;color:#c8d6e1}
+.app-shell.menu-shell .supply-card > span {margin-top:auto;color:#f2c66c;font-weight:700}
+.app-shell.menu-shell .army-shell-chips small {display:block;margin-top:4px;font-size:11px;font-weight:400}

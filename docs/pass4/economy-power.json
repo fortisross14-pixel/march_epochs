@@ -1,0 +1,180 @@
+{
+  "economy": [
+    {
+      "reached": 3,
+      "cleared": 2,
+      "gold": 52,
+      "xp": 24,
+      "tp": 1,
+      "objectiveMax": 12,
+      "firstResearchTP": 2,
+      "firstClearGold": 0,
+      "firstClearXP": 0,
+      "newStarsMax": 0
+    },
+    {
+      "reached": 6,
+      "cleared": 5,
+      "gold": 148,
+      "xp": 79,
+      "tp": 2,
+      "objectiveMax": 34,
+      "firstResearchTP": 2,
+      "firstClearGold": 0,
+      "firstClearXP": 0,
+      "newStarsMax": 0
+    },
+    {
+      "reached": 10,
+      "cleared": 9,
+      "gold": 332,
+      "xp": 194,
+      "tp": 3,
+      "objectiveMax": 72,
+      "firstResearchTP": 2,
+      "firstClearGold": 0,
+      "firstClearXP": 0,
+      "newStarsMax": 0
+    },
+    {
+      "reached": 11,
+      "cleared": 10,
+      "gold": 390,
+      "xp": 232,
+      "tp": 3,
+      "objectiveMax": 84,
+      "firstResearchTP": 2,
+      "firstClearGold": 0,
+      "firstClearXP": 0,
+      "newStarsMax": 0
+    },
+    {
+      "reached": 15,
+      "cleared": 15,
+      "gold": 794,
+      "xp": 492,
+      "tp": 5,
+      "objectiveMax": 150,
+      "firstResearchTP": 2,
+      "firstClearGold": 60,
+      "firstClearXP": 30,
+      "newStarsMax": 45
+    }
+  ],
+  "profiles": [
+    {
+      "name": "Starter",
+      "reached": 3,
+      "cleared": 2,
+      "firstBattle": {
+        "battle": 1,
+        "victory": true,
+        "time": 7.76,
+        "objective": true,
+        "timedOut": false,
+        "remaining": [
+          {
+            "type": "warrior",
+            "hp": 73
+          },
+          {
+            "type": "slinger",
+            "hp": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Two artifacts",
+      "reached": 4,
+      "cleared": 3,
+      "firstBattle": {
+        "battle": 1,
+        "victory": true,
+        "time": 7.28,
+        "objective": true,
+        "timedOut": false,
+        "remaining": [
+          {
+            "type": "warrior",
+            "hp": 76
+          },
+          {
+            "type": "slinger",
+            "hp": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Artifacts + level 4 training",
+      "reached": 4,
+      "cleared": 3,
+      "firstBattle": {
+        "battle": 1,
+        "victory": true,
+        "time": 6.96,
+        "objective": true,
+        "timedOut": false,
+        "remaining": [
+          {
+            "type": "warrior",
+            "hp": 87
+          },
+          {
+            "type": "slinger",
+            "hp": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Add Elder + Veteran",
+      "reached": 5,
+      "cleared": 4,
+      "firstBattle": {
+        "battle": 1,
+        "victory": true,
+        "time": 6.2,
+        "objective": true,
+        "timedOut": false,
+        "remaining": [
+          {
+            "type": "warrior",
+            "hp": 94
+          },
+          {
+            "type": "hunterBand",
+            "hp": 100
+          }
+        ]
+      }
+    },
+    {
+      "name": "Mature Age I formation",
+      "reached": 15,
+      "cleared": 15,
+      "firstBattle": {
+        "battle": 1,
+        "victory": true,
+        "time": 4.8,
+        "objective": true,
+        "timedOut": false,
+        "remaining": [
+          {
+            "type": "warrior",
+            "hp": 100
+          },
+          {
+            "type": "archer",
+            "hp": 100
+          },
+          {
+            "type": "warrior",
+            "hp": 95
+          }
+        ]
+      }
+    }
+  ]
+}

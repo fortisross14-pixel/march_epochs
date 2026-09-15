@@ -1,0 +1,122 @@
+[
+  {
+    "width": 360,
+    "screen": "Campaign",
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 360,
+    "screen": "People",
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 360,
+    "screen": "Armies",
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 360,
+    "screen": "Technology",
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 360,
+    "screen": "Artifacts",
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 390,
+    "screen": "Campaign",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 390,
+    "screen": "People",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 390,
+    "screen": "Armies",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 390,
+    "screen": "Technology",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 390,
+    "screen": "Artifacts",
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 430,
+    "screen": "Campaign",
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 430,
+    "screen": "People",
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 430,
+    "screen": "Armies",
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 430,
+    "screen": "Technology",
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "brokenImages": [],
+    "overflowButtons": []
+  },
+  {
+    "width": 430,
+    "screen": "Artifacts",
+    "scrollWidth": 430,
+    "innerWidth": 430,
+    "brokenImages": [],
+    "overflowButtons": []
+  }
+]

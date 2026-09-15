@@ -1,0 +1,482 @@
+[
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 1,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 2,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 3,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 4,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 5,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 6,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 7,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "average",
+    "seed": 8,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 1,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 2,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 3,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 4,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 5,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 6,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 7,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "warrior"
+    ],
+    "policy": "skilled",
+    "seed": 8,
+    "reached": 4,
+    "cleared": 3
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 1,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 2,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 3,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 4,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 5,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 6,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 7,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 8,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 1,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 2,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 3,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 4,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 5,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 6,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 7,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "warrior",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 8,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 1,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 2,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 3,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 4,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 5,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 6,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 7,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "average",
+    "seed": 8,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 1,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 2,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 3,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 4,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 5,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 6,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 7,
+    "reached": 3,
+    "cleared": 2
+  },
+  {
+    "roster": [
+      "slinger",
+      "slinger"
+    ],
+    "policy": "skilled",
+    "seed": 8,
+    "reached": 3,
+    "cleared": 2
+  }
+]

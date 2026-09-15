@@ -1,0 +1,47 @@
+{
+  "layoutChecks": 100,
+  "viewports": [
+    {
+      "width": 320,
+      "height": 640
+    },
+    {
+      "width": 360,
+      "height": 800
+    },
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 412,
+      "height": 915
+    },
+    {
+      "width": 1024,
+      "height": 900
+    }
+  ],
+  "layoutFailures": [],
+  "interactionChecks": 11,
+  "productionBuild": "passed",
+  "productionPreview": "passed",
+  "ruleFunctionsUnchanged": [
+    "finishRun",
+    "buyTech",
+    "buyTechSlot",
+    "openPack",
+    "upgradePerson",
+    "upgradeUnit",
+    "evolveArtifact",
+    "equipItem",
+    "claimAchievement"
+  ],
+  "protectedFiles": {
+    "src/components/Battle.jsx": "ca45ed31388ff7a8708a91d8500a4d5b884d6e6fea15b3fb31798b3355dda3cc",
+    "src/components/battle.css": "c37d630cf05aa053c6fa25e08af8c46a5f512dede01e64b851bb818475937bc2",
+    "src/components/battlePresentation.js": "40804f57bdc5a2ea39495f6cfc89bdeda42f7b7a1c9a56f1e1fa8a5bc7dcf763",
+    "src/data.js": "f96da255a4a505f7090fdbdf7a1ab866bad832927e15827be8306d0aa75e4fc7",
+    "src/storage.js": "894b586d5464ced27cdec61f5af1746c8dde87dff90a1d5a970795cc4fd82b19"
+  }
+}

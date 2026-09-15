@@ -1,12 +1,13 @@
+import {peopleUpgradeCost} from '../game/progression.js'
 import { useState } from 'react'
 import { ASSETS } from '../assets'
-import { PEOPLE, COPY_THRESHOLDS, GOLD_UPGRADE_COSTS, RARITIES } from '../data'
+import { PEOPLE, UNITS, COPY_THRESHOLDS, GOLD_UPGRADE_COSTS, RARITIES } from '../data'
 
 function stars(level,maxLevel){
   return '★'.repeat(level) + '☆'.repeat(Math.max(0,maxLevel-level))
 }
 
-export default function CardFlip({ id, meta, onUpgrade, compact=false }){
+export default function CardFlip({ id, meta, onUpgrade, compact=false, menu=false }){
   const [flipped,setFlipped] = useState(false)
   const p = PEOPLE[id]
   if(!p) return null
@@ -15,8 +16,16 @@ export default function CardFlip({ id, meta, onUpgrade, compact=false }){
   const copies = meta.characterCopies[id] || 0
   const maxLevel = RARITIES[p.rarity].maxLevel
   const nextCopies = level < maxLevel ? COPY_THRESHOLDS[level] : null
-  const nextGold = level < maxLevel ? GOLD_UPGRADE_COSTS[level] : null
+  const nextGold = level < maxLevel ? peopleUpgradeCost(id,level) : null
   const canUpgrade = nextCopies && copies >= nextCopies && meta.gold >= nextGold
+
+  if(menu)return <article className="person-profile" style={{'--rarity':RARITIES[p.rarity].color}}>
+    <div className="person-profile-art">{art?<img src={art.mini||art.front} alt={p.name}/>:<span>{p.icon}</span>}<span className="profile-rarity">{p.rarity} · {p.type}</span></div>
+    <div className="profile-progress"><b>Level {level} / {maxLevel}</b><span aria-label={`${level} of ${maxLevel} stars`}>{stars(level,maxLevel)}</span><small>{level<maxLevel?`${copies} / ${nextCopies} copies for next level`:'Maximum level reached'}</small></div>
+    {level<maxLevel&&<button className="primary" disabled={!canUpgrade} onClick={()=>onUpgrade?.(id)}>Upgrade · {nextGold} Gold</button>}
+    <p>{p.bio}</p><h3>Abilities</h3><ol className="profile-abilities">{p.levels.slice(0,maxLevel).map((ability,i)=><li key={i} className={i<level?'active':''}><b>Level {i+1}{i<level?' · Active':''}</b><span>{ability}</span></li>)}</ol>
+    {p.signatureUnit&&!UNITS[p.signatureUnit]?.contentPending&&<div className="signature-callout"><b>Signature army</b><span>{UNITS[p.signatureUnit]?.name}</span></div>}
+  </article>
 
   if(art?.front){
     return <div className={`premium-flip age1-card ${compact?'compact':''}`} style={{'--rarity':RARITIES[p.rarity].color}}>

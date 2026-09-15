@@ -1,0 +1,482 @@
+[
+  {
+    "policy": "average",
+    "seed": 1,
+    "runs": [
+      3,
+      6,
+      9,
+      14
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 2,
+    "runs": [
+      3,
+      7,
+      14,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 3,
+    "runs": [
+      3,
+      6,
+      13,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 4,
+    "runs": [
+      3,
+      7,
+      11,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 5,
+    "runs": [
+      3,
+      9,
+      9,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 6,
+    "runs": [
+      3,
+      6,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 7,
+    "runs": [
+      3,
+      8,
+      13,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 8,
+    "runs": [
+      3,
+      5,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 9,
+    "runs": [
+      3,
+      6,
+      11,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 10,
+    "runs": [
+      3,
+      9,
+      9,
+      12
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 11,
+    "runs": [
+      3,
+      6,
+      10,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 12,
+    "runs": [
+      3,
+      5,
+      11,
+      15
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 13,
+    "runs": [
+      3,
+      6,
+      12,
+      15
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 14,
+    "runs": [
+      3,
+      6,
+      10,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 15,
+    "runs": [
+      3,
+      7,
+      11,
+      15
+    ]
+  },
+  {
+    "policy": "average",
+    "seed": 16,
+    "runs": [
+      3,
+      6,
+      9,
+      14
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 1,
+    "runs": [
+      3,
+      7,
+      14,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 2,
+    "runs": [
+      3,
+      7,
+      11,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 3,
+    "runs": [
+      3,
+      7,
+      10,
+      15
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 4,
+    "runs": [
+      3,
+      7,
+      "15 clear",
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 5,
+    "runs": [
+      3,
+      7,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 6,
+    "runs": [
+      3,
+      7,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 7,
+    "runs": [
+      3,
+      7,
+      "15 clear",
+      15
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 8,
+    "runs": [
+      3,
+      7,
+      14,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 9,
+    "runs": [
+      3,
+      7,
+      15,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 10,
+    "runs": [
+      3,
+      7,
+      "15 clear",
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 11,
+    "runs": [
+      3,
+      7,
+      "15 clear",
+      15
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 12,
+    "runs": [
+      3,
+      7,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 13,
+    "runs": [
+      3,
+      7,
+      12,
+      15
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 14,
+    "runs": [
+      3,
+      7,
+      12,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 15,
+    "runs": [
+      3,
+      7,
+      "15 clear",
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "skilled",
+    "seed": 16,
+    "runs": [
+      3,
+      7,
+      14,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 1,
+    "runs": [
+      3,
+      4,
+      9,
+      15
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 2,
+    "runs": [
+      3,
+      4,
+      11,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 3,
+    "runs": [
+      3,
+      4,
+      9,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 4,
+    "runs": [
+      3,
+      4,
+      9,
+      15
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 5,
+    "runs": [
+      3,
+      4,
+      9,
+      14
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 6,
+    "runs": [
+      3,
+      4,
+      9,
+      15
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 7,
+    "runs": [
+      3,
+      4,
+      9,
+      14
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 8,
+    "runs": [
+      3,
+      4,
+      9,
+      15
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 9,
+    "runs": [
+      3,
+      6,
+      11,
+      15
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 10,
+    "runs": [
+      3,
+      4,
+      9,
+      14
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 11,
+    "runs": [
+      3,
+      4,
+      9,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 12,
+    "runs": [
+      3,
+      4,
+      11,
+      14
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 13,
+    "runs": [
+      3,
+      4,
+      9,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 14,
+    "runs": [
+      3,
+      4,
+      10,
+      14
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 15,
+    "runs": [
+      3,
+      4,
+      9,
+      "15 clear"
+    ]
+  },
+  {
+    "policy": "inefficient",
+    "seed": 16,
+    "runs": [
+      3,
+      4,
+      9,
+      15
+    ]
+  }
+]

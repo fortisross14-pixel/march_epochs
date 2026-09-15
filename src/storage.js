@@ -1,4 +1,5 @@
-import { START_META } from './data'
+import { START_META } from './data.js'
+import {migrateProgression} from './game/progression.js'
 
 const KEY = 'march-of-epochs-react-v017'
 
@@ -7,7 +8,7 @@ export function loadMeta(){
     const raw=localStorage.getItem(KEY)
     if(!raw)return structuredClone(START_META)
     const p=JSON.parse(raw)
-    return {
+    return migrateProgression({
       ...structuredClone(START_META),...p,
       loadout:{...START_META.loadout,...(p.loadout||{})},
       characterCopies:{...START_META.characterCopies,...(p.characterCopies||{})},
@@ -21,7 +22,7 @@ export function loadMeta(){
       heroEquipment:{...START_META.heroEquipment,...(p.heroEquipment||{})},
       stats:{...START_META.stats,...(p.stats||{})},
       claimedAchievements:[...(p.claimedAchievements||[])],
-    }
+    })
   }catch{return structuredClone(START_META)}
 }
 export function saveMeta(meta){localStorage.setItem(KEY,JSON.stringify(meta))}

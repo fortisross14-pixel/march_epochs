@@ -146,7 +146,7 @@ export const PEOPLE = {
   sargon: {
     id:'sargon', type:'general', name:'Sargon of Akkad', rarity:'Epic', era:'First Empires', archetype:'Expansion', icon:'⚔', signatureUnit:'bronzeGuard', signatureLevel:1,
     bio:'Sargon founded the Akkadian Empire and became the archetype of the conquering Mesopotamian king. Details of individual campaigns are fragmentary, but his expansion was extraordinary.',
-    levels:['Unlock Bronze Guard and +8% melee Damage','+15% melee Damage','+1 starting army slot','Campaign Momentum: +10% attack speed after each battle won','Bronze Guard gains +25% Health']
+    levels:['Unlock Bronze Guard and +8% melee Damage','+15% melee Damage','+1 starting army slot','Campaign Momentum: +10% attack speed after each battle won','+12% army Health; Bronze Guard gains an additional +12% in later Ages']
   },
   thutmose: {
     id:'thutmose', type:'general', name:'Thutmose III', rarity:'Epic', era:'New Kingdom', archetype:'Maneuver', icon:'⚑', signatureUnit:'chariot', signatureLevel:1, special:'Royal Charge', specialLevel:4,
@@ -223,13 +223,13 @@ export const PEOPLE = {
 }
 
 export const TECHS = {
-  fire: { id:'fire', name:'Fire', icon:'🔥', tier:1, cost:0, prereq:[], desc:'Root technology. Enables incendiary upgrades and later Gunpowder.' },
-  archery: { id:'archery', name:'Archery', icon:'🏹', tier:1, cost:0, prereq:[], desc:'Unlocks Archers and ranged upgrade paths.' },
-  wheel: { id:'wheel', name:'Wheel', icon:'◉', tier:1, cost:0, prereq:[], desc:'Unlocks mobile and chariot branches.' },
+  fire: { id:'fire', name:'Fire', icon:'🔥', tier:1, cost:0, prereq:[], desc:'Equip with Archery for +12% ranged Damage. Prerequisite for later Gunpowder.' },
+  archery: { id:'archery', name:'Archery', icon:'🏹', tier:1, cost:2, prereq:[], desc:'Unlocks Archers and ranged upgrade paths.' },
+  wheel: { id:'wheel', age1MoveMult:1.08, name:'Wheel', icon:'◉', tier:1, cost:2, prereq:[], desc:'Age I: +8% movement speed; unlocks later wheeled formations.' },
   agriculture: { id:'agriculture', name:'Agriculture', icon:'🌾', tier:1, cost:2, prereq:[], startSlots:1, reinforceMult:1.15, recovery:.03, desc:'+1 starting squad, faster reinforcements and better recovery.' },
   domestication: { id:'domestication', name:'Domestication', icon:'🐎', tier:1, cost:2, prereq:[], desc:'Unlocks mounted units.' },
-  writing: { id:'writing', name:'Writing', icon:'✎', tier:1, cost:2, prereq:[], desc:'Unlocks organization and advanced state technologies.' },
-  copper: { id:'copper', name:'Copper Working', icon:'◇', tier:1, cost:2, prereq:[], desc:'First metalworking step.' },
+  writing: { id:'writing', age1XpMult:1.15, name:'Writing', icon:'✎', tier:1, cost:2, prereq:[], desc:'Age I: +15% victory EXP; unlocks later state technologies.' },
+  copper: { id:'copper', name:'Copper Working', icon:'◇', tier:1, cost:2, prereq:[], desc:'Unlocks Spearmen. Prerequisite for Bronze Working.' },
   bronze: { id:'bronze', name:'Bronze Working', icon:'⬡', tier:2, cost:3, prereq:['copper'], desc:'Unlocks Bronze Axemen and heavier armor.' },
   irrigation: { id:'irrigation', name:'Irrigation', icon:'≋', tier:2, cost:3, prereq:['agriculture'], reinforceMult:1.15, recovery:.04, desc:'Improves reinforcement and recovery.' },
   organization: { id:'organization', name:'Military Organization', icon:'⚑', tier:2, cost:5, prereq:['writing'], startSlots:1, desc:'+1 starting squad and disciplined formations.' },
@@ -248,8 +248,8 @@ export const TECHS = {
 export const UNITS = {
   warrior: { id:'warrior', name:'Warriors', ageId:'origins', ageIndex:1, rarity:'Common', role:'MELEE', health:112, armor:4, damage:11, attackSpeed:1.0, range:0, moveSpeed:42, unlock:'Starting army', desc:'Basic close-combat squad.' },
   spear: { id:'spear', name:'Spearmen', ageId:'origins', ageIndex:1, rarity:'Common', role:'SPEAR', health:118, armor:6, damage:10, attackSpeed:1.05, range:0, moveSpeed:39, antiMounted:1.7, requires:['copper'], unlock:'Research Copper Working', desc:'+70% damage against mounted units.' },
-  slinger: { id:'slinger', name:'Slingers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:190, moveSpeed:37, unlock:'Starting army', desc:'Primitive ranged harassment.' },
-  archer: { id:'archer', name:'Archers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:235, moveSpeed:34, requires:['archery'], unlock:'Research Archery', desc:'Long-range projectile squad.' },
+  slinger: { id:'slinger', name:'Slingers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:72, armor:0, damage:8.5, attackSpeed:.95, range:260, moveSpeed:37, unlock:'Starting army', desc:'Primitive ranged harassment.' },
+  archer: { id:'archer', name:'Archers', ageId:'origins', ageIndex:1, rarity:'Uncommon', role:'RANGED', health:80, armor:0, damage:10, attackSpeed:1.18, range:310, moveSpeed:34, requires:['archery'], unlock:'Research Archery', desc:'Long-range projectile squad.' },
   cavalry: { id:'cavalry', name:'Horsemen', ageId:'origins', ageIndex:1, rarity:'Rare', role:'MOUNTED', health:126, armor:5, damage:15, attackSpeed:1.15, range:0, moveSpeed:71, charge:1.55, requires:['domestication'], unlock:'Research Domestication', desc:'Fast flanking unit.' },
   horseArcher: { id:'horseArcher', name:'Horse Archers', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MOUNTED RANGED', health:94, armor:3, damage:11.5, attackSpeed:1.08, range:205, moveSpeed:67, requires:['archery','domestication'], unlock:'Research Archery + Domestication', desc:'Mobile ranged cavalry.' },
   chariot: { id:'chariot', name:'Chariots', ageId:'bronzeIron', ageIndex:2, rarity:'Epic', role:'MOUNTED', health:140, armor:8, damage:17, attackSpeed:1.2, range:0, moveSpeed:75, charge:1.78, requires:['wheel','domestication'], unlock:'Research Wheel + Domestication, or obtain Thutmose III / Ramesses II', desc:'Shock chariots.' },
@@ -263,8 +263,8 @@ export const UNITS = {
   marines: { id:'marines', name:'Marines', ageId:'industrialAge', ageIndex:9, rarity:'Legend', role:'FIREARM MELEE', health:220, armor:20, damage:19, attackSpeed:1.22, range:210, moveSpeed:50, requires:['firearms','organization'], unlock:'Research Firearms + Military Organization', desc:'A future-era professional formation. Its Level 1 base stats intentionally exceed a fully trained primitive Warrior.' },
 
   // Full-game shell units. These already exist in the catalogue even when their final art, recipes and balance are still placeholders.
-  hunterBand:{id:'hunterBand',name:'Hunter Bands',ageId:'origins',ageIndex:1,rarity:'Common',role:'RANGED',health:76,armor:1,damage:9,attackSpeed:1.0,range:150,moveSpeed:39,unlock:'Origins technology / campaign discovery',shell:true,desc:'Early hunting parties adapted for skirmish warfare.'},
-  warCart:{id:'warCart',name:'War Carts',ageId:'origins',ageIndex:1,rarity:'Rare',role:'MOUNTED',health:128,armor:5,damage:14,attackSpeed:.9,range:0,moveSpeed:60,unlock:'Wheel + Domestication',shell:true,desc:'Primitive wheeled shock formation.'},
+  hunterBand:{id:'hunterBand',name:'Hunter Bands',ageId:'origins',ageIndex:1,rarity:'Common',role:'RANGED',health:88,armor:2,damage:11,attackSpeed:1.12,range:230,moveSpeed:48,discoveryBattle:3,artKey:'archer',unlock:'Win First Wars battle 3 or recruit Hunter Captain',desc:'Early hunting parties adapted for skirmish warfare.'},
+  warCart:{id:'warCart',name:'War Carts',ageId:'origins',ageIndex:1,rarity:'Rare',role:'MOUNTED',health:128,armor:5,damage:14,attackSpeed:.9,range:0,moveSpeed:60,charge:1.4,requires:['wheel','domestication'],contentPending:true,unlock:'Wheel + Domestication',desc:'Primitive wheeled shock formation.'},
   compositeBowmen:{id:'compositeBowmen',name:'Composite Bowmen',ageId:'bronzeIron',ageIndex:2,rarity:'Rare',role:'RANGED',health:88,armor:4,damage:12,attackSpeed:1.12,range:255,moveSpeed:34,unlock:'Composite Bow technology',shell:true,desc:'Powerful Bronze/Iron Age missile troops.'},
   assyrianSpears:{id:'assyrianSpears',name:'Assyrian Spearmen',ageId:'bronzeIron',ageIndex:2,rarity:'Epic',role:'SPEAR',health:150,armor:20,damage:14,attackSpeed:1.08,range:0,moveSpeed:38,unlock:'Bronze & Iron hero/technology path',shell:true,desc:'Disciplined imperial spear infantry.'},
   hoplite:{id:'hoplite',name:'Hoplites',ageId:'classical',ageIndex:3,rarity:'Rare',role:'SPEAR MELEE',health:160,armor:25,damage:15,attackSpeed:.94,range:0,moveSpeed:34,unlock:'Iron Working + Military Drill',shell:true,desc:'Heavy shield-and-spear infantry.'},
@@ -322,16 +322,18 @@ export function unitStatsAtLevel(id,level=1){
     else if(phase===2)damageSteps++
     else armorSteps++
   }
+  const early=u.ageId==='origins'?Math.min(lv-1,8):0
   return {
     ...u,
-    health: +(u.health*(1+healthSteps*.012)).toFixed(1),
-    attackSpeed: +(u.attackSpeed*(1+speedSteps*.007)).toFixed(3),
-    damage: +(u.damage*(1+damageSteps*.010)).toFixed(2),
-    armor: +(u.armor+armorSteps*.4).toFixed(1),
+    health: +(u.health*(1+early*.12+healthSteps*.012)).toFixed(1),
+    attackSpeed: +(u.attackSpeed*(1+early*.03+speedSteps*.007)).toFixed(3),
+    damage: +(u.damage*(1+early*.08+damageSteps*.010)).toFixed(2),
+    armor: +(u.armor+early*.5+armorSteps*.4).toFixed(1),
     level:lv,
   }
 }
-export function unitNextLevelBonus(level){
+export function unitNextLevelBonus(level,id){
+  if(UNITS[id]?.ageId==='origins'&&level<9){const phase=(level-1)%4;return `+${(12+(phase===0?1.2:0)).toFixed(1)}% base Health, +${(8+(phase===2?1:0)).toFixed(1)}% base Damage, +${(3+(phase===1?.7:0)).toFixed(1)}% base attack speed and +${(.5+(phase===3?.4:0)).toFixed(1)} Armor`}
   const next=Math.min(UNIT_LEVEL_MAX,Math.max(1,level)+1)
   const phase=(next-2)%4
   if(phase===0)return 'Health +1.2% base'
@@ -350,13 +352,13 @@ const firstWarTypes = [
   ['warrior','warrior','slinger'],
   ['warrior','slinger','slinger'],
   ['warrior','warrior','slinger'],
-  ['warrior','warrior','slinger','slinger'],
+  ['warrior','spear','slinger','slinger'],
   ['warrior','warrior','warrior','slinger'],
   ['warrior','warrior','slinger','slinger'],
-  ['warrior','warrior','warrior','slinger','slinger'],
+  ['warrior','warrior','cavalry','slinger','slinger'],
   ['warrior','warrior','slinger','slinger','slinger'],
-  ['warrior','warrior','warrior','slinger','slinger'],
-  ['warrior','warrior','warrior','slinger','slinger','slinger']
+  ['warrior','spear','warrior','archer','slinger'],
+  ['warrior','spear','cavalry','slinger','archer','slinger']
 ]
 const bronzeTypes = [
   ['warrior','spear'], ['chariot','spear'], ['axeman','cityArcher'], ['chariot','cityArcher','spear'], ['bronzeGuard','cityArcher','spear'],
@@ -409,10 +411,11 @@ function makeHistoricalStages(briefs, types, second=false){
     // Campaign I is now tuned as a full Age I onboarding arc: a fresh account should be able
     // to progress steadily, unlock People mid-run journey, and clear the campaign with a couple
     // of retries once artifacts / levels / better formations are understood.
-    mult: second ? (.88 + i*.030) : ([.60,.62,.60,.62,.62,.64,.66,.68,.70,.72,.73,.74,.76,.78,.80][i] ?? .70),
-    gold: second ? (20 + i*4) : ([12,14,16,18,20,22,24,26,28,30,34,38,44,50,65][i] ?? 22),
-    xp: second ? (14 + i*2) : ([8,9,10,12,14,14,15,16,18,19,21,23,26,30,36][i] ?? 12),
-    tp: second && [0,2,4,6,8,10,12,14].includes(i) ? 1 : 0,
+    mult: second ? (.88 + i*.030) : ([.60,.74,1.02,1.04,1.08,1.10,1.16,1.18,1.20,1.22,1.26,1.28,1.32,1.35,1.46][i] ?? .70),
+    gold: second ? (20 + i*4) : ([22,24,28,32,36,40,44,48,52,58,64,70,78,88,110][i] ?? 22),
+    xp: second ? (14 + i*2) : ([10,12,15,18,22,24,27,30,34,38,42,46,50,56,68][i] ?? 12),
+    tp: second ? ([0,2,4,6,8,10,12,14].includes(i)?1:0) : ([1,4,7,10,14].includes(i)?1:0),
+    ...(!second?{timeLimit:180,objective:{kind:i%3===0?'preserve':i%3===1?'condition':'tempo',label:i%3===0?'Win without losing a squad':i%3===1?'Win with at least 50% army health':`Win within ${i===14?18:i<8?12:14} seconds`,parSeconds:i===14?18:i<8?12:14,bonusGold:6+Math.floor(i/3)*2},...(i===14?{finale:{health:1.18,damage:1.10,armor:3,label:'Coalition Guard'}}:{})}:{}),
     boss:i===14,
     elite:[3,7,10,12].includes(i)
   }))
@@ -492,14 +495,15 @@ export const ARTIFACT_COPY_THRESHOLDS = [1,2,4,6,8]
 export const ARTIFACT_WORKSHOP_GOLD = [0,20,45,80,130]
 
 export const ITEMS = {
-  leatherLamellar:{id:'leatherLamellar',name:'Reinforced Leather Lamellar',slot:'unit',rarity:'Common',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.06},step:{healthMult:.025},desc:'A dependable early artifact. Increases Health of the equipped army type.'},
-  stoneAxeGrip:{id:'stoneAxeGrip',name:'Stone Axe Grip',slot:'unit',rarity:'Common',eligible:'MELEE',price:32,maxLevel:5,effect:{damageMult:1.05},step:{damageMult:.022},desc:'A wrapped haft and balanced grip that improves melee damage for close-combat formations.'},
-  boneCharm:{id:'boneCharm',name:'Bone Charm',slot:'unit',rarity:'Uncommon',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.04,armor:1},step:{healthMult:.018,armor:.4},desc:'A protective charm worn by early warbands. Slightly improves Health and Armor.'},
-  bronzeArmor:{id:'bronzeArmor',name:'Reinforced Bronze Armor',slot:'unit',rarity:'Rare',eligible:'ALL',price:45,maxLevel:5,effect:{armor:4},step:{armor:1.5},desc:'Adds flat Armor to the equipped army type.'},
-  bronzeEdges:{id:'bronzeEdges',name:'Hardened Bronze Edges',slot:'unit',rarity:'Uncommon',eligible:'MELEE',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improved edged bronze weapons for melee formations from the Bronze/Classical eras or earlier.'},
-  spearheads:{id:'spearheads',name:'Reinforced Bronze Spearheads',slot:'unit',rarity:'Uncommon',eligible:'SPEAR',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.055,armor:1},step:{damageMult:.02,armor:.5},desc:'Stronger spearheads for spear formations of the Bronze/Classical eras or earlier.'},
-  edgedProjectiles:{id:'edgedProjectiles',name:'Improved Edged Projectiles',slot:'unit',rarity:'Rare',eligible:'RANGED',price:50,maxLevel:5,effect:{damageMult:1.06},step:{damageMult:.025},desc:'Improves Damage for ranged and firearm units.'},
-  slingPouch:{id:'slingPouch',name:'Braided Sling Pouch',slot:'unit',rarity:'Uncommon',eligible:'SLINGER',price:38,maxLevel:5,effect:{attackSpeedMult:1.07},step:{attackSpeedMult:.025},desc:'Improves Slingers’ Attack Speed.'},
+  leatherLamellar:{id:'leatherLamellar',name:'Reinforced Leather Lamellar',slot:'unit',rarity:'Common',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.14},step:{healthMult:.035},desc:'A dependable early artifact. Increases Health of the equipped army type.'},
+  stoneAxeGrip:{id:'stoneAxeGrip',name:'Stone Axe Grip',slot:'unit',rarity:'Common',eligible:'MELEE',price:32,maxLevel:5,effect:{damageMult:1.12},step:{damageMult:.03},desc:'A wrapped haft and balanced grip that improves melee damage for close-combat formations.'},
+  boneCharm:{id:'boneCharm',name:'Bone Charm',slot:'unit',rarity:'Uncommon',eligible:'ALL',price:30,maxLevel:5,effect:{healthMult:1.07,armor:2},step:{healthMult:.025,armor:.5},desc:'A protective charm worn by early warbands. Slightly improves Health and Armor.'},
+  bronzeArmor:{id:'bronzeArmor',name:'Reinforced Bronze Armor',slot:'unit',rarity:'Rare',eligible:'ALL',price:45,maxLevel:5,effect:{armor:6},step:{armor:1.2},desc:'Adds flat Armor to the equipped army type.'},
+  bronzeEdges:{id:'bronzeEdges',name:'Hardened Bronze Edges',slot:'unit',rarity:'Uncommon',eligible:'MELEE',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.10,attackSpeedMult:1.03},step:{damageMult:.025,attackSpeedMult:.01},desc:'Improved edged bronze weapons for melee formations from the Bronze/Classical eras or earlier.'},
+  spearheads:{id:'spearheads',name:'Reinforced Bronze Spearheads',slot:'unit',rarity:'Uncommon',eligible:'SPEAR',maxAge:3,price:42,maxLevel:5,effect:{damageMult:1.10,armor:2},step:{damageMult:.025,armor:.5},desc:'Stronger spearheads for spear formations of the Bronze/Classical eras or earlier.'},
+  edgedProjectiles:{id:'edgedProjectiles',name:'Improved Edged Projectiles',slot:'unit',rarity:'Rare',eligible:'RANGED',price:50,maxLevel:5,effect:{damageMult:1.11},step:{damageMult:.03},desc:'Improves Damage for ranged and firearm units.'},
+  slingPouch:{id:'slingPouch',name:'Braided Sling Pouch',slot:'unit',rarity:'Uncommon',eligible:'SLINGER',price:38,maxLevel:5,effect:{attackSpeedMult:1.13},step:{attackSpeedMult:.03},desc:'Improves Slingers’ Attack Speed.'},
+  spearShaft:{id:'spearShaft',name:'Hardened Spear Shaft',slot:'unit',rarity:'Common',eligible:'SPEAR',price:32,maxLevel:5,effect:{healthMult:1.08,attackSpeedMult:1.06},step:{healthMult:.025,attackSpeedMult:.02},desc:'Reinforced spear shafts improve a spear formation’s endurance and attack tempo.'},
   warStandard:{id:'warStandard',name:'Carthaginian War Standard',slot:'hero',rarity:'Epic',eligible:'general',price:160,maxLevel:5,effect:{reinforceMult:1.08},step:{reinforceMult:.025},desc:'A hero relic that improves reinforcement generation.'},
   ptolemaicCoin:{id:'ptolemaicCoin',name:'Ptolemaic Royal Coin',slot:'hero',rarity:'Rare',eligible:'leader',price:130,maxLevel:5,effect:{goldMult:1.06},step:{goldMult:.02},desc:'A hero relic that improves Gold after victories.'},
   bicorne:{id:'bicorne',name:'Imperial Bicorne',slot:'hero',rarity:'Legend',eligible:'general',price:240,maxLevel:5,effect:{damageMult:1.05},step:{damageMult:.015},desc:'A late hero relic that increases army Damage.'}
@@ -519,31 +523,31 @@ export function itemEffectAtLevel(itemId,level=1){
 }
 
 export const ACHIEVEMENTS = {
-  win1:{id:'win1',family:'Victories',order:1,name:'First Victory',desc:'Win 1 battle.',reward:20,stat:'battlesWon',target:1},
-  win3:{id:'win3',family:'Victories',order:2,name:'Battle Tested',desc:'Win 3 battles.',reward:25,stat:'battlesWon',target:3},
-  win5:{id:'win5',family:'Victories',order:3,name:'Learning the Field',desc:'Win 5 battles.',reward:40,stat:'battlesWon',target:5},
+  win1:{id:'win1',family:'Victories',order:1,name:'First Victory',desc:'Win 1 battle.',reward:12,stat:'battlesWon',target:1},
+  win3:{id:'win3',family:'Victories',order:2,name:'Battle Tested',desc:'Win 3 battles.',reward:15,stat:'battlesWon',target:3},
+  win5:{id:'win5',family:'Victories',order:3,name:'Learning the Field',desc:'Win 5 battles.',reward:25,stat:'battlesWon',target:5},
   win10:{id:'win10',family:'Victories',order:4,name:'Seasoned Army',desc:'Win 10 battles.',reward:60,stat:'battlesWon',target:10},
   win20:{id:'win20',family:'Victories',order:5,name:'Veterans',desc:'Win 20 battles.',reward:90,stat:'battlesWon',target:20},
   win50:{id:'win50',family:'Victories',order:6,name:'Conquerors',desc:'Win 50 battles.',reward:160,stat:'battlesWon',target:50},
   win100:{id:'win100',family:'Victories',order:7,name:'Century of Victories',desc:'Win 100 battles.',reward:300,stat:'battlesWon',target:100},
-  kill1:{id:'kill1',family:'Enemy Units',order:1,name:'First Blood',desc:'Destroy 1 enemy squad.',reward:12,stat:'unitsKilled',target:1},
-  kill2:{id:'kill2',family:'Enemy Units',order:2,name:'Break Their Line',desc:'Destroy 2 enemy squads.',reward:15,stat:'unitsKilled',target:2},
-  kill5:{id:'kill5',family:'Enemy Units',order:3,name:'Squad Hunter',desc:'Destroy 5 enemy squads.',reward:25,stat:'unitsKilled',target:5},
-  kill10:{id:'kill10',family:'Enemy Units',order:4,name:'Battlefield Threat',desc:'Destroy 10 enemy squads.',reward:40,stat:'unitsKilled',target:10},
+  kill1:{id:'kill1',family:'Enemy Units',order:1,name:'First Blood',desc:'Destroy 1 enemy squad.',reward:6,stat:'unitsKilled',target:1},
+  kill2:{id:'kill2',family:'Enemy Units',order:2,name:'Break Their Line',desc:'Destroy 2 enemy squads.',reward:6,stat:'unitsKilled',target:2},
+  kill5:{id:'kill5',family:'Enemy Units',order:3,name:'Squad Hunter',desc:'Destroy 5 enemy squads.',reward:12,stat:'unitsKilled',target:5},
+  kill10:{id:'kill10',family:'Enemy Units',order:4,name:'Battlefield Threat',desc:'Destroy 10 enemy squads.',reward:20,stat:'unitsKilled',target:10},
   kill25:{id:'kill25',family:'Enemy Units',order:5,name:'Line Breaker',desc:'Destroy 25 enemy squads.',reward:75,stat:'unitsKilled',target:25},
   kill50:{id:'kill50',family:'Enemy Units',order:6,name:'Army Breaker',desc:'Destroy 50 enemy squads.',reward:120,stat:'unitsKilled',target:50},
   kill100:{id:'kill100',family:'Enemy Units',order:7,name:'Legend of the Field',desc:'Destroy 100 enemy squads.',reward:220,stat:'unitsKilled',target:100},
-  firstMarch:{id:'firstMarch',family:'Progression',order:1,name:'First March',desc:'Begin your first campaign run.',reward:10,stat:'runsStarted',target:1},
-  firstUnitLevel:{id:'firstUnitLevel',family:'Progression',order:2,name:'Training Day',desc:'Level any army once.',reward:20,stat:'unitLevelsBought',target:1},
+  firstMarch:{id:'firstMarch',family:'Progression',order:1,name:'First March',desc:'Begin your first campaign run.',reward:5,stat:'runsStarted',target:1},
+  firstUnitLevel:{id:'firstUnitLevel',family:'Progression',order:2,name:'Training Day',desc:'Level any army once.',reward:5,stat:'unitLevelsBought',target:1},
   peopleUnlocked:{id:'peopleUnlocked',family:'Progression',order:3,name:'Command Structure',desc:'Reach battle 1-6 and unlock People.',reward:25,stat:'peopleFeatureUnlocked',target:1},
-  firstTech:{id:'firstTech',family:'Progression',order:4,name:'Technological Advance',desc:'Research your first technology after Campaign I.',reward:35,stat:'techUnlocked',target:1},
+  firstTech:{id:'firstTech',family:'Progression',order:4,name:'Technological Advance',desc:'Research your first technology.',reward:35,stat:'techUnlocked',target:1},
   risingCommander:{id:'risingCommander',family:'People',order:1,name:'Rising Commander',desc:'Upgrade any Leader or General once.',reward:60,stat:'peopleUpgraded',target:1},
-  firstPack:{id:'firstPack',family:'Collection',order:1,name:'Open the Chronicle',desc:'Open your first pack.',reward:15,stat:'packsOpened',target:1},
-  quartermaster:{id:'quartermaster',family:'Artifacts',order:1,name:'Quartermaster',desc:'Equip your first artifact.',reward:30,stat:'itemsEquipped',target:1},
-  workshop:{id:'workshop',family:'Artifacts',order:2,name:'Workshop Apprentice',desc:'Evolve an artifact once.',reward:35,stat:'artifactsEvolved',target:1},
+  firstPack:{id:'firstPack',family:'Collection',order:1,name:'Open the Chronicle',desc:'Open your first pack.',reward:5,stat:'packsOpened',target:1},
+  quartermaster:{id:'quartermaster',family:'Artifacts',order:1,name:'Quartermaster',desc:'Equip your first artifact.',reward:5,stat:'itemsEquipped',target:1},
+  workshop:{id:'workshop',family:'Artifacts',order:2,name:'Workshop Apprentice',desc:'Evolve an artifact once.',reward:8,stat:'artifactsEvolved',target:1},
   collector:{id:'collector',family:'Collection',order:2,name:'Growing Collection',desc:'Discover 5 different people.',reward:80,stat:'peopleDiscovered',target:5},
   campaigner:{id:'campaigner',family:'Progression',order:5,name:'Campaigner',desc:'Complete your first campaign.',reward:100,stat:'campaignsCompleted',target:1},
-  flawless:{id:'flawless',family:'Combat',order:1,name:'Flawless Battle',desc:'Win a battle without losing a squad.',reward:35,stat:'flawlessBattles',target:1}
+  flawless:{id:'flawless',family:'Combat',order:1,name:'Flawless Battle',desc:'Win a battle without losing a squad.',reward:10,stat:'flawlessBattles',target:1}
 }
 
 export const REWARD_POOL = [
@@ -557,8 +561,8 @@ export const REWARD_POOL = [
 ]
 
 export const START_META = {
-  gold: 120,
-  xp: 20,
+  gold: 20,
+  xp: 0,
   tp: 0,
   ownedTech: [],
   characterCopies: {},
@@ -573,11 +577,50 @@ export const START_META = {
   hpRank: 0,
   fieldMedicine: 0,
   freePack: 0,
-  inventory: { leatherLamellar:1, slingPouch:1 },
-  artifactLevels: { leatherLamellar:1, slingPouch:1 },
+  inventory: {},
+  artifactLevels: {},
   unitEquipment: {},
   heroEquipment: {},
   stats: { runsStarted:0,battlesWon:0,unitsKilled:0,flawlessBattles:0,techUnlocked:0,peopleUpgraded:0,packsOpened:0,itemsEquipped:0,artifactsEvolved:0,peopleDiscovered:0,campaignsCompleted:0,unitLevelsBought:0,peopleFeatureUnlocked:0 },
   claimedAchievements: [],
   loadout: { leader:null, general:null, tech:[] },
 }
+
+export const AGE1_TECH_IDS=['fire','archery','wheel','agriculture','domestication','writing','copper','irrigation']
+export const AGE1_PEOPLE_IDS=['elder','merchant','veteran','hunter','narmer','sargon']
+export const AGE1_ARTIFACT_IDS=['leatherLamellar','slingPouch','stoneAxeGrip','spearShaft','boneCharm','bronzeArmor','bronzeEdges','spearheads','edgedProjectiles']
+export const AGE1_PEOPLE_GOLD=[0,55,95,160,260,400]
+export const AGE1_REWARDS=[
+ {id:'damage',name:'Battle Hardened',desc:'+12% Damage (up to +80%)',apply:r=>({...r,damage:Math.min(1.80,r.damage*1.12)})},
+ {id:'armor',name:'Tempered Armor',desc:'+3 Armor (up to +15)',apply:r=>({...r,armorBonus:Math.min(15,r.armorBonus+3)})},
+ {id:'speed',name:'Drilled Attacks',desc:'+10% attack speed (up to +60%)',apply:r=>({...r,attackSpeed:Math.min(1.60,r.attackSpeed*1.10)})},
+ {id:'range',name:'Range Finding',desc:'+10% range (up to +40%)',apply:r=>({...r,range:Math.min(1.40,r.range*1.10)})},
+ {id:'reinforceSpeed',name:'Supply Columns',desc:'+12% reinforcement speed (up to +60%)',apply:r=>({...r,reinforceSpeed:Math.min(1.60,r.reinforceSpeed*1.12)})},
+ {id:'reinforceHeal',name:'Field Replacements',desc:'Reinforce restores +3% Health (up to +12%)',apply:r=>({...r,reinforceHeal:Math.min(.12,r.reinforceHeal+.03)})},
+ {id:'health',name:'Hardy Muster',desc:'+12% Health (up to +80%)',apply:r=>({...r,health:Math.min(1.80,r.health*1.12)})}
+]
+const age1PeopleEffects={
+ elder:[{goldMult:1.10,recovery:.03},{reinforceMult:1.15},{healthMult:1.08,recovery:.03}],
+ veteran:[{damageMult:1.10,armor:1},{reinforceMult:1.15},{healthMult:1.10}],
+ merchant:[{goldMult:1.12},{shopDiscount:.08},{goldMult:1.20/1.12}],
+ hunter:[{rangedDamageMult:1.12},{rangedSpeedMult:1.10},{rangedRangeMult:1.12}],
+ narmer:[{healthMult:1.10},{goldMult:1.10},{reinforceHeal:.04},{armor:3}],
+ sargon:[{meleeDamageMult:1.12},{meleeDamageMult:1.18/1.12},{startSlots:1},{momentum:.008},{healthMult:1.12,signatureHealthMult:1.12}]
+}
+const age1PeopleDescriptions={
+ elder:['+10% victory Gold and +3% inter-battle recovery','+15% reinforcement speed','+8% army Health and +3% additional recovery'],
+ veteran:['+10% army Damage and +1 Armor','+15% reinforcement speed','+10% army Health'],
+ merchant:['+12% victory Gold','Pack and supply purchases cost 8% less','Victory Gold bonus rises to +20%'],
+ hunter:['+12% ranged Damage and unlock Hunter Bands','+10% ranged attack speed','+12% ranged range'],
+ narmer:['+10% army Health','+10% victory Gold','Reinforce restores +4% more Health','+3 Armor to all armies'],
+ sargon:['+12% melee Damage','Melee Damage bonus rises to +18%','+1 starting squad','+0.8% attack speed per battle won this run (maximum +10%)','Bronze Guard gains +25% Health']
+}
+for(const id of AGE1_PEOPLE_IDS){PEOPLE[id].ageId='origins';PEOPLE[id].effects=age1PeopleEffects[id];PEOPLE[id].levels=age1PeopleDescriptions[id]}
+PEOPLE.hunter.signatureUnit='hunterBand';PEOPLE.hunter.signatureLevel=1
+// Signature art is genuinely missing; do not render an unrelated fallback unit.
+UNITS.bronzeGuard.contentPending=true
+export const AGE1_PENDING_PEOPLE=[
+ ['lawgiver','Village Lawgiver','leader','Uncommon'],['slingMaster','Sling Master','general','Uncommon'],
+ ['urNammu','Ur-Nammu','leader','Rare'],['gudea','Gudea','leader','Rare'],['eannatum','Eannatum','general','Rare'],['lugalZageSi','Lugal-Zage-Si','general','Rare'],['naramSin','Naram-Sin','general','Rare'],
+ ['hammurabi','Hammurabi','leader','Epic'],['enheduanna','Enheduanna','leader','Epic'],['shulgi','Shulgi','general','Epic'],['gilgamesh','Gilgamesh','leader','Legend'],['sargonGreat','Sargon the Great','general','Legend']
+]

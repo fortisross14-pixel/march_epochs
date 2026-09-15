@@ -1,0 +1,60 @@
+/* Battle-only styles: one portrait composition, independent of legacy shell overrides. */
+.epoch-battle{--battle-gold:#b89b60;--battle-cream:#f1e5c4;width:100%;max-width:500px;margin:0 auto;background:#091725;color:var(--battle-cream);min-height:100svh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);border:1px solid #8b7348;box-shadow:0 0 45px #0008;isolation:isolate}
+.epoch-battle button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.epoch-battle button:focus-visible{outline:2px solid #f1d993;outline-offset:3px}
+.epoch-battle button:disabled{cursor:default;opacity:.48}
+.epoch-stats{position:relative;z-index:2;background:linear-gradient(115deg,#142a3b,#081521 70%);padding:3px 8px 0;border-bottom:1px solid var(--battle-gold);box-shadow:0 3px 10px #0005}
+.epoch-stats:before,.epoch-stats:after{content:'';position:absolute;top:0;width:23px;height:23px;background:url('../assets/ui/gold-corner.png') center/contain no-repeat;pointer-events:none}
+.epoch-stats:before{left:0}.epoch-stats:after{right:0;transform:scaleX(-1)}
+.epoch-titlebar{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;align-items:center;text-align:center;gap:4px;min-height:49px}
+.epoch-titlebar small{display:block;font-size:10px;letter-spacing:.04em;color:#b9bba8}
+.epoch-titlebar h1{font:700 clamp(17px,4.7vw,23px)/1.1 Georgia,serif;margin:3px 0 5px;text-wrap:balance}
+.epoch-icon-button{width:44px;height:44px;display:grid;place-items:center;border:1px solid #455568;background:linear-gradient(#1a3041,#0c1c2a);border-radius:10px;box-shadow:inset 0 0 0 2px #09141a}
+.epoch-icon-button img{width:24px;height:24px}.epoch-pause-symbol{width:13px;height:17px;border-left:4px solid #e6d7ac;border-right:4px solid #e6d7ac}
+.epoch-army-health{display:grid;grid-template-columns:42px 1fr 1fr 42px;gap:6px;align-items:center;padding:2px 0 4px}
+.epoch-portrait{width:42px;height:42px;object-fit:cover;object-position:center 20%;border:2px solid #b7a16b;border-radius:50%;background:#14283a;box-shadow:0 0 0 2px #183f5c}.epoch-portrait.enemy{box-shadow:0 0 0 2px #662e25}
+.epoch-health-side{min-width:0}.epoch-health-side>span{display:flex;align-items:center;justify-content:space-between;gap:4px;font-size:10px;color:#c9d9df;margin-bottom:4px}.epoch-health-side b{font-size:12px;color:#f0e7cf;font-variant-numeric:tabular-nums}
+.epoch-health-side>div{height:12px;border:1px solid #8c805c;border-radius:3px;overflow:hidden;background:#07121e;box-shadow:0 1px 3px #0008}
+.epoch-health-side i{display:block;height:100%;background:linear-gradient(#81aac4,#3c749e 50%,#295878);box-shadow:inset 0 1px #c6d6d970;transition:width .2s linear}
+.epoch-health-side.enemy i{margin-left:auto;background:linear-gradient(#c48266,#9d4d3c 50%,#70372e)}
+.epoch-battle-state{height:30px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:7px;font-size:10px;color:#c3c8c1}.epoch-battle-state>span{line-height:1.15}.epoch-battle-state time{align-self:stretch;display:grid;place-items:center;min-width:65px;padding:0 9px;border:1px solid #7a704e;border-bottom:0;border-radius:7px 7px 0 0;background:#06111b;color:#f4ecd4;font:bold 17px Georgia;font-variant-numeric:tabular-nums}.epoch-battle-state button{justify-self:end;min-height:30px;padding:3px 0 3px 8px;border:0;background:none;color:#dfcd9d;text-decoration:underline;text-underline-offset:3px;font-size:11px}
+.epoch-field{position:relative;height:max(365px,calc(100svh - 336px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));max-height:760px;overflow:hidden;background:#a48a56}
+.epoch-field canvas{display:block;width:100%;height:100%;cursor:crosshair;touch-action:manipulation}
+.epoch-feedback,.epoch-field-notice,.epoch-asset-error{position:absolute;left:50%;top:12px;transform:translateX(-50%);background:#11251eeb;border:1px solid #b1a56d;color:#f3e5ba;box-shadow:0 3px 12px #0003;padding:7px 14px;border-radius:5px;font-size:12px;white-space:nowrap;pointer-events:none}
+.epoch-feedback{animation:epoch-feedback 2.4s both}.epoch-asset-error{font-size:10px;top:auto;bottom:6px;white-space:normal;width:90%;text-align:center}
+.epoch-command{position:relative;z-index:2;padding:6px 10px 8px;background:linear-gradient(110deg,#152c3a,#081522 70%);border-top:1px solid #baa065;box-shadow:0 -5px 14px #13201855}
+.epoch-commander-line{display:flex;align-items:center;gap:8px;min-height:40px;margin-bottom:4px}.epoch-commander-line>img{width:36px;height:36px;object-fit:cover;object-position:50% 20%;border:1px solid #b39759;border-radius:50%;background:#102131}.epoch-commander-line>div{min-width:0;flex:1}.epoch-commander-line b{display:block;font:700 13px Georgia;color:#e8d6a7}.epoch-commander-line span{display:block;font-size:10px;color:#b9c8cd;line-height:1.3;margin-top:2px}
+.epoch-cancel{height:44px;padding:5px 10px;background:#223748;border:1px solid #a28a54;border-radius:7px;color:#ead9ae;font-size:12px}
+.epoch-special{display:grid;grid-template-columns:22px auto;gap:3px;align-items:center;min-height:44px;border:0;background:transparent;padding:2px;color:#d2c599}.epoch-special img{width:22px;height:24px;object-fit:contain}.epoch-special span{font-size:10px}
+.epoch-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 7px}.epoch-actions>button{display:flex;flex-direction:column;align-items:center;padding:0 2px 3px;background:none;border:0;border-radius:12px;color:#ede3c7}.epoch-action-medallion{display:grid;place-items:center;position:relative;width:58px;height:58px;border:2px solid #a48b53;border-radius:50%;background:radial-gradient(circle at 40% 25%,#274a5b,#0b1b2b 70%);box-shadow:inset 0 0 0 3px #091623,inset 0 0 0 4px #546357,0 3px 7px #0008}.epoch-action-medallion img{width:43px;height:43px;object-fit:contain;filter:saturate(.55) sepia(.2)}
+.epoch-actions>button:nth-child(2) .epoch-action-medallion{background:radial-gradient(circle at 40% 25%,#633b2c,#261c21 70%)}.epoch-actions>button:nth-child(3) .epoch-action-medallion{background:radial-gradient(circle at 40% 25%,#35594e,#0c2227 70%)}
+.epoch-actions b{font:700 15px Georgia;margin-top:3px}.epoch-actions small{font-size:10px;color:#c2c7be;margin-top:2px}.epoch-actions .active .epoch-action-medallion{border-color:#e8d094;box-shadow:0 0 0 2px #947a4770,inset 0 0 0 3px #162c35}.epoch-actions .active b{color:#ffe5a4}
+.epoch-action-medallion .epoch-charge-ring{position:absolute;inset:-4px;width:62px;height:62px;transform:rotate(-90deg);fill:none;stroke:#d4c98c;stroke-width:2;stroke-linecap:round}
+.epoch-action-medallion .epoch-command-glyph{width:36px;height:36px;fill:none;stroke:#ddc992;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 2px #0008)}
+.epoch-command-glyph .epoch-plus{fill:#b7d6bc;stroke:#cbe0c5;stroke-width:1}.epoch-actions>button:first-child .epoch-command-glyph{stroke:#b6ced7}.epoch-actions>button:nth-child(2) .epoch-command-glyph{stroke:#e7bf85}
+.epoch-deploy-actions{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin:9px 0 12px}.epoch-deploy-actions button,.epoch-primary,.epoch-pause-menu>button{min-height:44px;border:1px solid #9d8753;border-radius:8px;background:linear-gradient(#233d4e,#102437);font-weight:700;font-size:12px;padding:8px 10px;color:#f1e3bf}
+.epoch-battle .epoch-primary{background:linear-gradient(#b89a58,#876b39);color:#0b1a23;border-color:#dcc78c;box-shadow:inset 0 1px #efdcaa70}
+.epoch-tray{display:flex;gap:7px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#8d794b #0c1a27;padding:2px 1px 4px;min-height:68px}
+.epoch-tray>button{position:relative;flex:1 0 65px;max-width:105px;height:65px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#3b493b,#172738);border:1px solid #65786f;border-radius:6px;padding:0;box-shadow:inset 0 0 0 2px #0b1928;text-align:center}.epoch-tray>button.enemy{border-color:#ad6d51;background:radial-gradient(ellipse at 50% 35%,#644b31,#2b2626)}.epoch-tray>button.selected{border-color:#e5c986;box-shadow:0 0 0 1px #d1b477,inset 0 0 0 2px #142a36}.epoch-tray>button.fallen{filter:grayscale(1)}
+.epoch-tray>button>img{display:block;margin:0 auto;width:54px;height:44px;object-fit:contain}.epoch-squad-number{position:absolute;top:2px;left:3px;color:#f3dfb1;background:#142638da;border-radius:3px;padding:0 3px;font:700 12px Georgia}.epoch-squad-name{position:absolute;bottom:8px;left:0;right:0;font:700 10px Georgia;background:#0b182be8;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;padding:2px;color:#e9e2cb}.epoch-tray>button>i{position:absolute;bottom:3px;left:5px;right:5px;height:3px;background:#071521}.epoch-tray em{display:block;height:100%;background:#85aaba}.epoch-tray .enemy em{background:#ce9875}
+.epoch-outcome{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#07172577;color:#f6e1aa;animation:epoch-result .45s ease-out;pointer-events:none}.epoch-outcome small{font-size:11px;letter-spacing:.16em}.epoch-outcome strong{font:700 46px Georgia;text-shadow:0 3px 12px #000;margin:8px}
+.epoch-pause-menu{display:grid;gap:12px}.epoch-pause-menu p,.epoch-details p{font-size:14px;line-height:1.6;color:#d4d9d4}.epoch-details h3{font:700 17px Georgia}.epoch-details ul{padding-left:22px;font-size:13px;line-height:1.8}.epoch-details>.epoch-primary{width:100%}.epoch-battle .modal-card{max-height:calc(100dvh - 28px);overflow-y:auto}.epoch-battle .modal-header>button{min-width:44px;min-height:44px}
+@keyframes epoch-feedback{0%{opacity:0;transform:translate(-50%,-4px)}12%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+@keyframes epoch-result{from{opacity:0}to{opacity:1}}
+.epoch-battle{display:flex;flex-direction:column;height:100svh;min-height:640px}
+.epoch-stats,.epoch-command{flex:none}
+.epoch-field{flex:1 1 0;min-height:250px;height:auto;max-height:none}
+.epoch-battle-state{height:44px}.epoch-battle-state button{min-height:44px;min-width:64px}
+.epoch-tray{scrollbar-width:none}.epoch-tray::-webkit-scrollbar{display:none}
+/* Give the field more screen space while retaining 44px command targets. */
+.epoch-commander-line{min-height:34px;margin-bottom:2px}
+.epoch-commander-line>img{width:30px;height:30px}
+.epoch-actions{margin-bottom:4px}
+.epoch-action-medallion{width:48px;height:48px}
+.epoch-action-medallion .epoch-command-glyph{width:30px;height:30px}
+.epoch-action-medallion .epoch-charge-ring{width:52px;height:52px}
+.epoch-actions b{margin-top:2px;font-size:14px}
+.epoch-deploy-actions{margin:5px 0 7px}
+.epoch-command{padding-top:4px;padding-bottom:4px}
+@media(max-width:350px){.epoch-command{padding-left:7px;padding-right:7px}.epoch-titlebar h1{font-size:17px}.epoch-army-health{grid-template-columns:36px 1fr 1fr 36px;gap:5px}.epoch-portrait{width:36px;height:36px}.epoch-health-side>span{font-size:9px}.epoch-actions{gap:5px}.epoch-battle-state{font-size:9px}.epoch-commander-line>img{width:30px;height:30px}.epoch-commander-line b{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.epoch-battle *{animation:none!important;transition:none!important}}

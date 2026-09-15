@@ -108,6 +108,7 @@ export const ASSETS = {
     spear: spearMini,
     slinger: slingerMini,
     archer: archerMini,
+    hunterBand: archerMini,
     cavalry: cavalryMini,
     warElephant: warElephantMini,
   },

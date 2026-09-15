@@ -1,0 +1,1090 @@
+{
+  "cases": [
+    {
+      "skill": "average",
+      "equipped": false,
+      "reached": 6,
+      "wins": 5,
+      "gold": 86,
+      "xp": 55,
+      "kills": 8,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.8,
+          "remaining": [
+            73,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.7,
+          "remaining": [
+            52,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 11,
+          "remaining": [
+            12,
+            90
+          ]
+        },
+        {
+          "battle": 4,
+          "won": true,
+          "time": 14.8,
+          "remaining": [
+            6
+          ]
+        },
+        {
+          "battle": 5,
+          "won": true,
+          "time": 13.5,
+          "remaining": [
+            52
+          ]
+        },
+        {
+          "battle": 6,
+          "won": false,
+          "time": 8.6,
+          "remaining": []
+        }
+      ]
+    },
+    {
+      "skill": "average",
+      "equipped": true,
+      "reached": 8,
+      "wins": 7,
+      "gold": 132,
+      "xp": 84,
+      "kills": 14,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.4,
+          "remaining": [
+            75,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.4,
+          "remaining": [
+            55,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 10.4,
+          "remaining": [
+            18,
+            90
+          ]
+        },
+        {
+          "battle": 4,
+          "won": true,
+          "time": 12,
+          "remaining": [
+            56
+          ]
+        },
+        {
+          "battle": 5,
+          "won": true,
+          "time": 9.8,
+          "remaining": [
+            35,
+            62
+          ]
+        },
+        {
+          "battle": 6,
+          "won": true,
+          "time": 12.4,
+          "remaining": [
+            100
+          ]
+        },
+        {
+          "battle": 7,
+          "won": true,
+          "time": 12.9,
+          "remaining": [
+            100,
+            6
+          ]
+        },
+        {
+          "battle": 8,
+          "won": false,
+          "time": 9.8,
+          "remaining": []
+        }
+      ]
+    },
+    {
+      "skill": "skilled",
+      "equipped": false,
+      "reached": 7,
+      "wins": 6,
+      "gold": 108,
+      "xp": 69,
+      "kills": 13,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.1,
+          "remaining": [
+            73,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.2,
+          "remaining": [
+            52,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 12.2,
+          "remaining": [
+            86
+          ]
+        },
+        {
+          "battle": 4,
+          "won": true,
+          "time": 11.1,
+          "remaining": [
+            87,
+            40
+          ]
+        },
+        {
+          "battle": 5,
+          "won": true,
+          "time": 12.2,
+          "remaining": [
+            37,
+            21
+          ]
+        },
+        {
+          "battle": 6,
+          "won": true,
+          "time": 16.8,
+          "remaining": [
+            12
+          ]
+        },
+        {
+          "battle": 7,
+          "won": false,
+          "time": 12.1,
+          "remaining": []
+        }
+      ]
+    },
+    {
+      "skill": "skilled",
+      "equipped": true,
+      "reached": 6,
+      "wins": 5,
+      "gold": 86,
+      "xp": 55,
+      "kills": 8,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.1,
+          "remaining": [
+            75,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.2,
+          "remaining": [
+            55,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 9.7,
+          "remaining": [
+            12,
+            100
+          ]
+        },
+        {
+          "battle": 4,
+          "won": true,
+          "time": 14.8,
+          "remaining": [
+            27
+          ]
+        },
+        {
+          "battle": 5,
+          "won": true,
+          "time": 13.1,
+          "remaining": [
+            58
+          ]
+        },
+        {
+          "battle": 6,
+          "won": false,
+          "time": 8.2,
+          "remaining": []
+        }
+      ]
+    },
+    {
+      "skill": "inefficient",
+      "equipped": false,
+      "reached": 4,
+      "wins": 3,
+      "gold": 48,
+      "xp": 29,
+      "kills": 5,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.8,
+          "remaining": [
+            73,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.7,
+          "remaining": [
+            47,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 9.9,
+          "remaining": [
+            12,
+            88
+          ]
+        },
+        {
+          "battle": 4,
+          "won": false,
+          "time": 13.6,
+          "remaining": []
+        }
+      ]
+    },
+    {
+      "skill": "inefficient",
+      "equipped": true,
+      "reached": 6,
+      "wins": 5,
+      "gold": 86,
+      "xp": 55,
+      "kills": 8,
+      "results": [
+        {
+          "battle": 1,
+          "won": true,
+          "time": 7.4,
+          "remaining": [
+            75,
+            100
+          ]
+        },
+        {
+          "battle": 2,
+          "won": true,
+          "time": 7.4,
+          "remaining": [
+            50,
+            100
+          ]
+        },
+        {
+          "battle": 3,
+          "won": true,
+          "time": 9.9,
+          "remaining": [
+            18,
+            88
+          ]
+        },
+        {
+          "battle": 4,
+          "won": true,
+          "time": 15,
+          "remaining": [
+            12
+          ]
+        },
+        {
+          "battle": 5,
+          "won": true,
+          "time": 11.6,
+          "remaining": [
+            54
+          ]
+        },
+        {
+          "battle": 6,
+          "won": false,
+          "time": 8.2,
+          "remaining": []
+        }
+      ]
+    }
+  ],
+  "economy": [
+    {
+      "reached": 3,
+      "cleared": 2,
+      "gold": 32,
+      "xp": 19,
+      "tp": 0
+    },
+    {
+      "reached": 6,
+      "cleared": 5,
+      "gold": 86,
+      "xp": 55,
+      "tp": 0
+    },
+    {
+      "reached": 11,
+      "cleared": 10,
+      "gold": 216,
+      "xp": 137,
+      "tp": 0
+    },
+    {
+      "reached": 15,
+      "cleared": 15,
+      "gold": 441,
+      "xp": 271,
+      "tp": 0
+    }
+  ],
+  "starting": {
+    "gold": 120,
+    "xp": 20,
+    "tp": 0,
+    "ownedTech": [],
+    "characterCopies": {},
+    "characterLevels": {},
+    "discoveredUnits": [
+      "warrior",
+      "slinger"
+    ],
+    "unitLevels": {
+      "warrior": 1,
+      "slinger": 1
+    },
+    "unlockedCampaigns": [
+      "dawn"
+    ],
+    "completedCampaigns": [],
+    "campaignStats": {
+      "dawn": {
+        "best": 0,
+        "stars": 0
+      },
+      "firstcities": {
+        "best": 0,
+        "stars": 0
+      },
+      "greekPersian": {
+        "best": 0,
+        "stars": 0
+      },
+      "romeCarthage": {
+        "best": 0,
+        "stars": 0
+      },
+      "lateAntiquity": {
+        "best": 0,
+        "stars": 0
+      },
+      "earlyMedieval": {
+        "best": 0,
+        "stars": 0
+      },
+      "arabExpansion": {
+        "best": 0,
+        "stars": 0
+      },
+      "crusadesSteppe": {
+        "best": 0,
+        "stars": 0
+      },
+      "lateMedieval": {
+        "best": 0,
+        "stars": 0
+      },
+      "renaissanceWars": {
+        "best": 0,
+        "stars": 0
+      },
+      "oceansEmpires": {
+        "best": 0,
+        "stars": 0
+      },
+      "kingsRevolution": {
+        "best": 0,
+        "stars": 0
+      },
+      "industrialNations": {
+        "best": 0,
+        "stars": 0
+      },
+      "worldWars": {
+        "best": 0,
+        "stars": 0
+      },
+      "modernBattlefield": {
+        "best": 0,
+        "stars": 0
+      }
+    },
+    "featureUnlocks": {
+      "artifacts": true,
+      "people": false,
+      "technology": false,
+      "relics": false
+    },
+    "techSlots": 3,
+    "hpRank": 0,
+    "fieldMedicine": 0,
+    "freePack": 0,
+    "inventory": {
+      "leatherLamellar": 1,
+      "slingPouch": 1
+    },
+    "artifactLevels": {
+      "leatherLamellar": 1,
+      "slingPouch": 1
+    },
+    "unitEquipment": {},
+    "heroEquipment": {},
+    "stats": {
+      "runsStarted": 0,
+      "battlesWon": 0,
+      "unitsKilled": 0,
+      "flawlessBattles": 0,
+      "techUnlocked": 0,
+      "peopleUpgraded": 0,
+      "packsOpened": 0,
+      "itemsEquipped": 0,
+      "artifactsEvolved": 0,
+      "peopleDiscovered": 0,
+      "campaignsCompleted": 0,
+      "unitLevelsBought": 0,
+      "peopleFeatureUnlocked": 0
+    },
+    "claimedAchievements": [],
+    "loadout": {
+      "leader": null,
+      "general": null,
+      "tech": []
+    }
+  },
+  "stages": [
+    {
+      "index": 1,
+      "name": "Nataruk Shore",
+      "date": "c. 7500 BCE",
+      "history": "At Nataruk near Lake Turkana, archaeologists found evidence of lethal group violence among hunter-gatherers. It is an archaeological site, not a documented named battle.",
+      "tip": "The water edge limits movement. Keep ranged troops behind your melee screen and avoid getting pinned against the shore.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          2
+        ]
+      },
+      "types": [
+        "warrior"
+      ],
+      "mult": 0.6,
+      "gold": 12,
+      "xp": 8,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 2,
+      "name": "Talheim Settlement",
+      "date": "c. 5000 BCE",
+      "history": "Talheim in present-day Germany is one of several Neolithic mass-grave sites showing that organized violence could strike farming settlements.",
+      "tip": "Protect your fragile ranged unit. A compact formation is safer than spreading across the whole field.",
+      "terrain": {
+        "mountains": [
+          {
+            "x": 170,
+            "y": 250,
+            "w": 100,
+            "h": 100
+          }
+        ]
+      },
+      "types": [
+        "warrior"
+      ],
+      "mult": 0.62,
+      "gold": 14,
+      "xp": 9,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 3,
+      "name": "Schletz Ditch",
+      "date": "c. 5000 BCE",
+      "history": "The fortified Neolithic settlement at Schletz-Asparn had defensive ditches and evidence of violent destruction.",
+      "tip": "Use the obstacle as a wall. Spears can hold the approach while ranged units fire around the open side.",
+      "terrain": {
+        "mountains": [
+          {
+            "x": 110,
+            "y": 265,
+            "w": 105,
+            "h": 110
+          },
+          {
+            "x": 350,
+            "y": 320,
+            "w": 90,
+            "h": 100
+          }
+        ]
+      },
+      "types": [
+        "warrior",
+        "slinger"
+      ],
+      "mult": 0.6,
+      "gold": 16,
+      "xp": 10,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 4,
+      "name": "Hamoukar Sling Storm",
+      "date": "c. 3500 BCE",
+      "history": "Hamoukar in northern Mesopotamia preserves evidence of violent destruction and large numbers of clay sling bullets—an unusually vivid trace of early urban warfare.",
+      "tip": "Slingers matter here. Place them far enough back to exploit range while your melee squads buy time.",
+      "terrain": {},
+      "types": [
+        "warrior",
+        "warrior"
+      ],
+      "mult": 0.62,
+      "gold": 18,
+      "xp": 12,
+      "tp": 0,
+      "boss": false,
+      "elite": true
+    },
+    {
+      "index": 5,
+      "name": "Uruk Frontier",
+      "date": "c. 3500 BCE · inspired",
+      "history": "Uruk-period influence spread widely across Mesopotamia. The exact military events are poorly documented, so this encounter is historically inspired rather than a named battle.",
+      "tip": "Do not chase across the river. Let enemies cross a bridge into concentrated defenders.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          1,
+          3
+        ]
+      },
+      "types": [
+        "warrior",
+        "slinger"
+      ],
+      "mult": 0.62,
+      "gold": 20,
+      "xp": 14,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 6,
+      "name": "Nile River Settlements",
+      "date": "c. 3300 BCE · inspired",
+      "history": "Growing communities along the Nile depended on river corridors for food, movement and communication. This scenario uses that geography as its tactical puzzle.",
+      "tip": "Ranged units can fire across water; melee troops need a crossing. Use that asymmetry.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          2
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "slinger"
+      ],
+      "mult": 0.64,
+      "gold": 22,
+      "xp": 14,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 7,
+      "name": "Early Dynastic Muster",
+      "date": "c. 2900 BCE · inspired",
+      "history": "The first Sumerian city-states increasingly fielded organized forces under rulers and temple institutions.",
+      "tip": "A balanced formation works best: spear in front, ranged behind, fast troops on open flanks.",
+      "terrain": {},
+      "types": [
+        "warrior",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.66,
+      "gold": 24,
+      "xp": 15,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 8,
+      "name": "Kish Plain",
+      "date": "3rd millennium BCE · inspired",
+      "history": "Kish repeatedly appears in early Mesopotamian political traditions as a center of kingship and competition among city-states.",
+      "tip": "The open center favors direct combat. Use Rally to reposition a threatened squad before it is surrounded.",
+      "terrain": {},
+      "types": [
+        "warrior",
+        "warrior",
+        "slinger"
+      ],
+      "mult": 0.68,
+      "gold": 26,
+      "xp": 16,
+      "tp": 0,
+      "boss": false,
+      "elite": true
+    },
+    {
+      "index": 9,
+      "name": "Umma Canal Border",
+      "date": "c. 2500 BCE",
+      "history": "Lagash and Umma fought over irrigated borderland. The conflict is one of the earliest wars known from contemporary inscriptions.",
+      "tip": "Canals split the battlefield. Concentrate on one crossing rather than fighting everywhere at once.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          1,
+          3
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.7,
+      "gold": 28,
+      "xp": 18,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 10,
+      "name": "Gu-Edin",
+      "date": "c. 2450 BCE",
+      "history": "The Stele of the Vultures commemorates Lagash’s victory over Umma and depicts tightly ordered infantry—one of the earliest visual records of organized battle formation.",
+      "tip": "Keep your melee line together. Ranged troops should support from behind rather than crossing first.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          2
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "warrior",
+        "slinger"
+      ],
+      "mult": 0.72,
+      "gold": 30,
+      "xp": 19,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 11,
+      "name": "Stele Formation",
+      "date": "c. 2450 BCE · tactical study",
+      "history": "This encounter turns the Stele of the Vultures into a formation exercise: cohesion and a protected rear line matter more than chasing individual enemies.",
+      "tip": "Deploy close together and use Focus only after enemy units are committed.",
+      "terrain": {},
+      "types": [
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.73,
+      "gold": 34,
+      "xp": 21,
+      "tp": 0,
+      "boss": false,
+      "elite": true
+    },
+    {
+      "index": 12,
+      "name": "Mari Frontier",
+      "date": "3rd millennium BCE · inspired",
+      "history": "Mari controlled important Euphrates routes. Warfare around river corridors and fortified towns became increasingly important.",
+      "tip": "Use the river to delay heavy enemies while ranged squads wear them down.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          1,
+          3
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.74,
+      "gold": 38,
+      "xp": 23,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 13,
+      "name": "Akkadian Levy",
+      "date": "c. 2350 BCE · inspired",
+      "history": "Sargon of Akkad built one of the earliest territorial empires, implying repeated campaigns and increasingly organized military logistics.",
+      "tip": "Enemy numbers are rising. Preserve squads—reinforcement is now more valuable than a reckless chase.",
+      "terrain": {},
+      "types": [
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.76,
+      "gold": 44,
+      "xp": 26,
+      "tp": 0,
+      "boss": false,
+      "elite": true
+    },
+    {
+      "index": 14,
+      "name": "Uruk Rebellion",
+      "date": "late 3rd millennium BCE · inspired",
+      "history": "Early Mesopotamian kings repeatedly faced coalitions and revolts among powerful cities. Exact battlefield detail is sparse.",
+      "tip": "Mountains break line of sight. Reposition ranged squads before using Focus Fire.",
+      "terrain": {
+        "mountains": [
+          {
+            "x": 135,
+            "y": 255,
+            "w": 105,
+            "h": 110
+          },
+          {
+            "x": 345,
+            "y": 350,
+            "w": 105,
+            "h": 110
+          }
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.78,
+      "gold": 50,
+      "xp": 30,
+      "tp": 0,
+      "boss": false,
+      "elite": false
+    },
+    {
+      "index": 15,
+      "name": "Coalition of the Cities",
+      "date": "3rd millennium BCE · finale",
+      "history": "The campaign finale represents the transition from local raiding to organized city-state warfare. It combines rivers, formations and larger armies.",
+      "tip": "Use everything learned: hold crossings, protect ranged units, and reinforce before a squad collapses.",
+      "terrain": {
+        "river": true,
+        "bridges": [
+          1,
+          3
+        ],
+        "mountains": [
+          {
+            "x": 390,
+            "y": 245,
+            "w": 85,
+            "h": 95
+          }
+        ]
+      },
+      "types": [
+        "warrior",
+        "warrior",
+        "warrior",
+        "slinger",
+        "slinger",
+        "slinger"
+      ],
+      "mult": 0.8,
+      "gold": 65,
+      "xp": 36,
+      "tp": 0,
+      "boss": true,
+      "elite": false
+    }
+  ],
+  "items": {
+    "leatherLamellar": {
+      "id": "leatherLamellar",
+      "name": "Reinforced Leather Lamellar",
+      "slot": "unit",
+      "rarity": "Common",
+      "eligible": "ALL",
+      "price": 30,
+      "maxLevel": 5,
+      "effect": {
+        "healthMult": 1.06
+      },
+      "step": {
+        "healthMult": 0.025
+      },
+      "desc": "A dependable early artifact. Increases Health of the equipped army type."
+    },
+    "stoneAxeGrip": {
+      "id": "stoneAxeGrip",
+      "name": "Stone Axe Grip",
+      "slot": "unit",
+      "rarity": "Common",
+      "eligible": "MELEE",
+      "price": 32,
+      "maxLevel": 5,
+      "effect": {
+        "damageMult": 1.05
+      },
+      "step": {
+        "damageMult": 0.022
+      },
+      "desc": "A wrapped haft and balanced grip that improves melee damage for close-combat formations."
+    },
+    "boneCharm": {
+      "id": "boneCharm",
+      "name": "Bone Charm",
+      "slot": "unit",
+      "rarity": "Uncommon",
+      "eligible": "ALL",
+      "price": 30,
+      "maxLevel": 5,
+      "effect": {
+        "healthMult": 1.04,
+        "armor": 1
+      },
+      "step": {
+        "healthMult": 0.018,
+        "armor": 0.4
+      },
+      "desc": "A protective charm worn by early warbands. Slightly improves Health and Armor."
+    },
+    "bronzeArmor": {
+      "id": "bronzeArmor",
+      "name": "Reinforced Bronze Armor",
+      "slot": "unit",
+      "rarity": "Rare",
+      "eligible": "ALL",
+      "price": 45,
+      "maxLevel": 5,
+      "effect": {
+        "armor": 4
+      },
+      "step": {
+        "armor": 1.5
+      },
+      "desc": "Adds flat Armor to the equipped army type."
+    },
+    "bronzeEdges": {
+      "id": "bronzeEdges",
+      "name": "Hardened Bronze Edges",
+      "slot": "unit",
+      "rarity": "Uncommon",
+      "eligible": "MELEE",
+      "maxAge": 3,
+      "price": 42,
+      "maxLevel": 5,
+      "effect": {
+        "damageMult": 1.06
+      },
+      "step": {
+        "damageMult": 0.025
+      },
+      "desc": "Improved edged bronze weapons for melee formations from the Bronze/Classical eras or earlier."
+    },
+    "spearheads": {
+      "id": "spearheads",
+      "name": "Reinforced Bronze Spearheads",
+      "slot": "unit",
+      "rarity": "Uncommon",
+      "eligible": "SPEAR",
+      "maxAge": 3,
+      "price": 42,
+      "maxLevel": 5,
+      "effect": {
+        "damageMult": 1.055,
+        "armor": 1
+      },
+      "step": {
+        "damageMult": 0.02,
+        "armor": 0.5
+      },
+      "desc": "Stronger spearheads for spear formations of the Bronze/Classical eras or earlier."
+    },
+    "edgedProjectiles": {
+      "id": "edgedProjectiles",
+      "name": "Improved Edged Projectiles",
+      "slot": "unit",
+      "rarity": "Rare",
+      "eligible": "RANGED",
+      "price": 50,
+      "maxLevel": 5,
+      "effect": {
+        "damageMult": 1.06
+      },
+      "step": {
+        "damageMult": 0.025
+      },
+      "desc": "Improves Damage for ranged and firearm units."
+    },
+    "slingPouch": {
+      "id": "slingPouch",
+      "name": "Braided Sling Pouch",
+      "slot": "unit",
+      "rarity": "Uncommon",
+      "eligible": "SLINGER",
+      "price": 38,
+      "maxLevel": 5,
+      "effect": {
+        "attackSpeedMult": 1.07
+      },
+      "step": {
+        "attackSpeedMult": 0.025
+      },
+      "desc": "Improves Slingers’ Attack Speed."
+    },
+    "warStandard": {
+      "id": "warStandard",
+      "name": "Carthaginian War Standard",
+      "slot": "hero",
+      "rarity": "Epic",
+      "eligible": "general",
+      "price": 160,
+      "maxLevel": 5,
+      "effect": {
+        "reinforceMult": 1.08
+      },
+      "step": {
+        "reinforceMult": 0.025
+      },
+      "desc": "A hero relic that improves reinforcement generation."
+    },
+    "ptolemaicCoin": {
+      "id": "ptolemaicCoin",
+      "name": "Ptolemaic Royal Coin",
+      "slot": "hero",
+      "rarity": "Rare",
+      "eligible": "leader",
+      "price": 130,
+      "maxLevel": 5,
+      "effect": {
+        "goldMult": 1.06
+      },
+      "step": {
+        "goldMult": 0.02
+      },
+      "desc": "A hero relic that improves Gold after victories."
+    },
+    "bicorne": {
+      "id": "bicorne",
+      "name": "Imperial Bicorne",
+      "slot": "hero",
+      "rarity": "Legend",
+      "eligible": "general",
+      "price": 240,
+      "maxLevel": 5,
+      "effect": {
+        "damageMult": 1.05
+      },
+      "step": {
+        "damageMult": 0.015
+      },
+      "desc": "A late hero relic that increases army Damage."
+    }
+  }
+}

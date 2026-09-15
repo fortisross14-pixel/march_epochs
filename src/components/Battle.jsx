@@ -1,367 +1,112 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ASSETS } from '../assets'
-import { CAMPAIGNS, ITEMS, PEOPLE, TECHS, UNITS, REWARD_POOL, itemEffectAtLevel, unitStatsAtLevel } from '../data'
+import { CAMPAIGNS, ITEMS, PEOPLE, TECHS, UNITS } from '../data'
 import Modal from './Modal'
+import { BattlePresentation } from './battlePresentation'
+import './battle.css'
+import {createRun,reinforcementMultiplier,reinforcementHeal,battleIncome,objectiveResult,recoverRoster,rewardOptions,applyReward} from '../game/battleRules.js'
+import {createEncounter,stepEncounter,setFocusTarget} from '../game/combat.js'
 
-const W=520,H=760
-const DEPLOY_TOP=455
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v))
-const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y)
-const roleHas=(u,s)=>u.role.includes(s)
-function formationPositions(count,side='player'){
-  if(count<=0)return []
-  const layout=count<=2?[count]:count===3?[2,1]:count===4?[2,2]:count===5?[3,2]:[3,3]
-  const baseRows=side==='player'?[628,540]:[186,272]
-  const spacings=side==='player'?[144,128]:[118,108]
-  const out=[]
-  layout.forEach((n,row)=>{
-    const center=W/2
-    const start=center-((n-1)*spacings[row])/2
-    for(let i=0;i<n;i++)out.push({x:start+i*spacings[row],y:baseRows[row]+Math.abs(i-(n-1)/2)*4})
-  })
-  return out.slice(0,count)
-}
-const defaultPositions=formationPositions(6,'player')
-const enemyCells=Array.from({length:18},(_,i)=>({x:64+(i%6)*78,y:124+Math.floor(i/6)*72}))
-
-const spriteCache=new Map()
-function getSprite(src){
-  if(!src)return null
-  let img=spriteCache.get(src)
-  if(!img){img=new Image();img.src=src;spriteCache.set(src,img)}
-  return img.complete?img:null
-}
-function squadPalette(side){return side==='player'?{ring:'#86ff9d',base:'#2f6d98',base2:'#9ee1ff',banner:'#153b52'}:{ring:'#ffe379',base:'#8e3a3a',base2:'#ffb08c',banner:'#4f1818'}}
-function drawDiamond(ctx,w,h){ctx.beginPath();ctx.moveTo(0,-h);ctx.lineTo(w,0);ctx.lineTo(0,h);ctx.lineTo(-w,0);ctx.closePath()}
-
-function unitStats(type,run,side='player',enemyMult=1){
-  const base=side==='player'?unitStatsAtLevel(type,run.unitLevels?.[type]||1):UNITS[type],s={...base}
-  if(side==='player'){
-    s.health*=run.upgrades.health;s.armor+=run.upgrades.armorBonus;s.damage*=run.upgrades.damage;s.attackSpeed*=run.upgrades.attackSpeed
-    if(roleHas(s,'RANGED')||roleHas(s,'FIREARM'))s.range*=run.upgrades.range
-    const gl=run.generalLevel
-    if(run.general==='veteran'&&gl>=1)s.damage*=1.06
-    if(run.general==='veteran'&&gl>=3)s.health*=1.08
-    if(run.general==='hunter'&&(roleHas(s,'RANGED')||roleHas(s,'FIREARM'))){if(gl>=1)s.damage*=1.08;if(gl>=2)s.attackSpeed*=1.10;if(gl>=3)s.range*=1.12}
-    if(run.general==='hannibal'&&(roleHas(s,'MOUNTED')||roleHas(s,'HEAVY'))){if(gl>=1)s.damage*=1.10;if(gl>=2)s.damage=(s.damage/1.10)*1.20;if(gl>=4)s.damage=(s.damage/1.20)*1.30;if(type==='warElephant'&&gl>=5){s.health*=1.35;s.damage*=1.25;s.armor+=8}}
-    if(run.general==='napoleon'){if(gl>=1)s.damage*=1.10;if(gl>=2&&(roleHas(s,'FIREARM')||roleHas(s,'RANGED')))s.attackSpeed*=1.15;if(type==='imperialGuard'&&gl>=5){s.health*=1.30;s.damage*=1.25}}
-    if(run.general==='sargon'&&roleHas(s,'MELEE'))s.damage*=gl>=2?1.15:1.08
-    if(run.general==='thutmose'&&roleHas(s,'MOUNTED')){s.damage*=1.10;if(gl>=2)s.moveSpeed*=1.15}
-    if(run.leader==='narmer'&&run.leaderLevel>=1)s.health*=1.08
-    if(run.leader==='cyrus'&&run.leaderLevel>=1)s.health*=1.05
-    if(run.leader==='ramesses'&&run.leaderLevel>=4)s.health*=1.10
-    if(run.tech.includes('fire')&&run.tech.includes('archery')&&(roleHas(s,'RANGED')||roleHas(s,'FIREARM')))s.damage*=1.12
-    for(const itemId of (run.unitEquipment?.[type]||[])){
-      const effect=itemEffectAtLevel(itemId,run.artifactLevels?.[itemId]||1)
-      if(effect.armor)s.armor+=effect.armor
-      if(effect.damageMult)s.damage*=effect.damageMult
-      if(effect.attackSpeedMult)s.attackSpeed*=effect.attackSpeedMult
-      if(effect.healthMult)s.health*=effect.healthMult
-    }
-    const heroRelicId=run.heroEquipment?.[run.general]
-    const heroRelicEffect=heroRelicId?itemEffectAtLevel(heroRelicId,run.artifactLevels?.[heroRelicId]||1):null
-    if(heroRelicEffect?.damageMult)s.damage*=heroRelicEffect.damageMult
-  }else{
-    s.health*=enemyMult;s.damage*=.92+enemyMult*.13;s.armor*=.9+enemyMult*.08
-  }
-  return s
-}
-
-function terrainFor(stage){
-  const t=stage.terrain||{}
-  return {river:!!t.river,riverY:[334,390],bridges:(t.bridges||[2]).map(i=>({x:35+i*100,w:64})),mountains:t.mountains||[]}
-}
-function pointInRect(x,y,r,pad=0){return x>=r.x-pad&&x<=r.x+r.w+pad&&y>=r.y-pad&&y<=r.y+r.h+pad}
-function pointInBridge(x,t){return t.bridges.some(b=>x>=b.x&&x<=b.x+b.w)}
-function blockedGroundPoint(x,y,t){
-  if(t.mountains.some(r=>pointInRect(x,y,r,8)))return true
-  if(t.river){const[y1,y2]=t.riverY;if(y>=y1&&y<=y2&&!pointInBridge(x,t))return true}
-  return false
-}
-function lineBlocked(a,b,mountains){
-  for(const r of mountains){for(let i=1;i<24;i++){const t=i/24,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;if(pointInRect(x,y,r,5))return r}}
-  return null
-}
-function mountainWaypoint(a,b,r){
-  const pad=24,corners=[{x:r.x-pad,y:r.y-pad},{x:r.x+r.w+pad,y:r.y-pad},{x:r.x-pad,y:r.y+r.h+pad},{x:r.x+r.w+pad,y:r.y+r.h+pad}]
-  return corners.sort((c,d)=>dist(a,c)+dist(c,b)-dist(a,d)-dist(d,b))[0]
-}
-function nearestBridge(a,terrain){return terrain.bridges.slice().sort((p,q)=>Math.abs((p.x+p.w/2)-a.x)-Math.abs((q.x+q.w/2)-a.x))[0]}
-function riverWaypoint(a,b,terrain){
-  if(!terrain.river)return null
-  const[y1,y2]=terrain.riverY
-  const aNorth=a.y<y1,aSouth=a.y>y2,bNorth=b.y<y1,bSouth=b.y>y2,inRiver=!aNorth&&!aSouth
-  if(!(inRiver||(aNorth&&bSouth)||(aSouth&&bNorth)))return null
-  const bridge=nearestBridge(a,terrain),cx=bridge.x+bridge.w/2
-  if(inRiver){if(bNorth)return{x:cx,y:y1-14};if(bSouth)return{x:cx,y:y2+14};return null}
-  if(aNorth&&bSouth){if(Math.abs(a.x-cx)>bridge.w*.34)return{x:cx,y:y1-14};return{x:cx,y:y2+14}}
-  if(aSouth&&bNorth){if(Math.abs(a.x-cx)>bridge.w*.34)return{x:cx,y:y2+14};return{x:cx,y:y1-14}}
-  return null
-}
-function movementWaypoint(a,b,terrain){
-  let goal={x:b.x,y:b.y}
-  const river=riverWaypoint(a,goal,terrain);if(river)goal=river
-  const mountain=lineBlocked(a,goal,terrain.mountains);if(mountain)goal=mountainWaypoint(a,goal,mountain)
-  return goal
-}
-function segmentGroundBlocked(a,b,terrain){
-  const d=Math.hypot(b.x-a.x,b.y-a.y),steps=Math.max(2,Math.ceil(d/12))
-  for(let i=1;i<=steps;i++){const t=i/steps,x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;if(blockedGroundPoint(x,y,terrain))return true}
-  return false
-}
-function findGroundPath(start,goal,terrain){
-  // Coarse A* navigation. Smaller cells + segment validation makes it much harder for a unit
-  // to get trapped against mountain rectangles or miss a bridge opening.
-  const step=18,minX=16,maxX=W-16,minY=26,maxY=H-24
-  const snap=p=>({x:clamp(Math.round((p.x-minX)/step)*step+minX,minX,maxX),y:clamp(Math.round((p.y-minY)/step)*step+minY,minY,maxY)})
-  const nearestValid=p=>{
-    const s=snap(p)
-    if(!blockedGroundPoint(s.x,s.y,terrain))return s
-    for(let r=1;r<12;r++){
-      const candidates=[]
-      for(let dx=-r;dx<=r;dx++)for(let dy=-r;dy<=r;dy++)if(Math.abs(dx)===r||Math.abs(dy)===r)candidates.push({x:clamp(s.x+dx*step,minX,maxX),y:clamp(s.y+dy*step,minY,maxY)})
-      candidates.sort((a,b)=>dist(a,p)-dist(b,p))
-      const ok=candidates.find(q=>!blockedGroundPoint(q.x,q.y,terrain))
-      if(ok)return ok
-    }
-    return s
-  }
-  const s=nearestValid(start),g=nearestValid(goal),key=p=>`${p.x},${p.y}`,heur=p=>Math.hypot(p.x-g.x,p.y-g.y)
-  const open=[{...s,g:0,f:heur(s)}],came=new Map(),best=new Map([[key(s),0]]),closed=new Set()
-  const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]
-  let found=null,guard=0
-  while(open.length&&guard++<5000){
-    open.sort((a,b)=>a.f-b.f);const cur=open.shift(),ck=key(cur)
-    if(closed.has(ck))continue;closed.add(ck)
-    if(Math.hypot(cur.x-g.x,cur.y-g.y)<step*1.15){found=cur;break}
-    for(const[dX,dY]of dirs){
-      const n={x:cur.x+dX*step,y:cur.y+dY*step}
-      if(n.x<minX||n.x>maxX||n.y<minY||n.y>maxY||blockedGroundPoint(n.x,n.y,terrain))continue
-      if(dX&&dY&&(blockedGroundPoint(cur.x+dX*step,cur.y,terrain)||blockedGroundPoint(cur.x,cur.y+dY*step,terrain)))continue
-      if(segmentGroundBlocked(cur,n,terrain))continue
-      const nk=key(n),ng=cur.g+(dX&&dY?1.414:1)*step
-      if(ng>=(best.get(nk)??Infinity))continue
-      best.set(nk,ng);came.set(nk,ck);open.push({...n,g:ng,f:ng+heur(n)})
-    }
-  }
-  if(!found)return[]
-  const path=[];let ck=key(found),skey=key(s),safety=0
-  while(ck!==skey&&safety++<800){const[x,y]=ck.split(',').map(Number);path.push({x,y});ck=came.get(ck);if(!ck)break}
-  path.reverse();path.push({x:g.x,y:g.y})
-  // Basic smoothing: skip intermediate nodes when the straight segment is now clear.
-  const smooth=[];let anchor={x:start.x,y:start.y},i=0
-  while(i<path.length){let far=i;for(let j=path.length-1;j>=i;j--){if(!segmentGroundBlocked(anchor,path[j],terrain)){far=j;break}}smooth.push(path[far]);anchor=path[far];i=far+1}
-  return smooth
-}
-function makeEntity(side,type,pos,hpFrac,run,mult,idx){
-  const stats=unitStats(type,run,side,mult),maxHp=stats.health
-  return{id:`${side}-${idx}-${Math.random().toString(36).slice(2,7)}`,side,type,x:pos.x,y:pos.y,stats,maxHp,hp:maxHp*(hpFrac??1),cool:Math.random()*.3,dead:false,moved:0,flash:0,manualDestination:null}
-}
-function drawSquad(ctx,e,selected=false,targetable=false,badgeLabel=''){
-  const u=e.stats,hp=e.hp/e.maxHp,pal=squadPalette(e.side),sprite=getSprite(ASSETS.units?.[e.type]),count=Math.max(2,Math.ceil(hp*5))
-  ctx.save();ctx.translate(e.x,e.y)
-  ctx.fillStyle='rgba(0,0,0,.32)';ctx.beginPath();ctx.ellipse(0,29,49,17,0,0,Math.PI*2);ctx.fill()
-  if(selected||targetable){ctx.strokeStyle=selected?'#86ff9d':pal.ring;ctx.lineWidth=4;drawDiamond(ctx,47,22);ctx.stroke()}
-  ctx.fillStyle=pal.base;drawDiamond(ctx,40,18);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2.2;ctx.stroke()
-  ctx.fillStyle=pal.base2;ctx.globalAlpha=.34;drawDiamond(ctx,28,11);ctx.fill();ctx.globalAlpha=1
-  for(let i=0;i<count;i++){
-    const px=(i-(count-1)/2)*11,py=19+Math.abs(i-(count-1)/2)*2.5
-    ctx.fillStyle=e.side==='player'?'#d9f6ff':'#ffe2d8';ctx.beginPath();ctx.arc(px,py,4.4,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(7,17,29,.55)';ctx.lineWidth=1;ctx.stroke()
-  }
-  if(e.flash>0){ctx.globalAlpha=.52;ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(0,0,31,24,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1}
-  if(sprite){ctx.drawImage(sprite,-48,-66,96,96)}else{
-    ctx.fillStyle=e.side==='player'?'#75c9ff':'#ef7474';ctx.beginPath();ctx.arc(0,-12,20,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
-    if(roleHas(u,'SPEAR')){ctx.strokeStyle='#e9d09b';ctx.beginPath();ctx.moveTo(8,-11);ctx.lineTo(25,-30);ctx.stroke()}
-    if(roleHas(u,'RANGED')||roleHas(u,'FIREARM')){ctx.strokeStyle='#f3dd9d';ctx.beginPath();ctx.moveTo(-11,-13);ctx.lineTo(18,5);ctx.stroke()}
-  }
-  if(roleHas(u,'MOUNTED')){ctx.strokeStyle='#d2ac73';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(0,12,31,12,0,0,Math.PI*2);ctx.stroke()}
-  if(e.type==='warElephant'){ctx.fillStyle='rgba(87,98,105,.78)';ctx.beginPath();ctx.ellipse(0,7,33,20,0,0,Math.PI*2);ctx.fill()}
-  ctx.fillStyle=pal.banner;ctx.fillRect(-40,-70,80,11)
-  ctx.fillStyle='#f8efcf';ctx.font='700 9px system-ui';ctx.textAlign='center';ctx.fillText(UNITS[e.type].name,0,-61)
-  ctx.fillStyle='rgba(7,17,29,.80)';ctx.fillRect(-35,40,70,8)
-  ctx.fillStyle=hp>.5?'#75d3a1':hp>.25?'#f2c66c':'#ef7474';ctx.fillRect(-35,40,70*hp,8)
-  if(badgeLabel){
-    ctx.fillStyle=selected?'#86ff9d':'#f6d27a'
-    ctx.beginPath();ctx.arc(38,-18,12,0,Math.PI*2);ctx.fill()
-    ctx.strokeStyle='#07111d';ctx.lineWidth=2;ctx.stroke()
-    ctx.fillStyle='#07111d';ctx.font='900 11px system-ui';ctx.fillText(String(badgeLabel),38,-14)
-  }
-  ctx.restore()
-}
+import {W,H,DEPLOY_TOP,clamp,formationPositions,defaultPositions,terrainFor,blockedGroundPoint} from '../game/combat.js'
 
 export default function Battle({campaignId,loadout,startingRoster,startCapacity,eligibleUnits=[],meta,onFinish}){
   const campaign=CAMPAIGNS[campaignId],canvasRef=useRef(null),battleRef=useRef(null),rafRef=useRef(null),actionRef=useRef({mode:null,unitId:null}),killsRef=useRef(0)
+  const presentationRef=useRef(null),pauseRef=useRef(false),finishTimerRef=useRef(null)
+  if(!presentationRef.current)presentationRef.current=new BattlePresentation()
+  const [paused,setPaused]=useState(false),[assetsReady,setAssetsReady]=useState(false),[assetError,setAssetError]=useState(false),[inspectId,setInspectId]=useState(null),[feedback,setFeedback]=useState(''),[outcome,setOutcome]=useState(null),[showDetails,setShowDetails]=useState(false)
   const [phase,setPhase]=useState('deploy'),[stageIndex,setStageIndex]=useState(0)
-  const [run,setRun]=useState(()=>({campaign:campaignId,leader:loadout.leader||null,general:loadout.general||null,tech:(loadout.tech||[]).filter(Boolean),leaderLevel:loadout.leader?(meta.characterLevels[loadout.leader]||1):0,generalLevel:loadout.general?(meta.characterLevels[loadout.general]||1):0,roster:startingRoster.map((type,i)=>({uid:`r${i}-${Date.now()}`,type,hpFrac:1})),deployCap:startCapacity,gold:0,xp:0,tp:0,eligibleUnits:[...eligibleUnits],unitLevels:meta.unitLevels||{},unitEquipment:meta.unitEquipment||{},heroEquipment:meta.heroEquipment||{},artifactLevels:meta.artifactLevels||{},upgrades:{damage:1,health:1,attackSpeed:1,range:1,armorBonus:0,reinforceSpeed:1,reinforceHeal:0}}))
+  const [run,setRun]=useState(()=>createRun(meta,campaignId,loadout,startingRoster,startCapacity,eligibleUnits))
   const [deployPos,setDeployPos]=useState(()=>formationPositions(startingRoster.length,'player')),[selectedRoster,setSelectedRoster]=useState(0)
   const [hud,setHud]=useState({player:100,enemy:100,powerP:0,powerE:0,meter:0,enemyMeter:0,rally:0,focus:0,special:0}),[actionMode,setActionMode]=useState(null),[actionUnitId,setActionUnitId]=useState(null)
-  const [rewardChoices,setRewardChoices]=useState([]),[showReward,setShowReward]=useState(false),[showMilestone,setShowMilestone]=useState(false),[showEnd,setShowEnd]=useState(false),[endInfo,setEndInfo]=useState(null),[lostAny,setLostAny]=useState(false),[flawlessCount,setFlawlessCount]=useState(0),[showBrief,setShowBrief]=useState(true)
+  const [rewardChoices,setRewardChoices]=useState([]),[reinforceReward,setReinforceReward]=useState(false),[showReward,setShowReward]=useState(false),[showMilestone,setShowMilestone]=useState(false),[showEnd,setShowEnd]=useState(false),[endInfo,setEndInfo]=useState(null),[lostAny,setLostAny]=useState(false),[flawlessCount,setFlawlessCount]=useState(0),[showBrief,setShowBrief]=useState(true)
   const stage=campaign.stages[stageIndex],terrain=useMemo(()=>terrainFor(stage),[stage]),leader=PEOPLE[run.leader]||null,general=PEOPLE[run.general]||null,generalMini=run.general?ASSETS.people[run.general]?.mini:null
-  const reinforceMult=useMemo(()=>{let m=run.upgrades.reinforceSpeed;for(const t of run.tech)m*=TECHS[t]?.reinforceMult||1;if(run.leader==='elder'&&run.leaderLevel>=2)m*=1.15;if(run.leader==='cleopatra'&&run.leaderLevel>=6)m*=1.20;if(run.general==='veteran'&&run.generalLevel>=2)m*=1.10;if(run.leader==='ramesses'&&run.leaderLevel>=1)m*=1.10;if(run.leader==='cyrus'&&run.leaderLevel>=2)m*=1.15;const relicId=run.heroEquipment?.[run.general];const effect=relicId?itemEffectAtLevel(relicId,run.artifactLevels?.[relicId]||1):null;if(effect?.reinforceMult)m*=effect.reinforceMult;return m},[run])
-  const reinforceHeal=useMemo(()=>{let h=.15+run.upgrades.reinforceHeal;if(run.leader==='cleopatra'&&run.leaderLevel>=3)h+=.08;if(run.tech.includes('agriculture'))h+=.03;if(run.tech.includes('irrigation'))h+=.04;return clamp(h,.10,.60)},[run])
+  const reinforceMult=useMemo(()=>reinforcementMultiplier(run),[run])
+  const reinforceHeal=useMemo(()=>reinforcementHeal(run),[run])
   const specialReady=!!(general?.special&&run.generalLevel>=(general.specialLevel||99))
 
   function setAction(mode,unitId=null){
+    if(mode)setFeedback('')
     actionRef.current={mode,unitId};setActionMode(mode);setActionUnitId(unitId)
   }
   function resetDeployPositions(roster=run.roster){setDeployPos(formationPositions(Math.max(1,Math.min(6,roster.length)),'player'));setSelectedRoster(0)}
   function autoDeploy(){resetDeployPositions()}
 
-  function drawTerrain(ctx,t,st,showDeploy=false){
-    ctx.clearRect(0,0,W,H)
-    const sky=ctx.createLinearGradient(0,0,0,260)
-    sky.addColorStop(0,campaignId==='dawn'?'#a7d4f2':'#f2cb92')
-    sky.addColorStop(.58,campaignId==='dawn'?'#6ca0c4':'#c58d57')
-    sky.addColorStop(1,campaignId==='dawn'?'#436985':'#92633d')
-    ctx.fillStyle=sky;ctx.fillRect(0,0,W,H)
-    ctx.fillStyle='rgba(255,255,255,.16)';ctx.beginPath();ctx.ellipse(92,72,42,15,-.2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(142,82,58,17,.1,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.ellipse(385,58,65,18,-.05,0,Math.PI*2);ctx.fill()
-
-    ctx.fillStyle='rgba(39,67,88,.32)';ctx.beginPath();ctx.moveTo(0,180);ctx.bezierCurveTo(70,148,150,146,238,176);ctx.bezierCurveTo(322,138,412,138,520,188);ctx.lineTo(520,238);ctx.lineTo(0,238);ctx.closePath();ctx.fill()
-    const ground=ctx.createLinearGradient(0,156,0,H)
-    ground.addColorStop(0,campaignId==='dawn'?'#8fb174':'#c99a66')
-    ground.addColorStop(.5,campaignId==='dawn'?'#688953':'#aa7a4a')
-    ground.addColorStop(1,campaignId==='dawn'?'#425d39':'#7c542f')
-    ctx.fillStyle=ground
-    ctx.beginPath();ctx.moveTo(0,162);ctx.lineTo(W,162);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill()
-
-    for(let row=0;row<10;row++){
-      const y=180+row*50
-      ctx.fillStyle=row%2===0?'rgba(255,255,255,.045)':'rgba(255,255,255,.025)'
-      ctx.beginPath();ctx.moveTo(18,y);ctx.lineTo(W-18,y-24);ctx.lineTo(W-18,y+8);ctx.lineTo(18,y+32);ctx.closePath();ctx.fill()
-    }
-    ctx.strokeStyle='rgba(255,255,255,.085)';ctx.lineWidth=1
-    for(let y=176;y<H+30;y+=34){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y-28);ctx.stroke()}
-    for(let x=-180;x<W+170;x+=42){ctx.beginPath();ctx.moveTo(x,170);ctx.lineTo(x+168,H);ctx.stroke()}
-
-    ctx.fillStyle='rgba(189,154,97,.32)'
-    ctx.beginPath();ctx.moveTo(132,208);ctx.lineTo(208,194);ctx.lineTo(357,330);ctx.lineTo(298,348);ctx.closePath();ctx.fill()
-    ctx.beginPath();ctx.moveTo(218,267);ctx.lineTo(276,255);ctx.lineTo(470,421);ctx.lineTo(424,438);ctx.closePath();ctx.fill()
-
-    if(t.river){const[y1,y2]=t.riverY;ctx.save();ctx.translate(0,-24);ctx.fillStyle='rgba(44,83,116,.28)';ctx.beginPath();ctx.moveTo(-20,y1+20);ctx.bezierCurveTo(98,y1+2,180,y2-20,290,y1+6);ctx.bezierCurveTo(378,y2+16,443,y1+9,540,y2-18);ctx.lineTo(540,y2+35);ctx.bezierCurveTo(434,y2+65,365,y2+57,285,y2+37);ctx.bezierCurveTo(175,y2+5,99,y2+25,-20,y2+45);ctx.closePath();ctx.fill();const river=ctx.createLinearGradient(0,y1,0,y2+50);river.addColorStop(0,'#76b6d9');river.addColorStop(.5,'#4f8db8');river.addColorStop(1,'#2d628d');ctx.fillStyle=river;ctx.beginPath();ctx.moveTo(-20,y1+8);ctx.bezierCurveTo(95,y1-8,176,y2-24,292,y1+2);ctx.bezierCurveTo(381,y2+18,449,y1+7,540,y2-22);ctx.lineTo(540,y2+22);ctx.bezierCurveTo(450,y2+49,379,y2+60,285,y2+28);ctx.bezierCurveTo(173,y1+5,94,y2+12,-20,y2+31);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(199,239,255,.45)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-5,y1+19);ctx.bezierCurveTo(91,y1+4,170,y2-11,288,y1+16);ctx.stroke();ctx.restore();for(const b of t.bridges){ctx.fillStyle='#654224';ctx.beginPath();ctx.moveTo(b.x,y1-1);ctx.lineTo(b.x+b.w,y1-16);ctx.lineTo(b.x+b.w,y2+14);ctx.lineTo(b.x,y2+28);ctx.closePath();ctx.fill();ctx.fillStyle='#bf8f5e';for(let x=b.x+4;x<b.x+b.w-2;x+=9){ctx.beginPath();ctx.moveTo(x,y1+2);ctx.lineTo(x+5,y1);ctx.lineTo(x+5,y2+22);ctx.lineTo(x,y2+24);ctx.closePath();ctx.fill()}}}
-
-    for(const r of t.mountains){ctx.fillStyle='#525b67';ctx.beginPath();ctx.moveTo(r.x,r.y+r.h);ctx.lineTo(r.x+r.w*.12,r.y+r.h*.54);ctx.lineTo(r.x+r.w*.36,r.y+r.h*.14);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.03);ctx.lineTo(r.x+r.w*.78,r.y+r.h*.28);ctx.lineTo(r.x+r.w,r.y+r.h*.74);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.closePath();ctx.fill();ctx.fillStyle='#73808d';ctx.beginPath();ctx.moveTo(r.x+r.w*.36,r.y+r.h*.14);ctx.lineTo(r.x+r.w*.58,r.y+r.h*.03);ctx.lineTo(r.x+r.w*.69,r.y+r.h*.23);ctx.lineTo(r.x+r.w*.48,r.y+r.h*.33);ctx.closePath();ctx.fill();ctx.fillStyle='rgba(28,34,41,.28)';ctx.beginPath();ctx.moveTo(r.x+r.w*.55,r.y+r.h*.22);ctx.lineTo(r.x+r.w,r.y+r.h*.74);ctx.lineTo(r.x+r.w,r.y+r.h);ctx.lineTo(r.x+r.w*.55,r.y+r.h);ctx.closePath();ctx.fill()}
-
-    for(let i=0;i<9;i++){const x=30+(i*57)%W,y=190+(i*73)%(H-220);ctx.fillStyle='rgba(22,47,27,.35)';ctx.beginPath();ctx.ellipse(x,y+8,12,5,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#2b5633';ctx.beginPath();ctx.moveTo(x,y-14);ctx.lineTo(x-11,y+6);ctx.lineTo(x+11,y+6);ctx.closePath();ctx.fill();ctx.fillStyle='#3a7445';ctx.beginPath();ctx.moveTo(x,y-9);ctx.lineTo(x-8,y+4);ctx.lineTo(x+8,y+4);ctx.closePath();ctx.fill()}
-
-    if(showDeploy){ctx.fillStyle='rgba(117,211,161,.08)';ctx.beginPath();ctx.moveTo(18,DEPLOY_TOP+8);ctx.lineTo(W-18,DEPLOY_TOP-20);ctx.lineTo(W-18,H-28);ctx.lineTo(18,H-6);ctx.closePath();ctx.fill();ctx.strokeStyle='rgba(117,211,161,.56)';ctx.setLineDash([8,8]);ctx.stroke();ctx.setLineDash([])}
-  }
-  function drawDeploy(){
-    const c=canvasRef.current;if(!c)return;const ctx=c.getContext('2d');drawTerrain(ctx,terrain,stage,true)
-    const playerSlots=formationPositions(Math.max(1,run.deployCap),'player')
-    const enemySlots=formationPositions(stage.types.length,'enemy')
-    run.roster.slice(0,run.deployCap).forEach((r,i)=>{const p=deployPos[i]||playerSlots[i]||defaultPositions[i];if(!p)return;drawSquad(ctx,makeEntity('player',r.type,p,r.hpFrac,run,1,i),i===selectedRoster,false)})
-    stage.types.forEach((type,i)=>drawSquad(ctx,makeEntity('enemy',type,enemySlots[i]||enemyCells[i%enemyCells.length],1,run,stage.mult,i),false,false))
-  }
-  useEffect(()=>{if(phase==='deploy')drawDeploy()},[phase,deployPos,selectedRoster,stageIndex,run])
-  useEffect(()=>()=>cancelAnimationFrame(rafRef.current),[])
+  function deploymentEntities(){const encounter=createEncounter(run,stage,deployPos);return [...encounter.player.map((e,i)=>({...e,id:'deploy-player-'+i})),...encounter.enemy.map((e,i)=>({...e,id:'deploy-enemy-'+i}))]}
+  function drawDeploy(){if(canvasRef.current)presentationRef.current.draw(canvasRef.current,deploymentEntities(),terrain,{deploy:true,selected:'deploy-player-'+selectedRoster})}
+  useEffect(()=>{let active=true;presentationRef.current.load().then(ok=>{if(active){setAssetsReady(true);setAssetError(!ok)}});return()=>{active=false}},[])
+  useEffect(()=>{if(phase==='deploy')drawDeploy()},[phase,deployPos,selectedRoster,stageIndex,run,assetsReady])
+  useEffect(()=>{
+    const resize=new ResizeObserver(()=>{if(battleRef.current)drawBattle(battleRef.current);else drawDeploy()});resize.observe(canvasRef.current)
+    return()=>resize.disconnect()
+  },[phase,deployPos,selectedRoster,stageIndex,assetsReady])
+  useEffect(()=>()=>{cancelAnimationFrame(rafRef.current);clearTimeout(finishTimerRef.current)},[])
+  useEffect(()=>{const hide=()=>{if(document.hidden&&battleRef.current&&!battleRef.current.done){pauseRef.current=true;setPaused(true)}};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide)},[])
+  useEffect(()=>{const key=e=>{if(e.key==='Escape'){if(actionRef.current.mode)setAction(null);else if(showDetails){setShowDetails(false);pauseRef.current=false}else if(!showBrief&&!showReward&&!showMilestone&&!showEnd)togglePause()}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key)},[showBrief,showReward,showMilestone,showEnd,showDetails])
+  useEffect(()=>{if(!feedback)return;const timer=setTimeout(()=>setFeedback(''),2400);return()=>clearTimeout(timer)},[feedback])
+  function togglePause(){pauseRef.current=!pauseRef.current;setPaused(pauseRef.current)}
+  function leaveCampaign(){cancelAnimationFrame(rafRef.current);clearTimeout(finishTimerRef.current);onFinish({victory:false,cleared:run.wins,objectives:run.objectives,gold:run.gold,xp:run.xp,tp:run.tp,battle:stageIndex+1,bestReached:stageIndex+1,units:run.roster.map(r=>r.type),stars:0,flawlessBattles:flawlessCount,unitsKilled:killsRef.current,campaign:campaignId})}
 
   function beginBattle(){
     const current=run.roster.slice(0,run.deployCap)
-    if(current.length<1)return
-    const enemySlots=formationPositions(stage.types.length,'enemy'),player=current.map((r,i)=>makeEntity('player',r.type,deployPos[i]||formationPositions(current.length,'player')[i]||defaultPositions[i],r.hpFrac,run,1,i)),enemy=stage.types.map((type,i)=>makeEntity('enemy',type,enemySlots[i]||enemyCells[i],1,run,stage.mult,i))
-    battleRef.current={player,enemy,projectiles:[],time:0,last:performance.now(),terrain,meter:35,enemyMeter:0,rallyCd:0,focusUntil:0,focusCd:0,focusTarget:null,specialUntil:0,specialCd:0,done:false}
-    setPhase('battle');setAction(null);tick(performance.now())
+    if(current.length<1||!assetsReady)return
+    presentationRef.current.reset();setOutcome(null);setFeedback('Engage the enemy');setInspectId(null)
+    battleRef.current={...createEncounter(run,stage,deployPos),last:performance.now()}
+    setPhase('battle');setAction(null);updateHud(battleRef.current);tick(performance.now())
   }
-  function chooseTarget(e,enemies,b){
-    let live=enemies.filter(x=>!x.dead);if(!live.length)return null
-    if(e.side==='player'&&b.focusTarget&&b.focusUntil>b.time){const ft=live.find(x=>x.id===b.focusTarget);if(ft)return ft}
-    if(roleHas(e.stats,'SPEAR')){const mounted=live.filter(x=>roleHas(x.stats,'MOUNTED'));if(mounted.length)live=mounted}
-    return live.sort((a,c)=>dist(e,a)-dist(e,c))[0]
-  }
-  function moveTowardPoint(e,point,dt,b){
-    let goal=point
-    const targetKey=`${Math.round(point.x/45)},${Math.round(point.y/45)}`
-    const directBlocked=segmentGroundBlocked(e,point,b.terrain)
-    if(directBlocked){
-      if(!e.navPath||!e.navPath.length||e.navTargetKey!==targetKey||b.time>(e.navRecalc||0)){
-        e.navPath=findGroundPath(e,point,b.terrain);e.navTargetKey=targetKey;e.navRecalc=b.time+.55
-      }
-      while(e.navPath?.length&&dist(e,e.navPath[0])<14)e.navPath.shift()
-      if(e.navPath?.length)goal=e.navPath[0]
-      else goal=movementWaypoint(e,point,b.terrain)
-    }else{e.navPath=null;e.navTargetKey=null}
-    const dx=goal.x-e.x,dy=goal.y-e.y,dd=Math.hypot(dx,dy)||1,step=Math.min(dd,e.stats.moveSpeed*dt)
-    let nx=e.x+dx/dd*step,ny=e.y+dy/dd*step
-    if(blockedGroundPoint(nx,ny,b.terrain)){
-      e.navPath=findGroundPath(e,point,b.terrain);e.navRecalc=b.time+.25
-      const next=e.navPath?.[0];if(next){const ndx=next.x-e.x,ndy=next.y-e.y,nd=Math.hypot(ndx,ndy)||1;nx=e.x+ndx/nd*Math.min(nd,e.stats.moveSpeed*dt);ny=e.y+ndy/nd*Math.min(nd,e.stats.moveSpeed*dt)}else{nx=e.x;ny=e.y}
-    }
-    e.x=clamp(nx,20,W-20);e.y=clamp(ny,35,H-35);e.moved+=Math.hypot(e.x-(e._lastX??e.x),e.y-(e._lastY??e.y));e._lastX=e.x;e._lastY=e.y
-  }
-  function moveEntity(e,target,dt,b){
-    if(!target)return
-    if(e.manualDestination){if(dist(e,e.manualDestination)<12){e.manualDestination=null}else{moveTowardPoint(e,e.manualDestination,dt,b);return}}
-    const melee=e.stats.range<=0,desiredRange=melee?25:e.stats.range*.82
-    if(dist(e,target)<=desiredRange&&!lineBlocked(e,target,b.terrain.mountains))return
-    moveTowardPoint(e,target,dt,b)
-  }
-  function canShoot(e,t,b){return dist(e,t)<=e.stats.range&&!lineBlocked(e,t,b.terrain.mountains)}
-  function attack(e,t,b){
-    if(e.cool>0||!t||t.dead||e.manualDestination)return
-    const melee=e.stats.range<=0;if(melee&&dist(e,t)>30)return;if(!melee&&!canShoot(e,t,b))return
-    let dmg=e.stats.damage;if(e.side==='player'&&b.specialUntil>b.time&&run.general==='hannibal')dmg*=1.30;if(e.side==='player'&&b.specialUntil>b.time&&run.general==='thutmose'&&roleHas(e.stats,'MOUNTED'))dmg*=1.35;if(e.stats.antiMounted&&roleHas(t.stats,'MOUNTED'))dmg*=e.stats.antiMounted;if(e.stats.charge&&e.moved>70){dmg*=e.stats.charge;e.moved=0}
-    const reduced=dmg*(100/(100+t.stats.armor*2.2));t.hp-=reduced;t.flash=.12;e.cool=1/e.stats.attackSpeed;if(!melee)b.projectiles.push({x:e.x,y:e.y,tx:t.x,ty:t.y,life:.25,side:e.side});if(t.hp<=0){t.hp=0;t.dead=true;if(t.side==='enemy')killsRef.current++}
-  }
-  function simSide(side,foes,dt,b){for(const e of side){if(e.dead)continue;e.cool-=dt;e.flash=Math.max(0,e.flash-dt);const t=chooseTarget(e,foes,b);if(!t)continue;const melee=e.stats.range<=0;if(e.manualDestination||(melee&&dist(e,t)>30)||(!melee&&!canShoot(e,t,b)))moveEntity(e,t,dt,b);attack(e,t,b)}}
   function drawBattle(b){
-    const c=canvasRef.current;if(!c)return;const ctx=c.getContext('2d');drawTerrain(ctx,b.terrain,stage,false)
-    for(const p of b.projectiles){ctx.strokeStyle=p.side==='player'?'#ffe08a':'#ffc0c0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.tx,p.ty);ctx.stroke()}
-    const mode=actionRef.current.mode,selectedId=actionRef.current.unitId
-    const enemyTargets=mode==='focus'?b.enemy.filter(e=>!e.dead):[]
-    const playerTargets=(mode==='reinforce'||mode==='rallyUnit')?b.player.filter(e=>!e.dead):[]
-    b.enemy.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='focus',mode==='focus'?(enemyTargets.findIndex(x=>x.id===e.id)+1):''))
-    b.player.forEach(e=>!e.dead&&drawSquad(ctx,e,e.id===selectedId,mode==='reinforce'||mode==='rallyUnit',(mode==='reinforce'||mode==='rallyUnit')?(playerTargets.findIndex(x=>x.id===e.id)+1):''))
-    if(mode){ctx.fillStyle='#07111dcc';ctx.fillRect(82,344,356,68);ctx.strokeStyle='#77a6c8';ctx.lineWidth=2;ctx.strokeRect(82,344,356,68);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 17px system-ui';const title=mode==='focus'?'SELECT ENEMY':mode==='reinforce'?'SELECT UNIT TO REINFORCE':mode==='rallyUnit'?'SELECT UNIT TO MOVE':'SELECT DESTINATION';ctx.fillText(title,260,370);ctx.font='700 10px system-ui';ctx.fillText('Battle remains paused until you pick a target or cancel the command.',260,392)}
+    if(!canvasRef.current)return
+    const mode=actionRef.current.mode,targets=mode==='focus'?b.enemy.filter(e=>!e.dead):mode==='reinforce'||mode==='rallyUnit'?b.player.filter(e=>!e.dead):[]
+    presentationRef.current.draw(canvasRef.current,[...b.enemy,...b.player],b.terrain,{time:b.time,selected:actionRef.current.unitId||b.inspectId,targets:targets.map(e=>e.id),focused:b.focusTarget,destination:mode==='rallyDestination',projectiles:b.projectiles})
   }
   function updateHud(b){
     const sum=(arr,k)=>arr.reduce((a,e)=>a+(e.dead?0:e[k]),0),max=arr=>arr.reduce((a,e)=>a+e.maxHp,0),power=arr=>Math.round(arr.filter(e=>!e.dead).reduce((a,e)=>a+e.hp*(e.stats.damage*e.stats.attackSpeed+e.stats.armor*.4),0)/10)
     const ph=sum(b.player,'hp'),pm=max(b.player),eh=sum(b.enemy,'hp'),em=max(b.enemy)
-    setHud({player:pm?Math.round(ph/pm*100):0,enemy:em?Math.round(eh/em*100):0,powerP:power(b.player),powerE:power(b.enemy),meter:Math.floor(b.meter),enemyMeter:Math.floor(b.enemyMeter),rally:Math.max(0,b.rallyCd-b.time),focus:Math.max(0,b.focusCd-b.time),special:Math.max(0,b.specialCd-b.time)})
+    setHud({time:b.time,player:pm?Math.round(ph/pm*100):0,enemy:em?Math.round(eh/em*100):0,powerP:power(b.player),powerE:power(b.enemy),meter:Math.floor(b.meter),enemyMeter:Math.floor(b.enemyMeter),rally:Math.max(0,b.rallyCd-b.time),focusTarget:b.focusTarget,special:Math.max(0,b.specialCd-b.time)})
   }
   function tick(now){
     const b=battleRef.current;if(!b||b.done)return
-    if(actionRef.current.mode){b.last=now;drawBattle(b);updateHud(b);rafRef.current=requestAnimationFrame(tick);return}
-    const dt=Math.min(.04,(now-b.last)/1000);b.last=now;b.time+=dt;b.meter=clamp(b.meter+dt*7.5*reinforceMult,0,100);b.enemyMeter=clamp(b.enemyMeter+dt*4.4*(1+stageIndex*.018),0,100)
-    if(b.enemyMeter>=100){const damaged=b.enemy.filter(e=>!e.dead&&e.hp<e.maxHp*.95).sort((a,c)=>a.hp/a.maxHp-c.hp/c.maxHp)[0];if(damaged){damaged.hp=Math.min(damaged.maxHp,damaged.hp+damaged.maxHp*(.13+stageIndex*.004));b.enemyMeter=0}}
-    simSide(b.player,b.enemy,dt,b);simSide(b.enemy,b.player,dt,b);b.projectiles.forEach(p=>p.life-=dt);b.projectiles=b.projectiles.filter(p=>p.life>0);drawBattle(b);if(Math.floor(b.time*5)!==Math.floor((b.time-dt)*5))updateHud(b)
-    const pAlive=b.player.some(e=>!e.dead),eAlive=b.enemy.some(e=>!e.dead);if(!pAlive||!eAlive){b.done=true;setTimeout(()=>finishBattle(pAlive&&!eAlive,b),320);return}rafRef.current=requestAnimationFrame(tick)
+    if(actionRef.current.mode||pauseRef.current){b.last=now;drawBattle(b);rafRef.current=requestAnimationFrame(tick);return}
+    const dt=Math.min(.04,(now-b.last)/1000);b.last=now
+    stepEncounter(b,run,stage,stageIndex,dt,()=>killsRef.current++);drawBattle(b)
+    if(Math.floor(b.time*5)!==Math.floor((b.time-dt)*5))updateHud(b)
+    if(b.done){updateHud(b);setOutcome(b.victory?'Victory':b.timedOut?'Time expired':'Defeat');finishTimerRef.current=setTimeout(()=>finishBattle(b.victory,b),700);return}rafRef.current=requestAnimationFrame(tick)
   }
+
   function finishBattle(victory,b){
     const hadLoss=b.player.some(e=>e.dead),totalLost=lostAny||hadLoss
     if(hadLoss)setLostAny(true)
-    if(!victory){setEndInfo({victory:false,gold:run.gold+6,xp:run.xp+2,tp:run.tp,battle:stageIndex+1,bestReached:stageIndex+1,units:run.roster.map(r=>r.type),stars:0,flawlessBattles:flawlessCount,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
+    if(!victory){setEndInfo({victory:false,cleared:run.wins,objectives:run.objectives,gold:run.gold+6,xp:run.xp+2,tp:run.tp,battle:stageIndex+1,bestReached:stageIndex+1,units:run.roster.map(r=>r.type),stars:0,flawlessBattles:flawlessCount,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
     const newFlawless=flawlessCount+(hadLoss?0:1);setFlawlessCount(newFlawless)
-    const survivors=b.player.filter(e=>!e.dead).map(e=>({type:e.type,hpFrac:e.hp/e.maxHp})),recovery=clamp(.05+run.tech.reduce((a,t)=>a+(TECHS[t]?.recovery||0),0)+(run.leader==='cyrus'&&run.leaderLevel>=4?.08:0),.05,.28),newRoster=survivors.map((s,i)=>({uid:`r${i}-${Date.now()}`,type:s.type,hpFrac:clamp(s.hpFrac+(1-s.hpFrac)*recovery,0,1)})),goldGain=Math.round(stage.gold*leaderGoldMult()),xpGain=stage.xp||0,tpGain=meta.featureUnlocks?.technology?(stage.tp||0):0,nextRun={...run,roster:newRoster,gold:run.gold+goldGain,xp:run.xp+xpGain,tp:run.tp+tpGain}
+    const objective=objectiveResult(stage,b),income=battleIncome(run,stage,objective),newRoster=recoverRoster(run,b),nextRun={...run,roster:newRoster,wins:run.wins+1,objectives:run.objectives+(objective?1:0),gold:run.gold+income.gold,xp:run.xp+income.xp,tp:run.tp+((campaignId==='dawn'||meta.featureUnlocks.technology)?income.tp:0)}
     setRun(nextRun)
-    if(stageIndex===campaign.stages.length-1){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
+    if(stageIndex===campaign.stages.length-1){const condition=newRoster.reduce((a,r)=>a+r.hpFrac,0)/Math.max(1,nextRun.deployCap),earnedStars=1+(condition>=.65?1:0)+(!totalLost?1:0);setEndInfo({victory:true,cleared:nextRun.wins,objectives:nextRun.objectives,gold:nextRun.gold,xp:nextRun.xp,tp:nextRun.tp,battle:15,bestReached:15,units:nextRun.roster.map(r=>r.type),stars:earnedStars,flawlessBattles:newFlawless,unitsKilled:killsRef.current});setShowEnd(true);setPhase('ended');return}
     if((campaign.milestones||[4,9,Math.max(0,campaign.stages.length-2)]).includes(stageIndex)){setShowMilestone(true);setPhase('milestone');return}openRewards(nextRun)
   }
-  function leaderGoldMult(){let m=1;if(run.leader==='cleopatra'){if(run.leaderLevel>=2)m=1.25;else if(run.leaderLevel>=1)m=1.15}else if(run.leader==='elder')m=1.08;else if(run.leader==='merchant')m=run.leaderLevel>=3?1.20:1.12;else if(run.leader==='ramesses'&&run.leaderLevel>=2)m=1.12;else if(run.leader==='cyrus'&&run.leaderLevel>=1)m=1.10;const relicId=run.heroEquipment?.[run.leader];const effect=relicId?itemEffectAtLevel(relicId,run.artifactLevels?.[relicId]||1):null;if(effect?.goldMult)m*=effect.goldMult;return m}
-  function availableUnitTypes(){return [...new Set((run.eligibleUnits?.length?run.eligibleUnits:['warrior']).filter(id=>UNITS[id]))]}
-  function openRewards(r=run,unitOnly=false){const options=[];if(r.roster.length<r.deployCap||unitOnly){const ids=availableUnitTypes().sort(()=>Math.random()-.5);for(const id of ids.slice(0,unitOnly?3:1))options.push({kind:'unit',id,name:`Recruit ${UNITS[id].name}`,icon:'⚑',desc:`Add one ${UNITS[id].name} squad.`})}if(!unitOnly)for(const rwd of REWARD_POOL.slice().sort(()=>Math.random()-.5).slice(0,3-options.length))options.push({kind:'upgrade',...rwd});setRewardChoices(options.slice(0,3));setShowReward(true);setPhase('reward')}
-  function chooseReward(choice){let next={...run};if(choice.kind==='unit')next={...next,roster:[...next.roster,{uid:`r${Date.now()}`,type:choice.id,hpFrac:1}]};else next={...next,upgrades:choice.apply(next.upgrades)};setRun(next);setShowReward(false);advanceStage(next)}
-  function advanceStage(nextRun=run){setStageIndex(i=>i+1);setRun(nextRun);setPhase('deploy');resetDeployPositions(nextRun.roster);setAction(null);setShowBrief(true)}
+  function openRewards(r=run,unitOnly=false){setReinforceReward(false);setRewardChoices(rewardOptions(r,Math.random,unitOnly).map(c=>c.kind==='unit'?{...c,name:'Recruit '+UNITS[c.id].name,desc:'Add one '+UNITS[c.id].name+' squad.'}:c));setShowReward(true);setPhase('reward')}
+  function chooseReward(choice){if(choice.kind==='reinforce'&&!choice.uid){setReinforceReward(true);return}const next=applyReward(run,choice);setRun(next);setShowReward(false);advanceStage(next)}
+  function advanceStage(nextRun=run){battleRef.current=null;presentationRef.current.reset();setOutcome(null);setInspectId(null);setHud({player:100,enemy:100,time:0,meter:0,rally:0,focus:0,special:0});setStageIndex(i=>i+1);setRun(nextRun);setPhase('deploy');resetDeployPositions(nextRun.roster);setAction(null);setShowBrief(true)}
   function milestone(type){if(type==='heal'){const next={...run,roster:run.roster.map(r=>({...r,hpFrac:1}))};setRun(next);setShowMilestone(false);advanceStage(next)}else{const cap=Math.min(6,run.deployCap+1),next={...run,deployCap:cap};setRun(next);setShowMilestone(false);openRewards(next,true)}}
 
-  function activateRally(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode?.startsWith('rally')){setAction(null);return}if(b.time<b.rallyCd)return;setAction('rallyUnit')}
-  function activateFocus(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode==='focus'){setAction(null);return}if(b.time<b.focusCd)return;setAction('focus')}
-  function activateReinforce(){const b=battleRef.current;if(!b||phase!=='battle')return;if(actionRef.current.mode==='reinforce'){setAction(null);return}if(b.meter<100)return;setAction('reinforce')}
-  function activateSpecial(){const b=battleRef.current;if(!b||phase!=='battle'||b.time<b.specialCd||!specialReady)return;if(run.general==='hannibal'){b.specialUntil=b.time+8;b.specialCd=b.time+34}else if(run.general==='thutmose'){b.specialUntil=b.time+7;b.specialCd=b.time+30}else if(run.general==='napoleon'){for(const e of b.enemy.filter(e=>!e.dead)){const wasAlive=!e.dead;e.hp=Math.max(0,e.hp-e.maxHp*.18);if(e.hp<=0){e.dead=true;if(wasAlive)killsRef.current++}}b.specialCd=b.time+32}updateHud(b)}
+  function activateRally(){const b=battleRef.current;if(!b||phase!=='battle'||pauseRef.current||b.done)return;if(actionRef.current.mode?.startsWith('rally')){setAction(null);return}if(b.time<b.rallyCd)return;setAction('rallyUnit')}
+  function activateFocus(){const b=battleRef.current;if(!b||phase!=='battle'||pauseRef.current||b.done)return;if(actionRef.current.mode==='focus'){setAction(null);return}setAction('focus')}
+  function activateReinforce(){const b=battleRef.current;if(!b||phase!=='battle'||pauseRef.current||b.done)return;if(actionRef.current.mode==='reinforce'){setAction(null);return}if(b.meter<100)return;setAction('reinforce')}
+  function activateSpecial(){const b=battleRef.current;if(!b||phase!=='battle'||pauseRef.current||b.done||actionRef.current.mode||b.time<b.specialCd||!specialReady)return;if(run.general==='hannibal'){b.specialUntil=b.time+8;b.specialCd=b.time+34}else if(run.general==='thutmose'){b.specialUntil=b.time+7;b.specialCd=b.time+30}else if(run.general==='napoleon'){for(const e of b.enemy.filter(e=>!e.dead)){const wasAlive=!e.dead;e.hp=Math.max(0,e.hp-e.maxHp*.18);if(e.hp<=0){e.dead=true;e.deathAt=b.time;if(wasAlive)killsRef.current++}}b.specialCd=b.time+32}updateHud(b)}
 
   function chooseActionTarget(id){
-    const b=battleRef.current;if(!b)return
+    const b=battleRef.current;if(!b||b.done||pauseRef.current)return
     const action=actionRef.current
     if(action.mode==='rallyUnit'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e)setAction('rallyDestination',e.id);return}
-    if(action.mode==='focus'){const e=b.enemy.find(u=>u.id===id&&!u.dead);if(e){b.focusTarget=e.id;b.focusUntil=b.time+4;b.focusCd=b.time+4;setAction(null);updateHud(b)}return}
-    if(action.mode==='reinforce'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e){e.hp=Math.min(e.maxHp,e.hp+e.maxHp*reinforceHeal);b.meter=0;setAction(null);updateHud(b)}return}
+    if(action.mode==='focus'){const e=b.enemy.find(u=>u.id===id&&!u.dead);if(e){setFocusTarget(b,e.id);setFeedback('Focus: '+UNITS[e.type].name);setAction(null);updateHud(b)}return}
+    if(action.mode==='reinforce'){const e=b.player.find(u=>u.id===id&&!u.dead);if(e){e.hp=Math.min(e.maxHp,e.hp+e.maxHp*reinforceHeal);e.healAt=b.time;setFeedback(UNITS[e.type].name+' reinforced');b.meter=0;setAction(null);updateHud(b)}return}
   }
 
   function handleCanvasClick(ev){
+    if(paused||outcome)return
     const c=canvasRef.current,rect=c.getBoundingClientRect(),x=(ev.clientX-rect.left)*W/rect.width,y=(ev.clientY-rect.top)*H/rect.height
     if(phase==='deploy'){
       const fallbackSlots=formationPositions(Math.max(1,run.deployCap),'player')
-      const points=run.roster.slice(0,run.deployCap).map((r,i)=>({i,p:deployPos[i]||fallbackSlots[i]||defaultPositions[i]})),hit=points.sort((a,b)=>Math.hypot(a.p.x-x,a.p.y-y)-Math.hypot(b.p.x-x,b.p.y-y))[0]
-      if(hit&&Math.hypot(hit.p.x-x,hit.p.y-y)<31){setSelectedRoster(hit.i);return}
+      const points=run.roster.slice(0,run.deployCap).map((r,i)=>({i,p:presentationRef.current.positions.get('deploy-player-'+i)||deployPos[i]||fallbackSlots[i]||defaultPositions[i]})),hit=points.sort((a,b)=>Math.hypot(a.p.x-x,(a.p.y-y)*presentationRef.current.ratio)-Math.hypot(b.p.x-x,(b.p.y-y)*presentationRef.current.ratio))[0]
+      if(hit&&Math.hypot(hit.p.x-x,(hit.p.y-y)*presentationRef.current.ratio)<48){setSelectedRoster(hit.i);return}
       if(y>=DEPLOY_TOP&&!blockedGroundPoint(x,y,terrain)){setDeployPos(pos=>{
         const base=run.roster.slice(0,run.deployCap).map((_,i)=>pos[i]||fallbackSlots[i]||defaultPositions[i])
         return base.map((p,i)=>i===selectedRoster?{x:clamp(x,28,W-28),y:clamp(y,DEPLOY_TOP+22,H-35)}:p)
@@ -369,11 +114,13 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
       return
     }
     const b=battleRef.current;if(!b)return;const action=actionRef.current
-    const nearest=(arr)=>arr.filter(e=>!e.dead).sort((a,c)=>Math.hypot(a.x-x,a.y-y)-Math.hypot(c.x-x,c.y-y))[0]
-    if(action.mode==='rallyUnit'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<38)chooseActionTarget(e.id);return}
-    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};e.navPath=null;b.rallyCd=b.time+4;setAction(null);updateHud(b)}return}
-    if(action.mode==='focus'){const e=nearest(b.enemy);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
-    if(action.mode==='reinforce'){const e=nearest(b.player);if(e&&Math.hypot(e.x-x,e.y-y)<40)chooseActionTarget(e.id);return}
+    const distance=e=>{const p=presentationRef.current.point(e);return Math.hypot(p.x-x,(p.y-y)*presentationRef.current.ratio)}
+    const nearest=arr=>arr.filter(e=>!e.dead).sort((a,c)=>distance(a)-distance(c))[0]
+    if(!action.mode){const e=nearest([...b.player,...b.enemy]);if(e&&distance(e)<50){b.inspectId=e.id;setInspectId(e.id)}return}
+    if(action.mode==='rallyUnit'){const e=nearest(b.player);if(e&&distance(e)<50)chooseActionTarget(e.id);return}
+    if(action.mode==='rallyDestination'){const e=b.player.find(u=>u.id===action.unitId&&!u.dead);if(e&&!blockedGroundPoint(x,y,b.terrain)){e.manualDestination={x:clamp(x,20,W-20),y:clamp(y,35,H-35)};e.navPath=null;b.rallyCd=b.time+4;setFeedback(UNITS[e.type].name+' moving');setAction(null);updateHud(b)}else setFeedback('Choose open ground or a bridge');return}
+    if(action.mode==='focus'){const e=nearest(b.enemy);if(e&&distance(e)<50)chooseActionTarget(e.id);return}
+    if(action.mode==='reinforce'){const e=nearest(b.player);if(e&&distance(e)<50)chooseActionTarget(e.id);return}
   }
 
   function enhancementSummary(){
@@ -392,25 +139,43 @@ export default function Battle({campaignId,loadout,startingRoster,startCapacity,
     for(const type of rosterTypes){const lv=run.unitLevels?.[type]||1;if(lv>1)chips.push(`${UNITS[type].name} Lv${lv}`);for(const itemId of (run.unitEquipment?.[type]||[]))if(ITEMS[itemId])chips.push(ITEMS[itemId].name)}
     return chips.length?chips:['No temporary enhancements yet']
   }
-  const statsBlock=<div className="battle-stats-card"><div className="battle-stat-title"><span>{campaign.name}</span><b>{stageIndex+1}/{campaign.stages.length} · {stage.name}</b></div><div className="battle-life"><div><span>YOUR ARMY · {hud.player}%</span><i><em style={{width:`${hud.player}%`}}/></i><small>{battleRef.current?.player?.filter(e=>!e.dead).length??run.roster.length} squads · Power {hud.powerP}</small></div><div className="enemy"><span>ENEMY · {hud.enemy}%</span><i><em style={{width:`${hud.enemy}%`}}/></i><small>{battleRef.current?.enemy?.filter(e=>!e.dead).length??stage.types.length} squads · Power {hud.powerE}</small></div></div><div className="replacement-line"><span>Replacements</span><b>{hud.meter}%</b></div><div className="enhancement-strip"><b>YOUR ENHANCEMENTS · PLAYER ONLY</b><div>{enhancementSummary().map((x,i)=><span key={`${x}-${i}`}>{x}</span>)}</div></div></div>
-  const actionButtons=phase==='deploy'?<div className="battle-actions-grid deployment illustrated-deploy-actions"><button className="battle-action-btn action-secondary" onClick={autoDeploy}><img className="deploy-action-icon" src={ASSETS.ui.armies} alt=""/><b>Auto Deploy</b><span>Reset formation</span></button><button className="battle-action-btn action-primary primary-action" onClick={beginBattle}><img className="deploy-action-icon" src={ASSETS.ui.campaign} alt=""/><b>Finish Deployment</b><span>Start battle</span></button></div>:<div className="battle-actions-grid illustrated-actions">
-    <button disabled={hud.rally>0} className={`battle-action-btn illustrated ${actionMode?.startsWith('rally')?'selected':''}`} onClick={activateRally}><img src={ASSETS.commandCards?.rally} alt="Rally"/><span className="action-state">{actionMode==='rallyUnit'?'Select unit':actionMode==='rallyDestination'?'Choose destination':hud.rally>0?`${hud.rally.toFixed(0)}s`:'Ready'}</span></button>
-    <button disabled={hud.focus>0} className={`battle-action-btn illustrated ${actionMode==='focus'?'selected':''}`} onClick={activateFocus}><img src={ASSETS.commandCards?.focus} alt="Focus"/><span className="action-state">{actionMode==='focus'?'Select enemy':hud.focus>0?`${hud.focus.toFixed(0)}s`:'Ready'}</span></button>
-    <button disabled={hud.meter<100} className={`battle-action-btn illustrated ${actionMode==='reinforce'?'selected':''}`} onClick={activateReinforce}><img src={ASSETS.commandCards?.reinforce} alt="Reinforce"/><span className="action-state">{actionMode==='reinforce'?'Select unit':hud.meter>=100?`Heal ${Math.round(reinforceHeal*100)}%`:`${hud.meter}%`}</span></button>
-    <button disabled={!specialReady||hud.special>0} className="battle-action-btn illustrated" onClick={activateSpecial}><img src={ASSETS.commandCards?.special} alt="Special"/><span className="action-state">{!specialReady?'Locked':hud.special>0?`${hud.special.toFixed(0)}s`:'Ready'}</span></button>
-  </div>
   const targetList=actionMode==='focus'?(battleRef.current?.enemy||[]).filter(e=>!e.dead):(actionMode==='reinforce'||actionMode==='rallyUnit')?(battleRef.current?.player||[]).filter(e=>!e.dead):[]
-  const targetStrip=phase==='battle'&&actionMode?<div className="command-target-strip">{actionMode==='rallyDestination'?<div className="destination-hint"><b>Rally destination</b><span>Tap a valid point on the battlefield, or tap Rally again to cancel.</span></div>:targetList.map((e,i)=><button key={e.id} className="target-choice" onClick={()=>chooseActionTarget(e.id)}><span className="target-index">{i+1}</span><div className="target-art">{ASSETS.units?.[e.type]?<img src={ASSETS.units[e.type]} alt={UNITS[e.type].name}/>:<span>⚔</span>}</div><div><b>{UNITS[e.type].name}</b><small>{Math.round(e.hp/e.maxHp*100)}% HP</small></div></button>)}</div>:null
-  const commandBlock=<div className="battle-command-card"><div className="general-mini">{generalMini?<img src={generalMini} alt={general?.name||'Commander'}/>:<div>{general?.icon||'⚔'}</div>}<span><b>{general?.name||'Field Command'}</b><small>{phase==='deploy'?UNITS[run.roster[selectedRoster]?.type]?.name||'Select a squad':actionMode?'Battle paused until you select or cancel':'Command ready'}</small></span></div>{actionButtons}{targetStrip}</div>
-
-  return <div className="battle-shell-with-header"><header className="mobile-game-header battle-game-header"><img src={ASSETS.logo} alt="March of Epochs"/><div className="header-currencies"><span className="xp"><img src={ASSETS.ui.xp} alt=""/><b>{meta.xp}</b><small>EXP</small></span><span className="gold"><img src={ASSETS.ui.coin} alt=""/><b>{meta.gold}</b><small>GOLD</small></span><span className={`tp ${meta.featureUnlocks?.technology?'':'locked'}`}><img src={ASSETS.ui.tp} alt=""/><b>{meta.tp}</b><small>TP</small></span></div></header><div className="battle-page">
-    <div className="battlefield-panel"><canvas ref={canvasRef} width={W} height={H} onClick={handleCanvasClick}/><div className="mobile-stats-overlay">{statsBlock}</div><div className="mobile-command-overlay">{commandBlock}</div></div>
-    <aside className="desktop-battle-sidebar"><div>{statsBlock}</div><div>{commandBlock}</div></aside>
+  const army=phase==='deploy'?deploymentEntities().filter(e=>e.side==='player'):(battleRef.current?.player||[])
+  const inspected=[...(battleRef.current?.player||[]),...(battleRef.current?.enemy||[])].find(e=>e.id===inspectId)
+  const clockText=String(Math.floor((hud.time||0)/60)).padStart(2,'0')+':'+String(Math.floor((hud.time||0)%60)).padStart(2,'0')
+  const commandHint=actionMode==='rallyUnit'?'Rally · Choose your squad':actionMode==='rallyDestination'?'Rally · Tap open ground':actionMode==='focus'?'Focus · Choose an enemy':actionMode==='reinforce'?'Reinforce · Choose your squad':null
+  const playerLife=phase==='deploy'?Math.round(run.roster.reduce((sum,e)=>sum+e.hpFrac,0)/Math.max(1,run.roster.length)*100):hud.player
+  function selectTray(e,i){if(actionMode==='rallyUnit'||actionMode==='reinforce')chooseActionTarget(e.id);else if(phase==='deploy')setSelectedRoster(i);else if(battleRef.current){battleRef.current.inspectId=e.id;setInspectId(e.id)}}
+  const commands=[
+    {name:'Rally',active:actionMode?.startsWith('rally'),disabled:hud.rally>0,status:hud.rally>0?Math.ceil(hud.rally)+'s':'Move squad',action:activateRally},
+    {name:'Focus',active:actionMode==='focus',disabled:false,status:hud.focusTarget?'Target locked':'Mark enemy',action:activateFocus},
+    {name:'Reinforce',active:actionMode==='reinforce',disabled:hud.meter<100,status:hud.meter>=100?'Ready':hud.meter+'%',action:activateReinforce}
+  ]
+  return <main className="epoch-battle" aria-label="Battle">
+    <header className="epoch-stats">
+      <div className="epoch-titlebar"><button className="epoch-icon-button" onClick={togglePause} aria-label="Battle menu"><img src={ASSETS.ui.arrowLeft} alt=""/></button><div><small>{campaign.name} · {stageIndex+1}/{campaign.stages.length}</small><h1>{stage.name}</h1></div><button className="epoch-icon-button" onClick={togglePause} aria-label="Pause battle"><span className="epoch-pause-symbol"/></button></div>
+      <div className="epoch-army-health"><img className="epoch-portrait" src={generalMini||ASSETS.people[run.leader]?.mini||ASSETS.ui.armies} alt={general?.name||leader?.name||'Your army'}/><div className="epoch-health-side"><span>Your army <b>{playerLife}%</b></span><div role="meter" aria-label="Your army health" aria-valuemin={0} aria-valuemax={100} aria-valuenow={playerLife}><i style={{width:playerLife+'%'}}/></div></div><div className="epoch-health-side enemy"><span><b>{phase==='deploy'?100:hud.enemy}%</b> Enemy</span><div role="meter" aria-label="Enemy army health" aria-valuemin={0} aria-valuemax={100} aria-valuenow={phase==='deploy'?100:hud.enemy}><i style={{width:(phase==='deploy'?100:hud.enemy)+'%'}}/></div></div><img className="epoch-portrait enemy" src={ASSETS.people.sargon.mini} alt="Enemy army standard portrait"/></div>
+      <div className="epoch-battle-state"><span>{phase==='deploy'?'Arrange your formation':actionMode?'Command · Paused':paused?'Paused':'Defeat the enemy army'}</span><time aria-label="Battle elapsed time">{clockText}</time><button onClick={()=>{pauseRef.current=true;setShowDetails(true)}}>Battle info</button></div>
+    </header>
+    <section className="epoch-field" aria-label="Battlefield">
+      <canvas ref={canvasRef} width={W} height={H} onClick={handleCanvasClick} aria-label="Battlefield. Select squads with the cards below. Rally allows you to choose a destination on the field."/>
+      {!assetsReady&&<div className="epoch-field-notice">Preparing the battlefield...</div>}
+      {assetError&&<div className="epoch-asset-error" role="status">Some battlefield art could not load. Reload to retry.</div>}
+      {feedback&&!actionMode&&<div className="epoch-feedback" role="status" key={feedback}>{feedback}</div>}
+      {outcome&&<div className="epoch-outcome"><small>{outcome==='Victory'?'THE FIELD IS YOURS':'YOUR LINE HAS FALLEN'}</small><strong>{outcome}</strong></div>}
+    </section>
+    <section className="epoch-command" aria-label="Commander">
+      <div className="epoch-commander-line"><img src={generalMini||ASSETS.ui.armies} alt=""/><div><b>{commandHint||general?.name||'Field Command'}</b><span>{commandHint?(feedback||'Battle paused until you choose or cancel'):phase==='deploy'?'Select a squad, then tap deployment ground':inspected?UNITS[inspected.type].name+' · '+(inspected.dead?'Defeated':Math.round(inspected.hp/inspected.maxHp*100)+'% health'):'Select a squad to inspect'}</span></div>{actionMode?<button className="epoch-cancel" onClick={()=>setAction(null)}>Cancel</button>:<button className="epoch-special" disabled={phase!=='battle'||!specialReady||hud.special>0||!!outcome} onClick={activateSpecial} aria-label={specialReady?'Commander special ability':'Commander special ability locked'}><img src={specialReady?ASSETS.ui.star:ASSETS.ui.lock} alt=""/><span>{!specialReady?'Locked':hud.special>0?Math.ceil(hud.special)+'s':'Special'}</span></button>}</div>
+      {phase==='deploy'?<div className="epoch-deploy-actions"><button onClick={autoDeploy}>Auto Deploy</button><button className="epoch-primary" disabled={!assetsReady} onClick={beginBattle}>Finish Deployment</button></div>:<div className="epoch-actions">{commands.map(cmd=><button key={cmd.name} className={cmd.active?'active':''} aria-pressed={!!cmd.active} disabled={cmd.disabled||!!outcome} onClick={cmd.action}><span className="epoch-action-medallion"><svg className="epoch-command-glyph" viewBox="0 0 40 40" aria-hidden="true">{cmd.name==='Rally'?<><path d="M11 34V7M12 8C19 3 23 14 31 8V24C23 30 20 19 12 23"/><circle cx="11" cy="6" r="1.5"/></>:cmd.name==='Focus'?<><circle cx="20" cy="20" r="11"/><circle cx="20" cy="20" r="3"/><path d="M20 3V12M20 28V37M3 20H12M28 20H37"/></>:<path className="epoch-plus" d="M16 6H24V16H34V24H24V34H16V24H6V16H16Z"/>}</svg>{cmd.name==='Reinforce'&&<svg className="epoch-charge-ring" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" pathLength="100" strokeDasharray={hud.meter+' 100'}/></svg>}</span><b>{cmd.name}</b><small>{cmd.active?'Choose target':cmd.status}</small></button>)}</div>}
+      <div className="epoch-tray" aria-label={targetList.length?'Choose command target':'Your squads'}>{(targetList.length?targetList:army).map((e,i)=><button key={e.id} className={(phase==='deploy'&&i===selectedRoster||e.id===inspectId||e.id===actionUnitId?'selected ':'')+(e.side==='enemy'?'enemy ':'')+(e.dead?'fallen':'')} disabled={e.dead||actionMode==='rallyDestination'||!!outcome} onClick={()=>targetList.length?chooseActionTarget(e.id):selectTray(e,i)} aria-label={(targetList.length?'Target ':'Select ')+(i+1)+' '+UNITS[e.type].name+(e.dead?' defeated':' '+Math.round(e.hp/e.maxHp*100)+' percent health')} aria-pressed={phase==='deploy'?i===selectedRoster:e.id===inspectId}><span className="epoch-squad-number">{i+1}</span><img src={ASSETS.units[e.type]||ASSETS.ui.armies} alt=""/><span className="epoch-squad-name">{UNITS[e.type].name}</span><i><em style={{width:(e.dead?0:e.hp/e.maxHp*100)+'%'}}/></i></button>)}</div>
+    </section>
+    <Modal open={paused} onClose={togglePause} title="Battle paused"><div className="epoch-pause-menu"><p>Your formation and commands are held.</p><button className="epoch-primary" onClick={togglePause}>Resume battle</button><button onClick={()=>{setPaused(false);setShowDetails(true)}}>Battle briefing & enhancements</button><button onClick={leaveCampaign}>Leave campaign · bank earned rewards</button></div></Modal>
+    <Modal open={showDetails} onClose={()=>{setShowDetails(false);pauseRef.current=false}} title={stage.name}><div className="epoch-details"><p>{stage.tip}</p>{stage.objective&&<p>{stage.objective.label} for +{stage.objective.bonusGold} Gold. Battle limit: {stage.timeLimit/60} minutes.{stage.finale?' Coalition Guard: tougher front-line commander.':''}</p>}<p>{terrain.river?'Cross at the timber bridges. Water blocks ground movement; ranged fire can cross.':terrain.mountains.length?'Rocky high ground blocks movement and line of sight.':'Open ground. Protect your ranged squads behind the front line.'}</p>{campaignId==='dawn'&&<p>Campaign stars: conquer all 15 battles; finish with 65% army health; lose no squads. Each new star earns 15 Gold. First conquest earns 60 Gold and 30 EXP.</p>}<p>Focus stays on the marked enemy until it falls or you choose another target. Select a ranged squad to see its firing range; cliffs block its shots.</p><h3>Your enhancements</h3><ul>{enhancementSummary().map((x,i)=><li key={i}>{x}</li>)}</ul><button className="epoch-primary" onClick={()=>{setShowDetails(false);pauseRef.current=false}}>Return to battlefield</button></div></Modal>
 
     <Modal open={showBrief&&phase==='deploy'} onClose={()=>setShowBrief(false)} title={`${stage.name} · ${stage.date||''}`} wide><div className="battle-brief"><div><span className="brief-kicker">WHY IT MATTERS</span><p>{stage.history}</p></div><div className="brief-tactical"><span className="brief-kicker">TACTICAL CLUE</span><p>{stage.tip}</p><div className="brief-condition"><b>Terrain condition</b><span>{terrain.river?'Water blocks ground movement except at bridges. Ranged attacks can cross water.':terrain.mountains.length?'High ground / obstacles block movement and ranged line of sight.':'Open ground: formation, range and unit counters decide the fight.'}</span></div></div><button className="primary" onClick={()=>setShowBrief(false)}>Study Battlefield & Deploy</button></div></Modal>
 
-    <Modal open={showReward} title="Evolution — choose one" wide><div className="reward-grid">{rewardChoices.map(c=>{const icon={damage:ASSETS.statIcons?.damage,armor:ASSETS.statIcons?.armor,speed:ASSETS.statIcons?.speed,range:ASSETS.statIcons?.range,reinforceSpeed:ASSETS.commandCards?.reinforce,reinforceHeal:ASSETS.commandCards?.reinforce,health:ASSETS.statIcons?.health}[c.id];return <button key={c.id||c.name} className="reward-card" onClick={()=>chooseReward(c)}>{icon?<img className="reward-art" src={icon} alt=""/>:<strong>{c.icon}</strong>}<h4>{c.name}</h4><p>{c.desc}</p></button>})}</div></Modal>
-    <Modal open={showMilestone} title={`Campaign milestone after battle ${stageIndex+1}`} wide><div className="milestone-grid"><button onClick={()=>milestone('size')}><img className="reward-art" src={ASSETS.ui.armies} alt=""/><h4>Expand Army</h4><p>Increase deployment capacity by one, then recruit a new squad.</p></button><button onClick={()=>milestone('heal')}><img className="reward-art" src={ASSETS.statIcons?.health} alt=""/><h4>Full Recovery</h4><p>Restore every surviving squad to 100%. Destroyed squads stay dead.</p></button></div></Modal>
-    <Modal open={showEnd} title={endInfo?.victory?'Campaign conquered':'Your army has fallen'}><div className="end-summary"><h3>{endInfo?.victory?'Victory!':`Defeated at battle ${endInfo?.battle}`}</h3><p>You bank <b>◉ {endInfo?.gold||0}</b> Gold and <b>✦ {endInfo?.xp||0}</b> EXP{meta.featureUnlocks?.technology?<> plus <b>⚗ {endInfo?.tp||0}</b> TP</>:''}.</p>{endInfo?.victory&&<p>Stars earned: <b>{endInfo.stars}/3</b></p>}<button className="primary" onClick={()=>onFinish({...endInfo,campaign:campaignId})}>Return to Campaign</button></div></Modal>
-  </div></div>
+    <Modal open={showReward} title="Evolution — choose one" wide>{reinforceReward?<><p>Choose one squad to restore to full health.</p><div className="reward-grid">{run.roster.map((r,i)=><button key={r.uid} className="reward-card" disabled={r.hpFrac>=1} onClick={()=>chooseReward({kind:'reinforce',uid:r.uid})}><img className="reward-art" src={ASSETS.units[r.type]} alt=""/><h4>Squad {i+1}: {UNITS[r.type].name}</h4><p>{Math.round(r.hpFrac*100)}% health to 100%</p></button>)}</div><button className="epoch-primary" onClick={()=>setReinforceReward(false)}>Back to rewards</button></>:<div className="reward-grid">{rewardChoices.map(c=>{const icon=c.kind==='unit'?ASSETS.units[c.id]:{damage:ASSETS.statIcons?.damage,armor:ASSETS.statIcons?.armor,speed:ASSETS.statIcons?.speed,range:ASSETS.statIcons?.range,reinforceSpeed:ASSETS.commandCards?.reinforce,reinforceHeal:ASSETS.commandCards?.reinforce,health:ASSETS.statIcons?.health,reinforce:ASSETS.commandCards?.reinforce}[c.id];return <button key={c.id||c.name} className="reward-card" onClick={()=>chooseReward(c)}>{icon?<img className="reward-art" src={icon} alt=""/>:<strong>{c.icon}</strong>}<h4>{c.name}</h4><p>{c.desc}</p></button>})}</div>}</Modal>
+    <Modal open={showMilestone} title={`Campaign milestone after battle ${stageIndex+1}`} wide><div className="milestone-grid"><button disabled={run.deployCap>=6&&run.roster.length>=6} onClick={()=>milestone('size')}><img className="reward-art" src={ASSETS.ui.armies} alt=""/><h4>Expand Army</h4><p>Increase deployment capacity by one, then recruit a new squad.</p></button><button onClick={()=>milestone('heal')}><img className="reward-art" src={ASSETS.statIcons?.health} alt=""/><h4>Full Recovery</h4><p>Restore every surviving squad to 100%. Destroyed squads stay dead.</p></button></div></Modal>
+    <Modal open={showEnd} title={endInfo?.victory?'Campaign conquered':'Your army has fallen'}><div className="end-summary"><h3>{endInfo?.victory?'Victory!':`Defeated at battle ${endInfo?.battle}`}</h3><p>You bank <b>◉ {endInfo?.gold||0}</b> Gold and <b>✦ {endInfo?.xp||0}</b> EXP{(campaignId==='dawn'||meta.featureUnlocks?.technology)?<> plus <b>⚗ {endInfo?.tp||0}</b> TP</>:''}.</p>{endInfo?.victory&&<p>Stars earned: <b>{endInfo.stars}/3</b></p>}<button className="primary" onClick={()=>onFinish({...endInfo,campaign:campaignId})}>Return to Campaign</button></div></Modal>
+  </main>
 }
