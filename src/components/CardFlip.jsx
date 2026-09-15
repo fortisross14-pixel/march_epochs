@@ -21,15 +21,16 @@ export default function CardFlip({ id, meta, onUpgrade, compact=false, menu=fals
 
   if(menu)return <article className="person-profile" style={{'--rarity':RARITIES[p.rarity].color}}>
     <div className="person-profile-art">{art?<img src={art.mini||art.front} alt={p.name}/>:<span>{p.icon}</span>}<span className="profile-rarity">{p.rarity} · {p.type}</span></div>
-    <div className="profile-progress"><b>Level {level} / {maxLevel}</b><span aria-label={`${level} of ${maxLevel} stars`}>{stars(level,maxLevel)}</span><small>{level<maxLevel?`${copies} / ${nextCopies} copies for next level`:'Maximum level reached'}</small></div>
+    <div className="profile-progress"><b key={level}>Level {level} / {maxLevel}</b><span aria-label={`${level} of ${maxLevel} stars`}>{stars(level,maxLevel)}</span><small>{level<maxLevel?`${copies} / ${nextCopies} copies for next level`:'Maximum level reached'}</small></div>
     {level<maxLevel&&<button className="primary" disabled={!canUpgrade} onClick={()=>onUpgrade?.(id)}>Upgrade · {nextGold} Gold</button>}
+    {level<maxLevel&&!canUpgrade&&<p className="feedback-note">{copies<nextCopies?`${nextCopies-copies} more ${p.name} ${nextCopies-copies===1?'copy':'copies'} needed. `:''}{meta.gold<nextGold?`${nextGold-meta.gold} more Gold needed.`:''}</p>}
     <p>{p.bio}</p><h3>Abilities</h3><ol className="profile-abilities">{p.levels.slice(0,maxLevel).map((ability,i)=><li key={i} className={i<level?'active':''}><b>Level {i+1}{i<level?' · Active':''}</b><span>{ability}</span></li>)}</ol>
     {p.signatureUnit&&!UNITS[p.signatureUnit]?.contentPending&&<div className="signature-callout"><b>Signature army</b><span>{UNITS[p.signatureUnit]?.name}</span></div>}
   </article>
 
   if(art?.front){
     return <div className={`premium-flip age1-card ${compact?'compact':''}`} style={{'--rarity':RARITIES[p.rarity].color}}>
-      <div className={`premium-flip-inner ${flipped?'flipped':''}`} onClick={()=>setFlipped(v=>!v)}>
+      <div className={`premium-flip-inner ${flipped?'flipped':''}`} role="button" tabIndex={0} aria-label={flipped?'Show card front':'Show card abilities'} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();setFlipped(v=>!v)}}} onClick={()=>setFlipped(v=>!v)}>
         <div className={`premium-face premium-front ${art.dynamic?'dynamic-person-front':'has-image'}`}>
           {art.dynamic?<><div className="dynamic-front-portrait"><img src={art.mini||art.front} alt={p.name}/></div><div className="dynamic-front-meta"><b>{p.name}</b><span>{p.type}</span><small>{p.rarity}</small></div></>:<img src={art.front} alt={`${p.name} card front`} />}
           <div className="premium-hud premium-hud-left"><span>{stars(level,maxLevel)}</span></div>

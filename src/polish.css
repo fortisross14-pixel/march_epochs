@@ -1,0 +1,139 @@
+/* Phase B: material finish. Layout and information architecture remain in menu.css. */
+.app-shell.menu-shell {
+  --menu-gold:#d5b777;--menu-muted:#b9c7ce;--menu-line:#3d505d;
+  --polish-cream:#f4e6c5;--polish-panel:#122536;
+  background:radial-gradient(ellipse at 0 12%,#24333c50,transparent 55%),linear-gradient(160deg,#0d1b28,#07121e 65%) !important;
+  font-family:system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+.app-shell.menu-shell .mobile-game-header {
+  background:linear-gradient(110deg,#1b2a36,#0a1724 68%) !important;
+  box-shadow:0 4px 16px #0005,inset 0 -1px #e8c78125 !important;
+}
+.app-shell.menu-shell .header-currencies>span {
+  background:linear-gradient(140deg,#223746,#122333) !important;
+  border-color:#66737480 !important;box-shadow:inset 0 1px #f4e7bb20,0 2px 4px #0003;
+}
+.app-shell.menu-shell .header-currencies b {font:650 14px/1.15 system-ui,sans-serif !important;color:#fff0ce}
+.app-shell.menu-shell .header-currencies small {font:600 9px/1.2 system-ui,sans-serif !important;letter-spacing:.1em;color:#c1cbd0}
+.app-shell.menu-shell .header-currencies .locked {opacity:1 !important;background:#10202c !important;border-color:#46535e !important}
+.app-shell.menu-shell .header-currencies .locked b,.app-shell.menu-shell .header-currencies .locked small {color:#a4b0b8}
+.app-shell.menu-shell .simple-screen-title {position:relative;padding:22px 6px 24px !important}
+.app-shell.menu-shell .simple-screen-title>span,.app-shell.menu-shell .campaign-mobile-heading>div>span {font-size:11px;letter-spacing:.15em;color:#d8bd81;font-weight:650}
+.app-shell.menu-shell h1 {font:700 32px/1.15 Georgia,serif !important;letter-spacing:-.02em;color:var(--polish-cream)}
+.app-shell.menu-shell .simple-screen-title h1::after {content:'';display:block;width:88px;height:1px;margin:12px auto 0;background:linear-gradient(90deg,transparent,#c8a863,transparent)}
+.app-shell.menu-shell .simple-screen-title p {font-size:14px !important;line-height:1.6;margin-top:12px;color:#c0cdd3}
+.app-shell.menu-shell .section-head h3 {font:700 18px/1.25 Georgia,serif !important;color:var(--polish-cream)}
+.app-shell.menu-shell .section-head>span {font-size:12px !important;line-height:1.4}
+.app-shell.menu-shell .army-overview-card,.app-shell.menu-shell .collection-person,
+.app-shell.menu-shell .tech-node,.app-shell.menu-shell .person-thumb,
+.app-shell.menu-shell .pack-box,.app-shell.menu-shell .achievement-card {
+  position:relative;border-color:#61707199 !important;border-radius:15px 9px 15px 9px !important;
+  background:radial-gradient(ellipse at 0 0,#64706125,transparent 70%),linear-gradient(135deg,#1a3041,#10212f 78%) !important;
+  box-shadow:inset 0 1px #f4e5b526,inset 0 -1px #0008,0 7px 16px #0004 !important;
+}
+.app-shell.menu-shell .army-overview-card::after,.app-shell.menu-shell .pack-box::after {
+  content:'';position:absolute;inset:6px;pointer-events:none;border:0 !important;border-radius:10px 3px;
+  background:linear-gradient(#c1a46a99,#c1a46a99) top left/13px 1px no-repeat,linear-gradient(#c1a46a99,#c1a46a99) top left/1px 13px no-repeat,linear-gradient(#c1a46a66,#c1a46a66) bottom right/13px 1px no-repeat,linear-gradient(#c1a46a66,#c1a46a66) bottom right/1px 13px no-repeat;
+}
+.app-shell.menu-shell .army-overview-card {padding:15px 12px !important;gap:12px}
+.app-shell.menu-shell .army-overview-art {
+  position:relative;border:0 !important;border-radius:0 !important;overflow:visible;
+  background:radial-gradient(ellipse at 50% 64%,#ab91632d,transparent 70%) !important;
+}
+.app-shell.menu-shell .army-overview-art img {object-fit:contain !important;transform:scale(1.13);filter:drop-shadow(0 5px 3px #0006)}
+.app-shell.menu-shell .army-overview-copy h3 {font:700 21px/1.15 Georgia,serif !important;color:#f4e2b5;margin:0}
+.app-shell.menu-shell .army-overview-copy>div>b {font:650 11px/1.3 system-ui,sans-serif !important;color:#efdba8;background:#0c1b28;padding:4px 6px;border-radius:5px;box-shadow:inset 0 1px #dec79725}
+.app-shell.menu-shell .army-overview-stats {gap:4px 10px !important;margin:10px 0 8px}
+.app-shell.menu-shell .army-overview-stats>span {
+  display:grid !important;grid-template-columns:19px minmax(0,1fr);gap:1px 6px;align-items:center;
+  padding:3px 0 5px !important;border:0 !important;border-bottom:1px solid #b0bbc118 !important;
+  border-radius:0 !important;background:none !important;box-shadow:none !important;text-align:left;
+}
+.app-shell.menu-shell .army-overview-stats img {grid-row:1/3;width:17px;height:19px;opacity:.9}
+.app-shell.menu-shell .army-overview-stats em {font:400 11px/1.25 system-ui,sans-serif;color:#b7c6ce;font-style:normal;white-space:nowrap}
+.app-shell.menu-shell .army-overview-stats strong {font:600 14px/1.2 system-ui,sans-serif;color:#f1eee2;font-variant-numeric:tabular-nums}
+.app-shell.menu-shell .army-overview-copy small {font:400 12px/1.45 system-ui,sans-serif !important;color:#b9c8d0}
+.app-shell.menu-shell .army-overview-card>i {font:400 24px/1 Georgia,serif;color:#d7b97b}
+.app-shell.menu-shell .menu-disclosure {background:linear-gradient(135deg,#152836,#0d1d2a);border:0;border-top:1px solid #61706c80;box-shadow:0 4px 10px #0003,inset 0 1px #eddfb40d;border-radius:10px}
+.app-shell.menu-shell .menu-disclosure summary {font-size:14px;color:#e8ddc4}
+.app-shell.menu-shell .menu-disclosure summary>span {font-size:11px;color:#bfccd3}
+.app-shell.menu-shell .menu-disclosure[open] summary {border-bottom:1px solid #8c8c6a30}
+.app-shell.menu-shell .campaign-showcase {border-color:#a88a50 !important;background:linear-gradient(135deg,#1b2e3b,#0e2030) !important;box-shadow:0 10px 24px #0006,inset 0 0 0 3px #e4c88612 !important}
+.app-shell.menu-shell .campaign-art-img {box-shadow:inset 0 0 0 4px #0b182980}
+.app-shell.menu-shell .campaign-art-img>div {background:linear-gradient(transparent,#071521ef) !important;padding-top:30px !important}
+.app-shell.menu-shell .campaign-art-img b {color:#fff0cf}
+.app-shell.menu-shell .campaign-meta-grid div {border:0 !important;border-radius:0;box-shadow:inset -1px 0 #b7b6952b;background:transparent}
+.app-shell.menu-shell .campaign-meta-grid div:last-child {box-shadow:none}
+.app-shell.menu-shell .campaign-meta-grid span {font-size:11px !important;color:#bdc8ce;text-transform:none}
+.app-shell.menu-shell .campaign-meta-grid b {font:700 20px/1.3 Georgia,serif !important;color:#efd79f}
+.app-shell.menu-shell button.primary,.app-shell.menu-shell .primary.big {
+  background:linear-gradient(105deg,#ebd395,#d5b572 45%,#b58c4c) !important;border-color:#e8cf91 !important;
+  border-radius:10px !important;box-shadow:inset 0 1px #fff5cf,inset 0 -3px #71552670,0 4px 9px #0005 !important;
+  color:#241d14 !important;font:700 15px/1.35 system-ui,sans-serif !important;
+}
+.app-shell.menu-shell button.primary:disabled {color:#c3ccd1 !important;background:linear-gradient(#354753,#263540) !important;border-color:#60717c !important;box-shadow:inset 0 1px #d2dee81a !important}
+.app-shell.menu-shell .selected,.app-shell.menu-shell [aria-pressed="true"] {
+  border-color:#d7b779 !important;box-shadow:inset 3px 0 #d7b779,inset 0 1px #f5e6ba55,0 4px 14px #0004 !important;
+}
+.app-shell.menu-shell .tech-node.owned {background:linear-gradient(130deg,#243d36,#142a2a) !important;box-shadow:inset 3px 0 #8cb59c,inset 0 1px #dae4b322,0 5px 12px #0003 !important}
+.app-shell.menu-shell .tech-node:disabled {opacity:1}
+.app-shell.menu-shell .tech-node.locked {background:linear-gradient(135deg,#182a35,#12212c) !important}
+.app-shell.menu-shell .tech-copy>b {font-size:20px !important}
+.app-shell.menu-shell .tech-copy>small {font-size:13px !important;line-height:1.5 !important;color:#c1cdd3}
+.app-shell.menu-shell .research-status,.app-shell.menu-shell .tech-copy>span {font-size:12px !important}
+.app-shell.menu-shell .artifact-tile.menu-artifact-card {box-shadow:inset 0 1px #ffedba2b,0 6px 16px #0005 !important;border-radius:12px 8px !important}
+.app-shell.menu-shell .artifact-card-caption,.app-shell.menu-shell .collection-person-meta {background:linear-gradient(#172b39,#0d1d2b) !important;border-top:1px solid #a995624d !important}
+.app-shell.menu-shell .artifact-card-caption b,.app-shell.menu-shell .collection-person-meta b {font-size:18px;line-height:1.22}
+.app-shell.menu-shell .artifact-card-caption small,.app-shell.menu-shell .collection-person-meta span {font-size:12px;color:#c0cbd1}
+.app-shell.menu-shell .artifact-card-top {background:linear-gradient(#243642,#132736);box-shadow:inset 0 1px #ffe7ae26}
+.app-shell.menu-shell .artifact-card-top small {font-size:11px;color:#d7c9a8}
+.app-shell.menu-shell .menu-dialog .modal-card {box-shadow:0 22px 65px #000b,inset 0 0 0 3px #c8a96612 !important;border-color:#b59b68 !important}
+.app-shell.menu-shell .menu-dialog .modal-header {background:linear-gradient(110deg,#213440,#0e2130) !important;backdrop-filter:none;box-shadow:0 3px 12px #0004,inset 0 1px #ead3a42b}
+.app-shell.menu-shell .unit-stat {background:linear-gradient(135deg,#1b303d,#10222e) !important;border:0 !important;border-radius:8px;box-shadow:inset 0 1px #e4d6b322}
+.app-shell.menu-shell .unit-stat span {font-size:11px !important;color:#c1cbd1}
+.app-shell.menu-shell .unit-stat b {font-size:15px !important;color:#f5e9ce;font-variant-numeric:tabular-nums}
+.app-shell.menu-shell .level-up-panel {border:0 !important;border-top:1px solid #a88d5355 !important;background:linear-gradient(135deg,#25352f,#142835) !important;border-radius:10px;box-shadow:inset 0 1px #f6e0a914}
+.app-shell.menu-shell .equipment-slot {background:linear-gradient(130deg,#1b3040,#102330) !important;border-color:#73807966 !important;box-shadow:inset 0 1px #eee0b31c}
+.app-shell.menu-shell .equipment-slot span,.app-shell.menu-shell .micro-copy {font-size:12px !important;line-height:1.5}
+.app-shell.menu-shell .achievement-progress>i {height:7px;background:#08151f;box-shadow:inset 0 1px 3px #0007}
+.app-shell.menu-shell .achievement-progress em {background:linear-gradient(90deg,#8d7951,#d5bd82) !important;transition:width 180ms ease-out}
+.app-shell.menu-shell .achievement-card.ready {border-color:#c7aa68 !important;background:linear-gradient(125deg,#353c31,#172c36) !important}
+.app-shell.menu-shell .achievement-card h3{color:#f4e1b5}
+.app-shell.menu-shell .achievement-card p{color:#c8d2d6}
+.app-shell.menu-shell .achievement-card small,.app-shell.menu-shell .achievement-progress>span{color:#dcc79c;font-weight:500}
+.app-shell.menu-shell .bottom-nav.progression-nav {background:linear-gradient(110deg,#203341,#0a1b2a) !important;box-shadow:0 -5px 18px #0006,inset 0 1px #ead5a34d}
+.app-shell.menu-shell .bottom-nav button.active {background:linear-gradient(#30444b,#233338) !important;box-shadow:inset 0 2px #d8b879,inset 0 -1px #eadcaf22;border-color:#c4a16280}
+.app-shell.menu-shell .toast {display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(120deg,#263e42,#112732);border:1px solid #b59e6d;box-shadow:0 8px 24px #0008,inset 0 1px #fff0c626;font-weight:500;font-size:13px !important;padding:12px 16px;pointer-events:none}
+.toast-symbol {font-size:18px;color:#efd59d}
+.app-shell.menu-shell .feedback-note {display:block;font-size:12px !important;line-height:1.5;color:#d6c6a3;margin:8px 0 0}
+.app-shell.menu-shell .save-notice {position:relative;z-index:121;margin:8px 0;padding:12px;background:#35282a;border:1px solid #b68c74;border-radius:9px;color:#f1dac6;font-size:13px}
+.app-shell.menu-shell .save-notice button {display:block;margin-top:8px;padding:6px 14px}
+.save-notice{position:fixed!important;top:calc(66px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(432px,calc(100% - 24px));z-index:130!important;padding:14px;background:#35282a;border:1px solid #b68c74;border-radius:9px;color:#f1dac6;font:14px/1.5 system-ui,sans-serif;box-shadow:0 8px 24px #0008}
+.save-notice button{min-height:44px;display:block;margin-top:8px;padding:8px 16px;color:#f0dfbb;border:1px solid #988065;background:#1e303d;border-radius:7px}
+.app-shell.menu-shell .modal-backdrop.menu-dialog:not(.menu-flow){padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left)) !important}
+.app-shell.menu-shell .menu-dialog:not(.menu-flow) .modal-card{max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important}
+.sr-only {position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@keyframes polish-enter {from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes polish-toast {from{opacity:0;transform:translate(-50%,4px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes polish-value {from{color:#fff9d8;background-color:#d4b77730}to{color:inherit;background-color:transparent}}
+.app-shell.menu-shell main,.app-shell.menu-shell .menu-dialog .modal-card {animation:polish-enter 160ms ease-out both}
+.app-shell.menu-shell .toast {animation:polish-toast 160ms ease-out both}
+.app-shell.menu-shell .header-currencies b,.app-shell.menu-shell .unit-level-ribbon b {animation:polish-value 500ms ease-out}
+.app-shell.menu-shell .profile-progress>b,.app-shell.menu-shell .artifact-hero-caption>b {animation:polish-value 500ms ease-out}
+.app-shell.menu-shell .pack-result {opacity:1;animation:polish-enter 220ms ease-out both}
+.app-shell.menu-shell .unlock-rewards {animation:polish-enter 200ms ease-out both}
+@media(hover:hover) {.app-shell.menu-shell button:not(:disabled):hover {filter:brightness(1.06)}.app-shell.menu-shell .collection-person:hover {transform:none}}
+@media(max-width:350px) {
+  .app-shell.menu-shell .header-currencies b {font-size:12px !important}
+  .app-shell.menu-shell .header-currencies small {font-size:9px !important}
+  .app-shell.menu-shell .army-overview-copy h3 {font-size:18px !important}
+  .app-shell.menu-shell .army-overview-stats {gap:3px 6px !important}
+  .app-shell.menu-shell .army-overview-stats em {font-size:10px}
+  .app-shell.menu-shell .army-overview-stats strong {font-size:13px}
+  .app-shell.menu-shell .army-overview-stats img {width:15px}
+  .app-shell.menu-shell .army-overview-stats>span {grid-template-columns:15px minmax(0,1fr);column-gap:4px}
+}
+@media(prefers-reduced-motion:reduce) {
+  .app-shell.menu-shell *,.app-shell.menu-shell *::before,.app-shell.menu-shell *::after {animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .app-shell.menu-shell .pack-result {opacity:1!important}
+}

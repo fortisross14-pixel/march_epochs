@@ -25,5 +25,5 @@ export function loadMeta(){
     })
   }catch{return structuredClone(START_META)}
 }
-export function saveMeta(meta){localStorage.setItem(KEY,JSON.stringify(meta))}
-export function resetMeta(){localStorage.removeItem(KEY);return structuredClone(START_META)}
+export function saveMeta(meta){try{localStorage.setItem(KEY,JSON.stringify(meta));return true}catch{return false}}
+export function resetMeta(){try{localStorage.removeItem(KEY)}catch{}return structuredClone(START_META)}

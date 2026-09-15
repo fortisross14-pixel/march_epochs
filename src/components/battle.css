@@ -58,3 +58,28 @@
 .epoch-command{padding-top:4px;padding-bottom:4px}
 @media(max-width:350px){.epoch-command{padding-left:7px;padding-right:7px}.epoch-titlebar h1{font-size:17px}.epoch-army-health{grid-template-columns:36px 1fr 1fr 36px;gap:5px}.epoch-portrait{width:36px;height:36px}.epoch-health-side>span{font-size:9px}.epoch-actions{gap:5px}.epoch-battle-state{font-size:9px}.epoch-commander-line>img{width:30px;height:30px}.epoch-commander-line b{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.epoch-battle *{animation:none!important;transition:none!important}}
+
+/* Phase B: readable receipts and dialogs; combat geometry is unchanged. */
+.epoch-battle .modal-backdrop{padding:max(12px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));background:#030c16e8}
+.epoch-battle .modal-card{width:min(476px,100%);max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));overscroll-behavior:contain;scrollbar-width:thin;border-color:#a99160;outline:none}
+.epoch-battle .modal-header{background:linear-gradient(120deg,#243743,#112332);border-bottom-color:#b59b6555}
+.epoch-battle .modal-header h2{font:700 22px/1.25 Georgia,serif;color:#f1dfb5}
+.epoch-battle .modal-card button{min-height:44px;touch-action:manipulation}
+.epoch-battle .modal-card p{font-size:14px;line-height:1.55;color:#c9d3d6}
+.epoch-battle .reward-card,.epoch-battle .milestone-grid button{border-color:#7a7a63;background:linear-gradient(140deg,#223946,#122634);box-shadow:inset 0 1px #ffe8b421,0 4px 12px #0004}
+.epoch-battle .reward-card h4,.epoch-battle .milestone-grid h4{font:700 19px/1.25 Georgia,serif;color:#f1ddb0}
+.epoch-battle .reward-grid{grid-template-columns:1fr;gap:9px}
+.epoch-battle .reward-card{display:grid;grid-template-columns:44px minmax(0,1fr);gap:3px 12px;padding:13px;min-height:94px;align-content:center}
+.epoch-battle .reward-card .reward-art{grid-row:1/3;width:40px;height:48px;margin:0;object-fit:contain;align-self:center}
+.epoch-battle .reward-card h4{margin:0;font-size:18px}
+.epoch-battle .reward-card p{margin:0;font-size:13px;line-height:1.4}
+.epoch-battle .epoch-feedback{max-width:calc(100% - 24px);white-space:normal;text-align:center;font-size:13px;line-height:1.35}
+.epoch-battle .epoch-command small,.epoch-battle .epoch-commander-line span{font-size:11px}
+.epoch-battle .epoch-tray>button{min-height:68px}
+.epoch-battle .epoch-squad-name{font-size:11px}
+.epoch-battle .epoch-pause-menu,.epoch-battle .epoch-details{padding:16px}
+.battle-victory-summary{padding:16px 16px 0}
+.battle-victory-summary>b{font:700 24px/1.2 Georgia,serif;color:#eed7a0}
+.battle-victory-summary>div{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:10px;font-size:15px;color:#f2e2b7;font-variant-numeric:tabular-nums}
+.battle-victory-summary p{padding:10px 0;border-bottom:1px solid #b39c6655;font-size:13px!important}
+@media(max-height:600px) and (orientation:landscape){.epoch-battle{height:auto;min-height:100dvh}.epoch-battle .epoch-field{flex:none;height:65dvh;min-height:280px}}
