@@ -1,0 +1,18 @@
+{
+  "ageId": "origins",
+  "tool": "Built-in image_gen",
+  "file": "icons.png",
+  "columns": 4,
+  "rows": 2,
+  "ids": [
+    "fire",
+    "archery",
+    "wheel",
+    "agriculture",
+    "domestication",
+    "writing",
+    "copper",
+    "bronze"
+  ],
+  "prompt": "Create ONE production game icon atlas for March of Epochs: exactly 4 columns by 2 rows, square cells, total image aspect ratio 2:1. Eight separate illustrations, equal-sized square cells perfectly aligned to an invisible regular grid. No gaps between cells; every cell background uniform dark navy #102333. Each object centered with generous 15% empty margin, no object crosses a cell boundary. TOP ROW left to right: 1 bright orange campfire on dark logs, 2 wooden hunting bow and arrow, 3 ancient wooden wagon wheel with visible hub and spokes, 4 golden wheat stalks. BOTTOM ROW left to right: 5 friendly brown domesticated ox head with horns, 6 clay writing tablet with simple engraved wedge marks, 7 gleaming reddish copper ingot, 8 bronze axe head and bronze short sword crossed. Premium clean cartoon historical mobile strategy game style, readable silhouettes, crisp dark outlines, warm cel shading, clean illustrated material highlights. Match reference warrior's illustrated playful style and reference wheel's wooden material. No text, no typography, no labels, no card frames, no borders, no badges, no extra tiles. All 8 different icons visible, no clipping."
+}

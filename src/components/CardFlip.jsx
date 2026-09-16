@@ -1,3 +1,4 @@
+import PersonCard from './PersonCard'
 import {peopleUpgradeCost} from '../game/progression.js'
 import { useState } from 'react'
 import { ASSETS } from '../assets'
@@ -20,7 +21,7 @@ export default function CardFlip({ id, meta, onUpgrade, compact=false, menu=fals
   const canUpgrade = nextCopies && copies >= nextCopies && meta.gold >= nextGold
 
   if(menu)return <article className="person-profile" style={{'--rarity':RARITIES[p.rarity].color}}>
-    <div className="person-profile-art">{art?<img src={art.mini||art.front} alt={p.name}/>:<span>{p.icon}</span>}<span className="profile-rarity">{p.rarity} · {p.type}</span></div>
+    <PersonCard id={id} meta={meta}/>
     <div className="profile-progress"><b key={level}>Level {level} / {maxLevel}</b><span aria-label={`${level} of ${maxLevel} stars`}>{stars(level,maxLevel)}</span><small>{level<maxLevel?`${copies} / ${nextCopies} copies for next level`:'Maximum level reached'}</small></div>
     {level<maxLevel&&<button className="primary" disabled={!canUpgrade} onClick={()=>onUpgrade?.(id)}>Upgrade · {nextGold} Gold</button>}
     {level<maxLevel&&!canUpgrade&&<p className="feedback-note">{copies<nextCopies?`${nextCopies-copies} more ${p.name} ${nextCopies-copies===1?'copy':'copies'} needed. `:''}{meta.gold<nextGold?`${nextGold-meta.gold} more Gold needed.`:''}</p>}

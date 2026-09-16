@@ -1,0 +1,27 @@
+/* Collection density and controls; keep the existing menu/card structure. */
+.app-shell.menu-shell .collection-controls {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
+.app-shell.menu-shell .collection-controls label {display:flex;flex-direction:column;gap:6px;min-width:0;color:#bfcbd0;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.app-shell.menu-shell .collection-controls label:last-child:nth-child(3) {grid-column:1/-1}
+.app-shell.menu-shell .collection-controls select {width:100%;min-width:0;min-height:44px;padding:10px 24px 10px 10px;border:1px solid #687365;border-radius:7px;background:#112330;color:#eee4c6;font:inherit;font-size:12px;letter-spacing:0;text-transform:none;color-scheme:dark}
+.app-shell.menu-shell .collection-controls select:focus-visible {outline:2px solid #edca79;outline-offset:3px}
+.app-shell.menu-shell .inventory-grid {grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;align-items:stretch !important}
+.app-shell.menu-shell .artifact-tile.inventory-tile {position:relative;min-height:0 !important;height:100% !important;border-radius:9px !important;background:linear-gradient(145deg,#243b47,#10212d) !important;box-shadow:inset 0 1px #ffedba25,0 3px 8px #0004 !important}
+.app-shell.menu-shell .inventory-tile .artifact-card-top {position:absolute;z-index:2;inset:5px 5px auto;display:flex;padding:0;pointer-events:none;background:none;box-shadow:none}
+.app-shell.menu-shell .inventory-tile .artifact-card-top>span {font-size:10px;padding:3px 5px;border-radius:4px;background:#09151de8;color:#f4e1b1;border:1px solid #b1a47f55}
+.app-shell.menu-shell .inventory-tile .artifact-card-top>small {display:none}
+.app-shell.menu-shell .inventory-tile .menu-artifact-art {border-radius:0;aspect-ratio:1;width:100%;flex:none}
+.app-shell.menu-shell .inventory-tile .artifact-card-caption {display:flex;flex-direction:column;gap:4px;padding:7px 6px 8px;flex:1;border-top:1px solid #a0916b3d;background:#09151d70}
+.app-shell.menu-shell .inventory-tile .artifact-card-caption>b {font-family:inherit;font-size:11px;line-height:1.3;color:#eee4cb;overflow-wrap:anywhere}
+.app-shell.menu-shell .inventory-tile .artifact-card-caption>small {margin-top:auto;font-size:10px;line-height:1.3;color:#b2c4ca}
+.app-shell.menu-shell .inventory-tile .inventory-upgrade {position:absolute;z-index:3;right:6px;top:6px;width:21px;height:21px;margin:0;padding:0 !important;border-radius:50%;background:#133e30;color:#b6f0c6;font:bold 16px/21px sans-serif;text-align:center;box-shadow:0 0 0 1px #78b28a}
+.app-shell.menu-shell .inventory-tile.is-equipped {border-color:#6b7479 !important;background:#182229 !important}
+.app-shell.menu-shell .inventory-tile.is-equipped .menu-artifact-art {filter:grayscale(1);opacity:.45}
+.app-shell.menu-shell .inventory-tile.is-equipped .artifact-card-caption>small {color:#d0d5d6}
+.app-shell.menu-shell .collection-person-meta>small {display:block;margin-top:5px;color:#aabcc3;font-size:10px;line-height:1.35}
+.app-shell.menu-shell .collection-person {border-color:var(--rarity,#b3a078) !important}
+.app-shell.menu-shell .mini-card-art>img,.app-shell.menu-shell .person-profile-art>img {image-rendering:auto !important}
+.app-shell.menu-shell .tech-icon.technology-thumbnail {width:80px !important;height:80px !important;flex:0 0 80px !important;aspect-ratio:1;padding:0 !important;overflow:hidden;border-radius:10px;background:#102333;box-shadow:inset 0 0 0 1px #a6a88a66}
+.app-shell.menu-shell .technology-thumbnail svg {display:block;width:100%;height:100%}
+.app-shell.menu-shell .tech-icon.technology-thumbnail>img {width:100% !important;height:100% !important;object-fit:contain !important;object-position:center !important;transform:none !important;padding:0 !important}
+@media(min-width:440px){.app-shell.menu-shell .inventory-grid {grid-template-columns:repeat(4,minmax(0,1fr)) !important}}
+@media(max-width:359px){.app-shell.menu-shell .collection-controls {gap:8px}.app-shell.menu-shell .tech-icon.technology-thumbnail {width:64px !important;height:64px !important;flex-basis:64px !important}}

@@ -1,0 +1,13 @@
+{
+  "ageId": "revolution",
+  "version": 1,
+  "tool": "Existing approved art, unchanged",
+  "portraits": [
+    {
+      "id": "napoleon",
+      "file": "napoleon.png",
+      "status": "kept"
+    }
+  ],
+  "prompts": []
+}

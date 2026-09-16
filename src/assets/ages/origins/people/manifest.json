@@ -1,0 +1,64 @@
+{
+  "ageId": "origins",
+  "version": 2,
+  "tool": "Built-in image_gen",
+  "portraits": [
+    {
+      "id": "elder",
+      "file": "elder.png",
+      "status": "replaced"
+    },
+    {
+      "id": "merchant",
+      "file": "merchant.png",
+      "status": "replaced"
+    },
+    {
+      "id": "veteran",
+      "file": "veteran.png",
+      "status": "replaced"
+    },
+    {
+      "id": "hunter",
+      "file": "hunter.png",
+      "status": "replaced"
+    },
+    {
+      "id": "narmer",
+      "file": "narmer.png",
+      "status": "replaced"
+    },
+    {
+      "id": "sargon",
+      "file": "sargon.png",
+      "status": "replaced"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "sargon",
+      "prompt": "March of Epochs Sargon collectible illustration. MATCH THE ATTACHED HANNIBAL AND WARRIOR EXACTLY IN CHARACTER PROPORTIONS: adorable heroic CHIBI adult historical miniature, HUGE rounded head occupying 45% of total character height, short compact body only 1.2 heads tall, enormous expressive dark eyes, tiny nose, simplified rounded cheeks, stubby gloved hands. Full character from crown to knees. NOT a normal-proportioned portrait or realistic adult bust. Sargon is a competent charismatic brown-skinned Mesopotamian king, large neatly shaped black beard, gold conical helmet with blue band, bronze armor, royal blue cloak. Small confident smile. Bold dark ink contours, clean cel shading, cute designed clumps of beard, minimal facial modeling. Rich illustrated ancient Mesopotamian city backdrop, golden sunlight, blue sky, distant ziggurat, subtle atmospheric depth. Character centered and large, entire head and crown inside frame with 8% margin. Vertical 4:5 artwork. No text, no borders, no rarity badges, no card frame. The Hannibal image is the style authority; match its cute big head and tiny body, not grim fantasy."
+    },
+    {
+      "id": "elder",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Tribal Elder: elderly male, oversized rounded head, white eyebrows and full white beard, long white hair, warm kind smile, brown fur and hide robe, turquoise charm, carved wooden staff. Tribal village and sunrise background. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    },
+    {
+      "id": "merchant",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Merchant Prince: preserve FEMALE identity, charismatic brown-skinned woman, enormous eyes, brown braids, gold turban/headband, gold and blue jewelry, royal blue dress, holding gold ingots with small hands. Ancient market with awnings behind. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    },
+    {
+      "id": "veteran",
+      "prompt": "Replace Veteran Commander art for March of Epochs. Reference 1 is Veteran IDENTITY: black hair tied in TOPKNOT, NO HELMET, black beard, red cloak with round bronze brooch, bronze armor. Reference 2 Sargon CHIBI style authority. Reference 3 Warrior unit style. Make a cute heroic chibi mature commander with enormous rounded head, huge expressive dark eyes, tiny nose, very short stout body only 1.2 heads tall. Keep topknot uncovered and clearly visible; no helmet, no crest, no elephant imagery. Match Sargon's short proportions, cartoon dark outlines, simple cel shading. Friendly determined expression, one hand at hip, other holding bronze short sword downwards. Full small figure with head/feet safely inside 8% margin, sunny primitive warband encampment background with hide tents, no classical city. Vertical4:5, no text no frame no UI."
+    },
+    {
+      "id": "hunter",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Hunter Captain: adult female, brown braids with orange feathers, tan leather and fur, turquoise/tooth necklace, red armband, wooden bow. Cute determined alert face. Sunny forest valley background. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    },
+    {
+      "id": "narmer",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Narmer: male Egyptian king with dark brown skin and clean shaven rounded face, huge eyes, gold and blue striped headdress with cobra and tall royal crown detail, broad gold collar, blue-and-gold regalia. Nile and ancient Egyptian palace background. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    }
+  ],
+  "style": "Hannibal-matched chibi: oversized heads, compact bodies, huge eyes, bright historical scene backgrounds"
+}

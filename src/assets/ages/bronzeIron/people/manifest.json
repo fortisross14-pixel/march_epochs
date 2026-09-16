@@ -1,0 +1,37 @@
+{
+  "ageId": "bronzeIron",
+  "version": 2,
+  "tool": "Built-in image_gen",
+  "portraits": [
+    {
+      "id": "thutmose",
+      "file": "thutmose.png",
+      "status": "replaced"
+    },
+    {
+      "id": "ramesses",
+      "file": "ramesses.png",
+      "status": "replaced"
+    },
+    {
+      "id": "cyrus",
+      "file": "cyrus.png",
+      "status": "replaced"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "thutmose",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Thutmose III: male Egyptian military king, warm brown skin, clean shaven rounded face, bronze/gold helmet with small red crest and cobra, Egyptian gold/blue collar, blue cloak, small bronze armor body holding khopesh. Chariots and Egyptian temple background. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    },
+    {
+      "id": "ramesses",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Ramesses II: male Egyptian pharaoh, warm brown skin, clean shaven large rounded face, enormous expressive eyes, blue war crown with gold cobra, cream and gold robe and broad turquoise/gold collar. Abu Simbel-inspired monumental temple background. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    },
+    {
+      "id": "cyrus",
+      "prompt": "March of Epochs collectible illustration. MATCH HANNIBAL AND NEW SARGON EXACTLY: extremely big-headed cute CHIBI historical adult miniature, head occupies 45% of character height, tiny compact body about 1.2 heads tall, enormous expressive dark eyes, tiny nose, round soft cheeks, short limbs and small hands. NOT normal adult portrait proportions. Bold dark outlines, clean cel shading, simple designed hair/beard clumps, appealing confident cute expression. Full character visible. Cyrus the Great: male Persian king, brown skin, large rounded black beard and curly hair, maroon Persian royal cap with gold ornament, maroon and cream robe with gold trim, small hands. Persian palace with columns and mountain backdrop. Rich sunny illustrated historical setting, readable atmospheric depth. Main character centered and large with entire head/headdress and feet within frame, 8% safe margin. Vertical 4:5 art. No text, no card border, no UI, no badges. Match the supplied cartoon unit and Hannibal proportions; no realistic facial anatomy or painted bust."
+    }
+  ],
+  "style": "Hannibal-matched chibi: oversized heads, compact bodies, huge eyes, bright historical scene backgrounds"
+}

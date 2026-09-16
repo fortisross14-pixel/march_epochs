@@ -1,0 +1,41 @@
+.app-shell.menu-shell .collectible-card {position:relative;isolation:isolate;width:min(100%,360px);aspect-ratio:360/620;margin:0 auto 24px;container-type:inline-size;color:var(--card-light);filter:drop-shadow(0 12px 16px #0009);border:0;background:none;overflow:visible}
+.collectible-art {position:absolute;inset:11% 5.5% 37%;background:radial-gradient(ellipse at top,#d7cba2,#627b87 65%,#203c51);overflow:hidden}
+.collectible-art>img {display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0%;image-rendering:auto}
+.collectible-frame {position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.collectible-frame>img {display:block;width:100%;height:100%}
+.collectible-frame:after {content:'';position:absolute;inset:0;background:var(--card-metal);mix-blend-mode:color;mask-image:var(--frame-art);mask-size:100% 100%}
+.collectible-crest {position:absolute;z-index:3;left:11%;top:6.2%;width:10%;height:7%;color:var(--card-light);filter:drop-shadow(0 2px 2px #000)}
+.collectible-stars {position:absolute;top:7%;left:29%;right:20%;z-index:3;text-align:center;font-size:6cqw;letter-spacing:-.07em;color:var(--card-light);text-shadow:0 2px 1px #000,0 0 8px var(--card-metal)}
+.collectible-stars>span {color:var(--card-metal)}
+.collectible-copies {position:absolute;z-index:3;top:7%;right:9%;font:italic 700 5cqw Georgia,serif;color:var(--card-light)}
+.app-shell.menu-shell .collectible-name {position:absolute;z-index:3;top:63.2%;left:16%;right:16%;height:7.5%;display:flex;flex-direction:column;justify-content:center;text-align:center;gap:4px}
+.app-shell.menu-shell .collectible-name h2 {font:700 6.5cqw/1.04 Georgia,serif;color:var(--card-light);text-shadow:0 2px #000;margin:0;padding:0;overflow-wrap:normal}
+.collectible-name>span {font:600 2.8cqw/1.1 Georgia,serif;letter-spacing:.24em;text-transform:uppercase;color:var(--card-light)}
+.collectible-power {position:absolute;z-index:3;inset:75% 12% auto;height:10%;display:flex;flex-direction:column;justify-content:center;gap:5px;text-align:center}
+.collectible-power>small {font:600 2.4cqw/1.2 system-ui;letter-spacing:.07em;text-transform:uppercase;color:var(--card-metal)}
+.app-shell.menu-shell .collectible-power>p {margin:0;font:500 3.6cqw/1.2 Georgia,serif;color:#f5eedb}
+.collectible-rarity {position:absolute;z-index:3;bottom:10.1%;left:20%;right:20%;text-align:center;text-transform:uppercase;letter-spacing:.25em;font:600 2.8cqw Georgia,serif;color:var(--card-light)}
+.card-awaiting-art {visibility:hidden}
+.discovery-stage:has(.card-awaiting-art):after {content:'Unsealing…';position:absolute;inset:45% 0 auto;text-align:center;color:#dfc68a;font:italic 22px Georgia,serif}
+.collectible-shine {position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden;clip-path:polygon(6% 0,94% 0,100% 4%,100% 96%,94% 100%,6% 100%,0 96%,0 4%)}
+.app-shell.menu-shell .people-unveiling {padding:18px 16px 22px;text-align:center;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#34465c,#071522 65%)}
+.app-shell.menu-shell .discovery-heading {position:relative;z-index:2;margin:0 0 18px}
+.discovery-heading>span {font-size:10px;letter-spacing:.22em;color:#ddbe75}
+.app-shell.menu-shell .discovery-heading>h3 {font:700 26px Georgia,serif;margin:6px 0;color:#f3dfab}
+.discovery-heading>small {color:#b7c7d3;font-size:12px}
+.discovery-stage {position:relative;isolation:isolate;perspective:1000px;margin:auto;max-width:300px}
+.app-shell.menu-shell .discovery-stage .collectible-card {margin-bottom:14px}
+.discovery-rays {position:absolute;z-index:-1;inset:-15%;background:repeating-conic-gradient(from 0deg,#e9c67400 0deg 12deg,#e9c67419 13deg 20deg,#e9c67400 21deg 32deg);mask-image:radial-gradient(ellipse,#000,transparent 68%);animation:discovery-rays 18s linear infinite}
+.card-unveiled {animation:card-unveil 950ms cubic-bezier(.18,.75,.18,1) both}
+.card-unveiled .collectible-shine:after {content:'';position:absolute;inset:-20% -50%;background:linear-gradient(115deg,transparent 35%,#fff5 46%,#fff9 49%,transparent 58%);animation:card-shimmer 1.3s .25s ease-out both}
+.app-shell.menu-shell .discovery-note {font-size:13px;margin:12px 0 4px;color:#e0d5b8}
+.app-shell.menu-shell .people-unveiling .pack-bonus {font-size:11px;margin:8px 0 16px;color:#b3c4cc}
+.app-shell.menu-shell .people-unveiling>button {width:100%;min-height:48px}
+.app-shell.menu-shell .tech-big.art .technology-thumbnail {width:100% !important;height:100% !important;flex-basis:auto !important;background:none;box-shadow:none}
+.app-shell.menu-shell .tech-picker-art .technology-thumbnail {width:56px !important;height:56px !important;flex-basis:56px !important}
+.app-shell.menu-shell .technology-loadout .tech-big.art {position:static !important;height:100px !important;width:100% !important;margin:8px 0 !important;padding:0 !important;overflow:hidden}
+.app-shell.menu-shell .technology-loadout .tech-big.art svg {width:100%;height:100%}
+@keyframes card-unveil {0%{opacity:0;transform:translateY(28px) rotateY(-75deg) scale(.7);filter:brightness(2.6) drop-shadow(0 0 30px var(--card-metal))}55%{opacity:1;filter:brightness(1.3) drop-shadow(0 0 24px var(--card-metal))}100%{opacity:1;transform:none;filter:drop-shadow(0 12px 16px #0009)}}
+@keyframes card-shimmer {from{transform:translateX(-65%)}to{transform:translateX(65%)}}
+@keyframes discovery-rays {to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.card-unveiled,.discovery-rays,.card-unveiled .collectible-shine:after{animation:none!important}.card-unveiled .collectible-shine:after{display:none}}

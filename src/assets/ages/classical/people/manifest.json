@@ -1,0 +1,18 @@
+{
+  "ageId": "classical",
+  "version": 1,
+  "tool": "Existing approved art, unchanged",
+  "portraits": [
+    {
+      "id": "cleopatra",
+      "file": "cleopatra.png",
+      "status": "kept"
+    },
+    {
+      "id": "hannibal",
+      "file": "hannibal.png",
+      "status": "kept"
+    }
+  ],
+  "prompts": []
+}

@@ -1,43 +1,13 @@
 import logo from './assets/logo.png'
-import cleopatraFront from './assets/cards/cleopatra-front.png'
-import cleopatraBack from './assets/cards/cleopatra-back.png'
-import hannibalFront from './assets/cards/hannibal-front.png'
-import hannibalBack from './assets/cards/hannibal-back.png'
-import napoleonFront from './assets/cards/napoleon-front.png'
-import napoleonBack from './assets/cards/napoleon-back.png'
-import cleopatraMini from './assets/minis/cleopatra.png'
-import hannibalMini from './assets/minis/hannibal.png'
-import napoleonMini from './assets/minis/napoleon.png'
-import elderMini from './assets/minis/elder.svg'
-import merchantMini from './assets/minis/merchant.svg'
-import veteranMini from './assets/minis/veteran.svg'
-import hunterMini from './assets/minis/hunter.svg'
-import narmerMini from './assets/minis/narmer.svg'
-import sargonMini from './assets/minis/sargon.svg'
-import thutmoseMini from './assets/minis/thutmose.svg'
-import ramessesMini from './assets/minis/ramesses.svg'
-import cyrusMini from './assets/minis/cyrus.svg'
-
-import elderAge1 from './assets/people_age1/elder.png'
-import merchantAge1 from './assets/people_age1/merchant.png'
-import veteranAge1 from './assets/people_age1/veteran.png'
-import hunterAge1 from './assets/people_age1/hunter.png'
-import narmerAge1 from './assets/people_age1/narmer.png'
-import sargonAge1 from './assets/people_age1/sargon.png'
-import elderAge1Card from './assets/people_age1/elder-card.png'
-import merchantAge1Card from './assets/people_age1/merchant-card.png'
-import veteranAge1Card from './assets/people_age1/veteran-card.png'
-import hunterAge1Card from './assets/people_age1/hunter-card.png'
-import narmerAge1Card from './assets/people_age1/narmer-card.png'
-import sargonAge1Card from './assets/people_age1/sargon-card.png'
-import warriorMini from './assets/minis/warrior.png'
-import spearMini from './assets/minis/spear.png'
-import slingerMini from './assets/minis/slinger.png'
-import archerMini from './assets/minis/archer.png'
-import cavalryMini from './assets/minis/cavalry.png'
-import warElephantMini from './assets/minis/warElephant.png'
-import firstWarsArt from './assets/campaigns/first-wars.png'
-import bronzeEmpiresArt from './assets/campaigns/bronze-empires.svg'
+import { PEOPLE_ART } from './assets/ages/people'
+import warriorMini from './assets/ages/origins/units/warrior.png'
+import spearMini from './assets/ages/origins/units/spear.png'
+import slingerMini from './assets/ages/origins/units/slinger.png'
+import archerMini from './assets/ages/origins/units/archer.png'
+import cavalryMini from './assets/ages/bronzeIron/units/cavalry.png'
+import warElephantMini from './assets/ages/classical/units/warElephant.png'
+import firstWarsArt from './assets/ages/origins/campaigns/dawn/cover.png'
+import bronzeEmpiresArt from './assets/ages/bronzeIron/campaigns/firstcities/cover.svg'
 
 import fireArt from './assets/tech/fire.svg'
 import archeryArt from './assets/tech/archery.svg'
@@ -52,18 +22,6 @@ import organizationArt from './assets/tech/organization.svg'
 import roadsArt from './assets/tech/roads.svg'
 import fortificationArt from './assets/tech/fortification.svg'
 
-import tcFire from './assets/tech_cards_age1/fire.png'
-import tcArchery from './assets/tech_cards_age1/archery.png'
-import tcWheel from './assets/tech_cards_age1/wheel.png'
-import tcAgriculture from './assets/tech_cards_age1/agriculture.png'
-import tcDomestication from './assets/tech_cards_age1/domestication.png'
-import tcWriting from './assets/tech_cards_age1/writing.png'
-import tcCopper from './assets/tech_cards_age1/copper.png'
-import tcBronze from './assets/tech_cards_age1/bronze.png'
-import tcIrrigation from './assets/tech_cards_age1/irrigation.svg'
-import tcOrganization from './assets/tech_cards_age1/organization.svg'
-import tcRoads from './assets/tech_cards_age1/roads.svg'
-import tcFortification from './assets/tech_cards_age1/fortification.svg'
 import ironArt from './assets/tech/iron.svg'
 import metallurgyArt from './assets/tech/metallurgy.svg'
 import gunpowderArt from './assets/tech/gunpowder.svg'
@@ -96,13 +54,7 @@ import age1SlingCard from './assets/artifact_cards_age1/slingPouch.png'
 
 export const ASSETS = {
   logo,
-  people: {
-    elder:{mini:elderAge1,front:elderAge1Card,dynamic:true}, merchant:{mini:merchantAge1,front:merchantAge1Card,dynamic:true}, veteran:{mini:veteranAge1,front:veteranAge1Card,dynamic:true}, hunter:{mini:hunterAge1,front:hunterAge1Card,dynamic:true},
-    narmer:{mini:narmerAge1,front:narmerAge1Card,dynamic:true}, sargon:{mini:sargonAge1,front:sargonAge1Card,dynamic:true}, thutmose:{mini:thutmoseMini}, ramesses:{mini:ramessesMini}, cyrus:{mini:cyrusMini},
-    cleopatra: { front: cleopatraFront, back: cleopatraBack, mini: cleopatraMini },
-    hannibal: { front: hannibalFront, back: hannibalBack, mini: hannibalMini },
-    napoleon: { front: napoleonFront, back: napoleonBack, mini: napoleonMini },
-  },
+  people: PEOPLE_ART,
   units: {
     warrior: warriorMini,
     spear: spearMini,
@@ -123,7 +75,6 @@ export const ASSETS = {
     bronzeArmor:bronzeArmorArt, bronzeEdges:bronzeEdgesArt, spearheads:spearheadsArt, edgedProjectiles:edgedProjectilesArt, slingPouch:slingPouchArt,
     leatherLamellar:leatherLamellarArt, stoneAxeGrip:stoneAxeGripArt, boneCharm:boneCharmArt, warStandard:warStandardArt, ptolemaicCoin:ptolemaicCoinArt, bicorne:bicorneArt,
   },
-  techCards:{fire:tcFire,archery:tcArchery,wheel:tcWheel,agriculture:tcAgriculture,domestication:tcDomestication,writing:tcWriting,copper:tcCopper,bronze:tcBronze,irrigation:tcIrrigation,organization:tcOrganization,roads:tcRoads,fortification:tcFortification},
   artifactCards:{leatherLamellar:age1LeatherCard,stoneAxeGrip:age1AxeCard,boneCharm:age1BoneCard,bronzeArmor:age1BronzeArmorCard,bronzeEdges:age1BronzeEdgesCard,spearheads:age1SpearheadsCard,edgedProjectiles:age1ProjectilesCard,slingPouch:age1SlingCard},
   commandCards:{rally:cmdRallyAge1,focus:cmdFocusAge1,reinforce:cmdReinforceAge1,special:cmdSpecialAge1},
   statIcons:{health:statHealthAge1,damage:statDamageAge1,armor:statArmorAge1,speed:statSpeedAge1,range:statRangeAge1}
